@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="FlowerShopEntities">
+    <EntitySetMapping Name="CUSTOMERS">
+      <EntityTypeMapping TypeName="Model.CUSTOMER">
+        <MappingFragment StoreEntitySet="CUSTOMERS">
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="SENDER_NAME" ColumnName="SENDER_NAME" />
+          <ScalarProperty Name="SENDER_EMAIL" ColumnName="SENDER_EMAIL" />
+          <ScalarProperty Name="SENDER_PHONE" ColumnName="SENDER_PHONE" />
+          <ScalarProperty Name="RECIPIENT_NAME" ColumnName="RECIPIENT_NAME" />
+          <ScalarProperty Name="RECIPIENT_PHONE" ColumnName="RECIPIENT_PHONE" />
+          <ScalarProperty Name="RECIPIENT_ADDRESS" ColumnName="RECIPIENT_ADDRESS" />
+          <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DISCOUNTCODES">
+      <EntityTypeMapping TypeName="Model.DISCOUNTCODE">
+        <MappingFragment StoreEntitySet="DISCOUNTCODES">
+          <ScalarProperty Name="DISCOUNT_ID" ColumnName="DISCOUNT_ID" />
+          <ScalarProperty Name="CODE" ColumnName="CODE" />
+          <ScalarProperty Name="DISCOUNT_TYPE" ColumnName="DISCOUNT_TYPE" />
+          <ScalarProperty Name="DISCOUNT_VALUE" ColumnName="DISCOUNT_VALUE" />
+          <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+          <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FLOWERS">
+      <EntityTypeMapping TypeName="Model.FLOWER">
+        <MappingFragment StoreEntitySet="FLOWERS">
+          <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
+          <ScalarProperty Name="FLOWER_NAME" ColumnName="FLOWER_NAME" />
+          <ScalarProperty Name="FLOWER_IMAGE" ColumnName="FLOWER_IMAGE" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="OLD_PRICE" ColumnName="OLD_PRICE" />
+          <ScalarProperty Name="NEW_PRICE" ColumnName="NEW_PRICE" />
+          <ScalarProperty Name="FLOWERTYPE_ID" ColumnName="FLOWERTYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FLOWERTYPES">
+      <EntityTypeMapping TypeName="Model.FLOWERTYPE">
+        <MappingFragment StoreEntitySet="FLOWERTYPES">
+          <ScalarProperty Name="FLOWERTYPE_ID" ColumnName="FLOWERTYPE_ID" />
+          <ScalarProperty Name="FLOWERTYPE_NAME" ColumnName="FLOWERTYPE_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ORDERHISTORies">
+      <EntityTypeMapping TypeName="Model.ORDERHISTORY">
+        <MappingFragment StoreEntitySet="ORDERHISTORY">
+          <ScalarProperty Name="HISTORY_ID" ColumnName="HISTORY_ID" />
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+          <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ORDERS">
+      <EntityTypeMapping TypeName="Model.ORDER">
+        <MappingFragment StoreEntitySet="ORDERS">
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ORDER_DATE" ColumnName="ORDER_DATE" />
+          <ScalarProperty Name="TOTAL_AMOUNT" ColumnName="TOTAL_AMOUNT" />
+          <ScalarProperty Name="DISCOUNT_ID" ColumnName="DISCOUNT_ID" />
+          <ScalarProperty Name="MESSAGE_TO_RECIPIENT" ColumnName="MESSAGE_TO_RECIPIENT" />
+          <ScalarProperty Name="MESSAGE_TO_SHOP" ColumnName="MESSAGE_TO_SHOP" />
+          <ScalarProperty Name="HIDE_SENDER_INFO" ColumnName="HIDE_SENDER_INFO" />
+          <ScalarProperty Name="PAYMENT_METHOD" ColumnName="PAYMENT_METHOD" />
+          <ScalarProperty Name="IS_PAID" ColumnName="IS_PAID" />
+          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SHOPPINGCARTs">
+      <EntityTypeMapping TypeName="Model.SHOPPINGCART">
+        <MappingFragment StoreEntitySet="SHOPPINGCART">
+          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
+          <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+          <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ORDERDETAIL1">
+      <EntityTypeMapping TypeName="Model.ORDERDETAIL1">
+        <MappingFragment StoreEntitySet="ORDERDETAILS">
+          <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+          <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+          <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

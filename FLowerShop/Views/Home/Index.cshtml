@@ -1,0 +1,647 @@
+﻿@model FLowerShop.Models.HomeModel
+
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<div class="list-flower container">
+    <div id="home-slider" class="carousel slide carousel-fade mb-5">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/Content/assets/img/banner1.png" class="d-block w-100 img-thumbnail" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Content/assets/img/banner2.png" class="d-block w-100 img-thumbnail" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Content/assets/img/banner3.png" class="d-block w-100 img-thumbnail" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#home-slider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#home-slider" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div id="discount-flower">
+        <h4 class="mt-5 mb-4 text-center">ĐANG GIẢM GIÁ</h4>
+        <div class="list-product row justify-content-center">
+            <div class="item-product col-md-3 col-6 mb-4">
+                <div class="image position-relative mb-3">
+                    <a href="./detail.html">
+                        <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                        <span class="percent-off-rounded">9%<br>GIẢM</span>
+                    </a>
+                </div>
+                <div class="content">
+                    <div class="description">
+                        <div class="fw-bold text-center">
+                            <a href="./detail.html">Mặt trời của anh</a>
+                        </div>
+                        <div class="price text-center fw-bold p-2">
+                            <span class="price-new">300,000VND</span>
+                            <span class="price-old">330,000VND</span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn bg-pink d-block p-1 w-60">
+                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-product col-md-3 col-6 mb-4">
+                <div class="image position-relative mb-3">
+                    <a href="./detail.html">
+                        <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                        <span class="percent-off-rounded">9%<br>GIẢM</span>
+                    </a>
+                </div>
+                <div class="content">
+                    <div class="description">
+                        <div class="fw-bold text-center">
+                            <a href="./detail.html">Mặt trời của anh</a>
+                        </div>
+                        <div class="price text-center fw-bold p-2">
+                            <span class="price-new">300,000VND</span>
+                            <span class="price-old">330,000VND</span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn bg-pink d-block p-1 w-60">
+                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-product col-md-3 col-6 mb-4">
+                <div class="image position-relative mb-3">
+                    <a href="./detail.html">
+                        <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                        <span class="percent-off-rounded">9%<br>GIẢM</span>
+                    </a>
+                </div>
+                <div class="content">
+                    <div class="description">
+                        <div class="fw-bold text-center">
+                            <a href="./detail.html">Mặt trời của anh</a>
+                        </div>
+                        <div class="price text-center fw-bold p-2">
+                            <span class="price-new">300,000VND</span>
+                            <span class="price-old">330,000VND</span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn bg-pink d-block p-1 w-60">
+                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-product col-md-3 col-6 mb-4">
+                <div class="image position-relative mb-3">
+                    <a href="./detail.html">
+                        <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                        <span class="percent-off-rounded">9%<br>GIẢM</span>
+                    </a>
+                </div>
+                <div class="content">
+                    <div class="description">
+                        <div class="fw-bold text-center">
+                            <a href="./detail.html">Mặt trời của anh</a>
+                        </div>
+                        <div class="price text-center fw-bold p-2">
+                            <span class="price-new">300,000VND</span>
+                            <span class="price-old">330,000VND</span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn bg-pink d-block p-1 w-60">
+                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-note row mt-2">
+        <div class="col-12 col-md-4">
+            <div class="text-center">
+                <img src="~/Content/assets/img/3.png.png" alt="">
+                <h5>FREE SHIPPING</h5>
+                <p>
+                    Bloom FLower giao miễn phí các nội thành TP.HCM đối với tất cả bó hoa, lẵng hoa, và kệ hoa trên 1 triệu.
+                </p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="text-center">
+                <img src="~/Content/assets/img/2.png.png" alt="">
+                <h5>GIAO NHANH TRONG 90 PHÚT</h5>
+                <p>Bloom Flower có thể giao nhanh trong 90' khu vực nội thành TP.HCM với bó / lẵng hoa đơn giản.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="text-center">
+                <img src="~/Content/assets/img/3.png.png" alt="">
+                <h5>HOA ĐẸP NHƯ HÌNH</h5>
+                <p>Cam kết hoa đẹp như hình và giống đến 90% so với hình chụp trên website.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="hot-flower">
+        <h4 class="mt-5 mb-4 text-center">ĐẶT NHIỀU NHẤT</h4>
+        <div class="list-product row justify-content-center">
+            @foreach (var item in Model.Flowers)
+            {
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="@Url.Action("Detail", "Flowers", new { flower_id = item.FLOWER_ID })">
+                            <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                            @if (item.OLD_PRICE != null)
+                            {
+                                var oldPrice = item.OLD_PRICE;
+                                var newPrice = item.NEW_PRICE;
+                                var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                            }
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">@item.FLOWER_NAME</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                @if (item.OLD_PRICE != null)
+                                {
+                                    <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                }
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flower_id = item.FLOWER_ID })">Đặt hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div id="opengrand-flower">
+            <h4 class="mt-5 mb-4 text-center">HOA KHAI TRƯƠNG</h4>
+            <div class="list-product row justify-content-center">
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="birthday-flower">
+            <h4 class="mt-5 mb-4 text-center">HOA SINH NHẬT</h4>
+            <div class="list-product row justify-content-center">
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="funeral-flower">
+            <h4 class="mt-5 mb-4 text-center">HOA TANG LỄ</h4>
+            <div class="list-product row justify-content-center">
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="./detail.html">
+                            <img class="img-fluid" src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
+                            <span class="percent-off-rounded">9%<br>GIẢM</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="./detail.html">Mặt trời của anh</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">300,000VND</span>
+                                <span class="price-old">330,000VND</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn bg-pink d-block p-1 w-60">
+                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="feedback-customer" class="mt-5 pb-5" style="background-color: #FDE7E5;">
+    <h4 class="text-center pt-5 pb-4 m-0">FEEDBACK TỪ KHÁCH HÀNG</h4>
+    <div id="feedback-slider" class="carousel slide">
+        <div class="carousel-inner container">
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Hôm trước đặt hoa ở Long An, thấy xa tưởng là không có shop nào nhận, ai ngờ may
+                                quá
+                                biết được bên này có giao hoa luôn
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2">
+                                    <p class="fw-bold m-0">Quỳnh Anh</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2 mt-md-0">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Lúc nãy đặt bó tỏ tình, rất đẹp nha các bạn! Cảm ơn các bạn đã tỉ mỉ giúp mình bó
+                                hoa
+                                lúc nãy nè. Lễ lượt mình đặt có gì inbox bạn.”
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2">
+                                    <p class="fw-bold m-0">Trọng Tấn</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Lẵng hoa khai trương vừa nhận được rất hài lòng, sẽ ủng hộ shop những lần tiếp
+                                theo.”
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2 h-50">
+                                    <p class="fw-bold m-0">Leo Messi</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2 mt-md-0">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Cảm ơn các bạn bó hoa sang trọng nè, màu tím này hợp với mẹ chồng mình thích
+                                luôn. Mẹ
+                                vui nên nãy giờ nhờ chụp mớ hình cùng hoa của các bạn luôn này.”
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2 h-50">
+                                    <p class="fw-bold m-0">Cristiano Ronaldo</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-12 col-md-6 px-3">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Nhóm mình 5 đứa đặt bó hoa nhỏ xinh tặng con bé bạn cùng phòng kí túc xá, nó nhận
+                                được hoa vui cười tít mắt.”
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2 h-50">
+                                    <p class="fw-bold m-0">Hoàng Lan</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2 mt-md-0">
+                        <div class="bg-white p-4 feedback-item">
+                            <p class="h-75 m-0">
+                                “Con bé nhà chú thích bó hướng dương lắm cháu ạ, hôm nay lễ tốt nghiệp của nó, chú
+                                phải chọn hướng dương cho nó ý nghĩa, cảm ơn các cháu”
+                            </p>
+                            <div class="user-information d-flex h-25">
+                                <img class="rounded-circle" src="~/Content/assets/img/avatar-placeholder.png" alt="avatar"
+                                     style="width: 50px; height: 50px">
+                                <div class="ms-2 h-50">
+                                    <p class="fw-bold m-0">Minh Hà</p>
+                                    <p>Khách hàng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#feedback-slider" data-bs-slide="prev">
+            <i class="fa-solid fa-chevron-left text-black-50"></i>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#feedback-slider" data-bs-slide="next">
+            <i class="fa-solid fa-chevron-right text-black-50"></i>
+            <span class="visually-hidden">Next</span>
+        </button>
+        <div class="carousel-indicators position-relative mt-3 mb-0">
+            <button type="button" data-bs-target="#feedback-slider" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#feedback-slider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#feedback-slider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+    </div>
+</div>

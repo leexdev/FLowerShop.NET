@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CUSTOMERS">
+    <Key>
+      <PropertyRef Name="CUSTOMER_ID" />
+    </Key>
+    <Property Name="CUSTOMER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="SENDER_NAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="SENDER_EMAIL" Type="nvarchar2" MaxLength="255" />
+    <Property Name="SENDER_PHONE" Type="nvarchar2" MaxLength="15" />
+    <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
+    <Property Name="RECIPIENT_ADDRESS" Type="clob" />
+    <Property Name="USERNAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="PASSWORD" Type="nvarchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="DISCOUNTCODES">
+    <Key>
+      <PropertyRef Name="DISCOUNT_ID" />
+    </Key>
+    <Property Name="DISCOUNT_ID" Type="guid raw" Nullable="false" />
+    <Property Name="CODE" Type="nvarchar2" MaxLength="20" />
+    <Property Name="DISCOUNT_TYPE" Type="nvarchar2" MaxLength="20" />
+    <Property Name="DISCOUNT_VALUE" Type="number" Precision="38" Scale="0" />
+    <Property Name="START_DATE" Type="date" />
+    <Property Name="END_DATE" Type="date" />
+    <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="FLOWERS">
+    <Key>
+      <PropertyRef Name="FLOWER_ID" />
+    </Key>
+    <Property Name="FLOWER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="FLOWER_NAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="FLOWER_IMAGE" Type="nvarchar2" MaxLength="255" />
+    <Property Name="DESCRIPTION" Type="clob" />
+    <Property Name="OLD_PRICE" Type="number" Precision="38" Scale="0" />
+    <Property Name="NEW_PRICE" Type="number" Precision="38" Scale="0" />
+    <Property Name="FLOWERTYPE_ID" Type="guid raw" />
+  </EntityType>
+  <EntityType Name="FLOWERTYPES">
+    <Key>
+      <PropertyRef Name="FLOWERTYPE_ID" />
+    </Key>
+    <Property Name="FLOWERTYPE_ID" Type="guid raw" Nullable="false" />
+    <Property Name="FLOWERTYPE_NAME" Type="nvarchar2" MaxLength="255" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ORDERDETAILS">
+    <Key>
+      <PropertyRef Name="ORDER_ID" />
+      <PropertyRef Name="FLOWER_ID" />
+    </Key>
+    <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="FLOWER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
+    <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="ORDERHISTORY">
+    <Key>
+      <PropertyRef Name="HISTORY_ID" />
+    </Key>
+    <Property Name="HISTORY_ID" Type="guid raw" Nullable="false" />
+    <Property Name="ORDER_ID" Type="guid raw" />
+    <Property Name="CHANGE_DATE" Type="date" />
+    <Property Name="CONTENT" Type="clob" />
+  </EntityType>
+  <EntityType Name="ORDERS">
+    <Key>
+      <PropertyRef Name="ORDER_ID" />
+    </Key>
+    <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="CUSTOMER_ID" Type="guid raw" />
+    <Property Name="ORDER_DATE" Type="date" />
+    <Property Name="TOTAL_AMOUNT" Type="number" Precision="10" Scale="2" />
+    <Property Name="DISCOUNT_ID" Type="guid raw" />
+    <Property Name="MESSAGE_TO_RECIPIENT" Type="nvarchar2" MaxLength="1000" />
+    <Property Name="MESSAGE_TO_SHOP" Type="nvarchar2" MaxLength="1000" />
+    <Property Name="HIDE_SENDER_INFO" Type="number" Precision="1" Scale="0" />
+    <Property Name="PAYMENT_METHOD" Type="nvarchar2" MaxLength="50" />
+    <Property Name="IS_PAID" Type="number" Precision="1" Scale="0" />
+    <Property Name="CART_ID" Type="guid raw" />
+  </EntityType>
+  <EntityType Name="SHOPPINGCART">
+    <Key>
+      <PropertyRef Name="CART_ID" />
+    </Key>
+    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
+    <Property Name="CUSTOMER_ID" Type="guid raw" />
+    <Property Name="FLOWER_ID" Type="guid raw" />
+    <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
+    <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <Association Name="SYS_C008575">
+    <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="0..1" />
+    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLOWERTYPES">
+        <PropertyRef Name="FLOWERTYPE_ID" />
+      </Principal>
+      <Dependent Role="FLOWERS">
+        <PropertyRef Name="FLOWERTYPE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008578">
+    <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="0..1" />
+    <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMERS">
+        <PropertyRef Name="CUSTOMER_ID" />
+      </Principal>
+      <Dependent Role="SHOPPINGCART">
+        <PropertyRef Name="CUSTOMER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008579">
+    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
+    <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLOWERS">
+        <PropertyRef Name="FLOWER_ID" />
+      </Principal>
+      <Dependent Role="SHOPPINGCART">
+        <PropertyRef Name="FLOWER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008582">
+    <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="0..1" />
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUSTOMERS">
+        <PropertyRef Name="CUSTOMER_ID" />
+      </Principal>
+      <Dependent Role="ORDERS">
+        <PropertyRef Name="CUSTOMER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008583">
+    <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="0..1" />
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DISCOUNTCODES">
+        <PropertyRef Name="DISCOUNT_ID" />
+      </Principal>
+      <Dependent Role="ORDERS">
+        <PropertyRef Name="DISCOUNT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008584">
+    <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="0..1" />
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SHOPPINGCART">
+        <PropertyRef Name="CART_ID" />
+      </Principal>
+      <Dependent Role="ORDERS">
+        <PropertyRef Name="CART_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008588">
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="0..1" />
+    <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ORDERS">
+        <PropertyRef Name="ORDER_ID" />
+      </Principal>
+      <Dependent Role="ORDERHISTORY">
+        <PropertyRef Name="ORDER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008591">
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
+    <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ORDERS">
+        <PropertyRef Name="ORDER_ID" />
+      </Principal>
+      <Dependent Role="ORDERDETAILS">
+        <PropertyRef Name="ORDER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008592">
+    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
+    <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLOWERS">
+        <PropertyRef Name="FLOWER_ID" />
+      </Principal>
+      <Dependent Role="ORDERDETAILS">
+        <PropertyRef Name="FLOWER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="DISCOUNTCODES" EntityType="Self.DISCOUNTCODES" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="FLOWERS" EntityType="Self.FLOWERS" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="FLOWERTYPES" EntityType="Self.FLOWERTYPES" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="ORDERHISTORY" EntityType="Self.ORDERHISTORY" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="SHOPPINGCART" EntityType="Self.SHOPPINGCART" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="ORDERDETAILS" EntityType="Self.ORDERDETAILS" store:Type="Tables" store:Schema="C##ADMIN">
+      <DefiningQuery>SELECT 
+"ORDERDETAILS"."ORDER_ID" AS "ORDER_ID", 
+"ORDERDETAILS"."FLOWER_ID" AS "FLOWER_ID", 
+"ORDERDETAILS"."QUANTITY" AS "QUANTITY", 
+"ORDERDETAILS"."SUBTOTAL" AS "SUBTOTAL"
+FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="SYS_C008575" Association="Self.SYS_C008575">
+      <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
+      <End Role="FLOWERS" EntitySet="FLOWERS" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008578" Association="Self.SYS_C008578">
+      <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+      <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008579" Association="Self.SYS_C008579">
+      <End Role="FLOWERS" EntitySet="FLOWERS" />
+      <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008582" Association="Self.SYS_C008582">
+      <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+      <End Role="ORDERS" EntitySet="ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008583" Association="Self.SYS_C008583">
+      <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
+      <End Role="ORDERS" EntitySet="ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008584" Association="Self.SYS_C008584">
+      <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
+      <End Role="ORDERS" EntitySet="ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008588" Association="Self.SYS_C008588">
+      <End Role="ORDERS" EntitySet="ORDERS" />
+      <End Role="ORDERHISTORY" EntitySet="ORDERHISTORY" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008591" Association="Self.SYS_C008591">
+      <End Role="ORDERS" EntitySet="ORDERS" />
+      <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008592" Association="Self.SYS_C008592">
+      <End Role="FLOWERS" EntitySet="FLOWERS" />
+      <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
