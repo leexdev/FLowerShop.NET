@@ -16,5 +16,7 @@
 **Bước 2**
 - Mở chương trình bằng Visual Studio.
 - Mở file Web.config sửa TNS_ADMIN đúng với đường dẫn máy của mình. VD: TNS_ADMIN=C:\Users\LE\Oracle\network\admin.
+<br>
 **Bước 3**
 - Chạy chương trình.
+<br>
