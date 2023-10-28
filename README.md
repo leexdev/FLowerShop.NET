@@ -10,9 +10,7 @@
 **- ODT for Visual Studio:** https://marketplace.visualstudio.com/items?itemName=OracleCorporation.OracleDeveloperToolsForVisualStudio2022
 <br>
 **Bước 1:**
-<br>
-Vào SQL Developer tạo User mới với Username: C##ADMIN và Password: 123 và phân quyền: connect, dba, resource cho user đó.
-<br>
+- Vào SQL Developer tạo User mới với Username: C##ADMIN và Password: 123 và phân quyền: connect, dba, resource cho user đó.
 - Tạo New Connection với tên là: FLowerShopDB.
 <br>
 **Bước 2:**
