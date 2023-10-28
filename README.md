@@ -13,7 +13,7 @@
 - Vào SQL Developer tạo User mới với Username: C##ADMIN và Password: 123 và phân quyền: connect, dba, resource cho user đó.
 - Tạo New Connection với tên là: FLowerShopDB.
 <br>
-**Bước 2:**
+**Bước 2**
 - Mở chương trình bằng Visual Studio.
 - Mở file Web.config sửa TNS_ADMIN đúng với đường dẫn máy của mình. VD: TNS_ADMIN=C:\Users\LE\Oracle\network\admin.
 **Bước 3**
