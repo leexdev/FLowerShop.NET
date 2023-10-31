@@ -1,7 +1,7 @@
 # Hướng dẫn sử dụng FLowerShop using ASP.NET MVC
 
 ## Cài đặt
-- [Oracle Database 21c Express Edition](https://www.oracle.com/database/technologies/xe-downloads)
+- [Oracle Database 21c Express Edition](https://www.oracle.com/database/technologies/xe-downloads.html)
 - [SQL Developer](https://www.oracle.com/database/sqldeveloper/technologies/download/)
 - [ODT for Visual Studio](https://marketplace.visualstudio.com/items?itemName=OracleCorporation.OracleDeveloperToolsForVisualStudio2022)
 
