@@ -212,6 +212,7 @@
     </Compile>
     <Compile Include="Models\DetailModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
+    <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\NoCacheAttribute.cs" />
   </ItemGroup>
@@ -296,6 +297,7 @@
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\Shared\_CartFlower.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
+    <Content Include="Views\Flowers\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

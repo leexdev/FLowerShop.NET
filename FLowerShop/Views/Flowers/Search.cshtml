@@ -1,0 +1,110 @@
+﻿@model FLowerShop.Models.SearchModel
+@{
+    ViewBag.Title = "Tìm kiếm";
+}
+
+<div class="container mt-4">
+    <h4>Kết quả tìm kiếm: @ViewBag.SearchQuery</h4>
+    @using (Html.BeginForm("Search", "Flowers", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <input name="searchQuery" type="text" value="@ViewBag.SearchQuery" class="form-control" id="search-flower-name" placeholder="Nhập tên sản phẩm ...">
+            </div>
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
+                <div class="form-group">
+                    <select class="form-select" name="flowerTypeId">
+                        <option selected value="0">Tất cả danh mục</option>
+                        @foreach (var item in Model.FlowersType)
+                        {
+                            <option value="@item.FLOWERTYPE_ID" @(item.FLOWERTYPE_ID.ToString() == ViewBag.SelectedFlowerTypeId ? "selected" : "")>
+                                @item.FLOWERTYPE_NAME
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" class="btn bg-pink text-white mt-2">
+            Tìm kiếm
+        </button>
+    }
+    <hr>
+    @if (Model.Flowers != null && Model.Flowers.Count > 0)
+    {
+        <div class="d-flex justify-content-end align-items-center mt-3">
+            <span class="me-2">Sắp xếp theo</span>
+            <div class="filter-flower">
+                <select class="form-select">
+                    <option selected>Mặc định</option>
+                    <option value="1">Tên (A - Z)</option>
+                    <option value="2">Tên (Z - A)</option>
+                    <option value="3">Giá (Thấp > Cao)</option>
+                    <option value="4">Giá (Cao > Thấp)</option>
+                </select>
+            </div>
+        </div>
+        <div class="product-list mt-3">
+            <div id="search-flower">
+                <div class="list-product row justify-content-center">
+                    @foreach (var item in Model.Flowers)
+                    {
+                        <div class="item-product col-md-3 col-6 mb-4">
+                            <div class="image position-relative mb-3">
+                                <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                    <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                    @if (item.OLD_PRICE != null)
+                                    {
+                                        var oldPrice = item.OLD_PRICE;
+                                        var newPrice = item.NEW_PRICE;
+                                        var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                        <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                                    }
+                                </a>
+                            </div>
+                            <div class="content">
+                                <div class="description">
+                                    <div class="fw-bold text-center">
+                                        <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                    </div>
+                                    <div class="price text-center fw-bold p-2">
+                                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                        @if (item.OLD_PRICE != null)
+                                        {
+                                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    <nav class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    }
+    else
+    {
+        <p>Không có sản phẩm phù hợp với tiêu chí tìm kiếm.</p>
+    }
+</div>

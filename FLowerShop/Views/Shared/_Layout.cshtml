@@ -100,10 +100,13 @@
                         </li>
                     </ul>
                     <div class="d-flex mb-3 mb-md-0">
-                        <input class="border border-3 border-top-0 border-start-0 border-end-0 bg-milk" type="search"
-                               placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
-                        <a class="bg-pink text-white rounded-1 p-2 d-flex align-items-center" href="./search.html">Tìm kiếm</a>
-                        <a class="d-md-none p-2 position-relative" href="./cart.html">
+                        @using (Html.BeginForm("Search", "FLowers", FormMethod.Get, new {@class = "d-flex"}))
+                        {
+                            <input class="border border-3 border-top-0 border-start-0 border-end-0 bg-milk" type="search" name="searchQuery"
+                                   placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
+                            <button class="bg-pink text-white rounded-1 p-2 d-flex align-items-center border-0">Tìm kiếm</button>
+                        }
+                        <a class="d-md-none p-2 position-relative" href="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 1
