@@ -1,4 +1,4 @@
-// Xử lý sự kiện click ngoài collapse menu để đóng menu
+﻿// Xá»­ lÃ½ sá»± kiá»‡n click ngoÃ i collapse menu Ä‘á»ƒ Ä‘Ã³ng menu
 document.addEventListener("click", function(event) {
   var collapseMenu = document.getElementById("navbarMenu");
   var targetElement = event.target;
@@ -11,15 +11,19 @@ document.addEventListener("click", function(event) {
 });
 
 const toastTriggers = document.querySelectorAll('.liveToastBtn');
-const toastLiveExample = document.querySelector('.liveToast');
+const toastMessage = document.querySelector('.liveToast');
 
 if (toastTriggers.length > 0) {
   toastTriggers.forEach((trigger) => {
     trigger.addEventListener('click', () => {
-      const toastBootstrap = new bootstrap.Toast(toastLiveExample);
+      const toastBootstrap = new bootstrap.Toast(toastMessage);
       toastBootstrap.show();
     });
   });
 }
+
+window.onpopstate = function (event) {
+    location.reload();
+};
 
 

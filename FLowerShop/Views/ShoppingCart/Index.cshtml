@@ -1,0 +1,156 @@
+﻿@model List<FLowerShop.Context.SHOPPINGCART>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    int totalPrice = 0;
+}
+
+<div class="container my-5">
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="overflow-auto">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Tổng cộng</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tbody>
+                        <tr class="text-center align-middle">
+                            <td>
+                                <a href="./detail.html">
+                                    <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
+                                         alt="@item.FLOWER.FLOWER_IMAGE" />
+                                </a>
+                            </td>
+                            <td class="text-danger">
+                                <a href="@Url.Action("Detail", "Flowers", new { flowerid = item.FLOWER_ID })">@item.FLOWER.FLOWER_NAME</a>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <input class="form-control w-auto quantity-flower"
+                                           value="@item.QUANTITY"
+                                           min="1"
+                                           max="99"
+                                           type="number"
+                                           name="quantity"
+                                           data-shoppingCartId="@item.CART_ID"
+                                           data-flower-id="@item.FLOWER_ID"/>
+                                    @using (Html.BeginForm("DeleteProductSC", "ShoppingCart", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("shoppingCartId", item.CART_ID)
+                                        <button type="submit" class="btn bg-pink shadow-none">
+                                            <i class="fa-solid fa-x text-white"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                            <td class="text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                            <td class="text-end total-price" data-flower-id="@item.FLOWER_ID">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                        </tr>
+                        @{
+                            totalPrice += (int)item.SUBTOTAL.Value;
+                        }
+                    </tbody>
+                }
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Tổng cộng</td>
+                        <td class="text-end total-price-grand">@totalPrice.ToString("N0")VNĐ</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="d-inline-block pt-2 pd-2 w-100">
+            <div class="float-start">
+                <a href="@Url.Action("Index", "Home")" class="btn shadow-none btn-secondary">
+                    Tiếp tục mua sắm
+                </a>
+            </div>
+            <div class="float-end">
+                <a href="@Url.Action("Index", "Checkout")" class="btn shadow-none bg-pink text-white">
+                    Thanh toán
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3 class="text-center">Giỏ hàng của bạn đang trống.</h3>
+        <div class="d-inline-block pt-2 pd-2 w-100">
+            <div class="float-end">
+                <a href="@Url.Action("Index", "Home")" class="btn shadow-none bg-pink text-white">
+                    Tiếp tục
+                </a>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var quantityInputs = document.querySelectorAll(".quantity-flower");
+
+        quantityInputs.forEach(function (input) {
+            input.addEventListener("change", function () {
+                var quantity = input.value;
+                var shoppingCartId = input.getAttribute("data-shoppingCartId");
+                var flowerId = input.getAttribute("data-flower-id");
+
+                // Create an AJAX request
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '/ShoppingCart/UpdateShoppingCart', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var newTotalPrice = response.newTotalPrice;
+
+                        // Update the total price for the specific flower
+                        var totalPriceElement = document.querySelector('.total-price[data-flower-id="' + flowerId + '"]');
+                        if (totalPriceElement) {
+                            totalPriceElement.textContent = formatPrice(newTotalPrice);
+                        }
+
+                        // Update the grand total price
+                        updateGrandTotalPrice();
+                    } else {
+                        console.error('Lỗi:', xhr.statusText);
+                    }
+                };
+
+                var data = JSON.stringify({ quantity: quantity, shoppingCartId: shoppingCartId });
+                xhr.send(data);
+            });
+        });
+    });
+
+    function formatPrice(price) {
+        return price.toLocaleString() + "VNĐ";
+    }
+
+    function updateGrandTotalPrice() {
+        var flowerPrices = document.querySelectorAll('.total-price');
+        var totalPrice = 0;
+
+        flowerPrices.forEach(function (priceElement) {
+            var price = parseFloat(priceElement.textContent.replace(/\D/g, '')); // Extract the numeric value
+            totalPrice += price;
+        });
+
+        var grandTotalPriceElement = document.querySelector('.total-price-grand');
+        if (grandTotalPriceElement) {
+            grandTotalPriceElement.textContent = formatPrice(totalPrice);
+        }
+    }
+
+</script>

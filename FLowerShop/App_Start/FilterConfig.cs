@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using FLowerShop.Service;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FLowerShop
@@ -8,6 +9,7 @@ namespace FLowerShop
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new NoCacheAttribute());
         }
     }
 }

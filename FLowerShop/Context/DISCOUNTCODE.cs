@@ -22,8 +22,9 @@ namespace FLowerShop.Context
     
         public System.Guid DISCOUNT_ID { get; set; }
         public string CODE { get; set; }
-        public string DISCOUNT_TYPE { get; set; }
+        public Nullable<bool> DISCOUNT_TYPE { get; set; }
         public Nullable<decimal> DISCOUNT_VALUE { get; set; }
+        public Nullable<decimal> MINIMUM_ORDER_AMOUNT { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
         public string DESCRIPTION { get; set; }

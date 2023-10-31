@@ -39,13 +39,22 @@
                             </div>
                         </li>
                         <li class="list-inline-item">
-                            <a href="./cart.html" title="Giỏ hàng">
+                            <a href="@Url.Action("Index", "ShoppingCart")" title="Giỏ hàng">
                                 <i class="fa-solid fa-bag-shopping"></i>
                                 <span class="d-none d-md-inline">Giỏ hàng</span>
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="./checkout.html" title="Thanh toán">
+                            <a href="
+                               @if (ViewBag.lstFlowerCarts != null &&  ViewBag.lstFlowerCarts.Count > 0)
+                               {
+                                    @Url.Action("Index", "Checkout")
+                               }
+                               else
+                                {
+                                    @Url.Action("Index", "ShoppingCart")
+                                }
+                            " title="Thanh toán">
                                 <i class="fa-solid fa-share"></i>
                                 <span class="d-none d-md-inline">Thanh toán</span>
                             </a>
@@ -79,7 +88,7 @@
                             <ul class="dropdown-menu bg-milk">
                                 @foreach (var item in ViewBag.lstFLowerTypes)
                                 {
-                                    <li><a class="dropdown-item" href="./category.html">@item.FLOWERTYPE_NAME</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "FlowerTypes", new {flowerTypeId = item.FLOWERTYPE_ID})">@item.FLOWERTYPE_NAME</a></li>
                                 }
                             </ul>
                         </li>
@@ -90,7 +99,7 @@
                             <a class="nav-link" href="#">Liên hệ</a>
                         </li>
                     </ul>
-                    <form class="d-flex mb-3 mb-md-0">
+                    <div class="d-flex mb-3 mb-md-0">
                         <input class="border border-3 border-top-0 border-start-0 border-end-0 bg-milk" type="search"
                                placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
                         <a class="bg-pink text-white rounded-1 p-2 d-flex align-items-center" href="./search.html">Tìm kiếm</a>
@@ -104,93 +113,20 @@
                             <div class="dropdown">
                                 <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        1
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
+                                        @((ViewBag.lstFlowerCarts != null && ViewBag.lstFlowerCarts.Count > 0) ? ViewBag.lstFlowerCarts.Count : "0")
                                     </span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end table-cart-flower">
-                                    <table class="table" style="min-width: 500px;">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <a href="./detail.html">
-                                                        <img class="img-thumbnail img-cart-flower"
-                                                             src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
-                                                    </a>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <a href="./detail.html">
-                                                        Mặt trời của anh
-                                                    </a>
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    x2
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    1,080,000VND
-                                                </td>
-                                                <td class="text-start align-middle">
-                                                    <button type="button" class="text-white bg-pink border-0 py-2 px-3 rounded-2 liveToastBtn">
-                                                        <i class="fa-solid fa-xmark"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <a href="./detail.html">
-                                                        <img class="img-thumbnail img-cart-flower"
-                                                             src="~/Content/assets/img/mat-troi-cua-anh-271x271.jpg.png" alt="">
-                                                    </a>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <a href="./detail.html">
-                                                        Mặt trời của anh
-                                                    </a>
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    x2
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    1,080,000VND
-                                                </td>
-                                                <td class="text-start align-middle">
-                                                    <button type="button" class="text-white bg-pink border-0 py-2 px-3 rounded-2 liveToastBtn">
-                                                        <i class="fa-solid fa-xmark"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-bold text-end" colspan="3">
-                                                    Tổng cộng
-                                                </td>
-                                                <td class="text-center">
-                                                    1,450,000VND
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-end" colspan="5">
-                                                    <a href="./cart.html" title="Giỏ hàng" class="text-pink me-3">
-                                                        <i class="fa-solid fa-bag-shopping"></i>
-                                                        <span class="d-none d-md-inline">Giỏ hàng</span>
-                                                    </a>
-                                                    <a href="./checkout.html" title="Thanh toán" class="text-pink me-4">
-                                                        <i class="fa-solid fa-share"></i>
-                                                        <span class="d-none d-md-inline">Thanh toán</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </ul>
+                                @Html.Partial("_CartFLower")
                             </div>
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div id="content">
+    <div id="content" style="min-height: 600px">
         @RenderBody()
     </div>
 

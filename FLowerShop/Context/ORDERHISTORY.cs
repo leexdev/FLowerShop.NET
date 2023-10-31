@@ -18,7 +18,6 @@ namespace FLowerShop.Context
         public System.Guid ORDER_ID { get; set; }
         public Nullable<System.DateTime> CHANGE_DATE { get; set; }
         public string CONTENT { get; set; }
-        public Nullable<bool> DELETED { get; set; }
     
         public virtual ORDER ORDER { get; set; }
     }

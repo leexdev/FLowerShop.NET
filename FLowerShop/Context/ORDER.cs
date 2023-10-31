@@ -29,19 +29,17 @@ namespace FLowerShop.Context
         public string MESSAGE_TO_RECIPIENT { get; set; }
         public string MESSAGE_TO_SHOP { get; set; }
         public Nullable<bool> HIDE_SENDER_INFO { get; set; }
-        public string PAYMENT_METHOD { get; set; }
+        public Nullable<bool> PAYMENT_METHOD { get; set; }
         public Nullable<bool> IS_PAID { get; set; }
         public string RECIPIENT_NAME { get; set; }
         public string RECIPIENT_PHONE { get; set; }
         public string RECIPIENT_ADDRESS { get; set; }
         public Nullable<bool> DELETED { get; set; }
-        public System.Guid CART_ID { get; set; }
     
         public virtual DISCOUNTCODE DISCOUNTCODE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDERHISTORY> ORDERHISTORies { get; set; }
         public virtual USER USER { get; set; }
-        public virtual SHOPPINGCART SHOPPINGCART { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDERDETAIL> ORDERDETAILS { get; set; }
     }

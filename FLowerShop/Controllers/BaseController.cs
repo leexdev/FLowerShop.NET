@@ -14,6 +14,7 @@ namespace FLowerShop.Controllers
             using (var db = new FlowerShopEntities())
             {
                 ViewBag.lstFlowerTypes = db.FLOWERTYPES.ToList();
+                ViewBag.lstFlowerCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
             }
         }
     }

@@ -33,7 +33,7 @@
                         var newPrice = Model.Flower.NEW_PRICE;
                         var discount = ((oldPrice - newPrice) / oldPrice) * 100;
                         <span class="percent_off px-2 py-1 text-white ms-3 " style="background-color: #f00; font-size: 12px">
-                            @discount.Value.ToString("N0")
+                            @discount.Value.ToString("N0")%
                             GIẢM
                         </span>
                     }
@@ -48,7 +48,7 @@
                                 @foreach (var item in Model.DiscountCodes)
                                 {
                                     <div class="coupon-item">
-                                        Giảm @(item.DISCOUNT_TYPE.ToString() == "Percentage" ? item.DISCOUNT_VALUE + "%" : (item.DISCOUNT_VALUE / 1000) + "K")
+                                        Giảm @(item.DISCOUNT_TYPE == true ? item.DISCOUNT_VALUE + "%" : (item.DISCOUNT_VALUE / 1000) + "K")
                                     </div>
                                 }
                             </div>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="cp-other w-75 ms-2">
                                         <div class="cp-title text-uppercase">
-                                            Giảm @(item.DISCOUNT_TYPE.ToString() == "Percentage" ? item.DISCOUNT_VALUE + "%" : (item.DISCOUNT_VALUE / 1000) + "K")
+                                            Giảm @(item.DISCOUNT_TYPE == true ? item.DISCOUNT_VALUE + "%" : (item.DISCOUNT_VALUE / 1000) + "K")
                                         </div>
                                         <div class="cp-description text-dark fs-6">
                                             @item.DESCRIPTION
@@ -88,13 +88,12 @@
                     <p>Miễn phí giao hoa khu vực TP.HCM</p>
                 </div>
 
-                <form action="" id="form-product" class="d-flex">
-                    <input type="text" name="quantity" value="1" size="2" id="input-quantity"
-                            class="form-control shadow-none me-2">
-                    <a class="btn btn-warning text-white fw-bold px-4 py-2 me-2" href="./checkout.html">
-                        Đặt hàng
-                    </a>
-                </form>
+                @using (Html.BeginForm("AddProductSC", "ShoppingCart", FormMethod.Post, new { id = "form-product", @class = "d-flex" }))
+                {
+                    @Html.Hidden("flowerId", Model.Flower.FLOWER_ID)
+                    @Html.TextBox("quantity", 1, new { @id = "input-quantity", @class = "form-control shadow-none me-2", @min="1", @max="99", @type="number" })
+                    <button type="submit" class="btn btn-warning text-white fw-bold px-4 py-2 me-2">Đặt hàng</button>
+                }
 
                 <div class="pdp-featured py-4 row">
                     <div class="pdp-featured-item col-12 col-xl-6 row mb-3 mb-xl-0">
@@ -133,7 +132,7 @@
                     {
                         <div class="item-product col-md-3 col-6 mb-4">
                             <div class="image position-relative mb-3">
-                                <a href="@Url.Action("Detail", "Flowers", new { flower_id = item.FLOWER_ID})">
+                                <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID})">
                                     <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                                     @if(item.OLD_PRICE != null)
                                     {
@@ -147,7 +146,7 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="fw-bold text-center">
-                                        <a href="@Url.Action("Detail", "Flowers", new { flower_id = item.FLOWER_ID})">@item.FLOWER_NAME</a>
+                                        <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID})">@item.FLOWER_NAME</a>
                                     </div>
                                     <div class="price text-center fw-bold p-2">
                                         <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
@@ -158,7 +157,7 @@
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <div class="btn bg-pink d-block p-1 w-60">
-                                            <a class=" text-white rounded" href="@Url.Action("Detail", "Flowers", new { flower_id = item.FLOWER_ID})">Đặt hàng</a>
+                                            <a class="text-white rounded" href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID})">Đặt hàng</a>
                                         </div>
                                     </div>
                                 </div>

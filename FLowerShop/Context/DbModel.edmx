@@ -4,15 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DISCOUNTCODES">
           <Key>
             <PropertyRef Name="DISCOUNT_ID" />
           </Key>
           <Property Name="DISCOUNT_ID" Type="guid raw" Nullable="false" />
           <Property Name="CODE" Type="nvarchar2" MaxLength="20" />
-          <Property Name="DISCOUNT_TYPE" Type="nvarchar2" MaxLength="20" />
+          <Property Name="DISCOUNT_TYPE" Type="number" Precision="1" Scale="0" />
           <Property Name="DISCOUNT_VALUE" Type="number" Precision="38" Scale="0" />
+          <Property Name="MINIMUM_ORDER_AMOUNT" Type="number" Precision="38" Scale="0" />
           <Property Name="START_DATE" Type="date" />
           <Property Name="END_DATE" Type="date" />
           <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
@@ -60,7 +61,6 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
           <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
           <Property Name="CHANGE_DATE" Type="date" />
           <Property Name="CONTENT" Type="clob" />
-          <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
         </EntityType>
         <EntityType Name="ORDERS">
           <Key>
@@ -74,24 +74,22 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
           <Property Name="MESSAGE_TO_RECIPIENT" Type="nvarchar2" MaxLength="1000" />
           <Property Name="MESSAGE_TO_SHOP" Type="nvarchar2" MaxLength="1000" />
           <Property Name="HIDE_SENDER_INFO" Type="number" Precision="1" Scale="0" />
-          <Property Name="PAYMENT_METHOD" Type="nvarchar2" MaxLength="50" />
+          <Property Name="PAYMENT_METHOD" Type="number" Precision="1" Scale="0" />
           <Property Name="IS_PAID" Type="number" Precision="1" Scale="0" />
           <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="255" />
           <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
           <Property Name="RECIPIENT_ADDRESS" Type="clob" />
           <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
-          <Property Name="CART_ID" Type="guid raw" Nullable="false" />
         </EntityType>
         <EntityType Name="SHOPPINGCART">
           <Key>
             <PropertyRef Name="CART_ID" />
           </Key>
-          <Property Name="CART_ID" Type="guid raw" Nullable="false" />
-          <Property Name="USER_ID" Type="guid raw" Nullable="false" />
-          <Property Name="FLOWER_ID" Type="guid raw" Nullable="false" />
+          <Property Name="USER_ID" Type="guid raw" />
+          <Property Name="FLOWER_ID" Type="guid raw" />
           <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
           <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
-          <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+          <Property Name="CART_ID" Type="guid raw" Nullable="false" />
         </EntityType>
         <EntityType Name="USERS">
           <Key>
@@ -103,7 +101,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
           <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
           <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
         </EntityType>
-        <Association Name="SYS_C008618">
+        <Association Name="SYS_C008643">
           <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="1" />
           <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -115,8 +113,8 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008623">
-          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+        <Association Name="SYS_C008648">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
           <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="USERS">
@@ -127,8 +125,8 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008624">
-          <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
+        <Association Name="SYS_C008649">
+          <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
           <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FLOWERS">
@@ -139,7 +137,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008630">
+        <Association Name="SYS_C008654">
           <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
           <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -151,7 +149,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008631">
+        <Association Name="SYS_C008655">
           <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="1" />
           <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -163,19 +161,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008632">
-          <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="1" />
-          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SHOPPINGCART">
-              <PropertyRef Name="CART_ID" />
-            </Principal>
-            <Dependent Role="ORDERS">
-              <PropertyRef Name="CART_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C008635">
+        <Association Name="SYS_C008658">
           <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
           <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -187,7 +173,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008636">
+        <Association Name="SYS_C008659">
           <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
           <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -199,7 +185,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008639">
+        <Association Name="SYS_C008662">
           <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
           <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -228,45 +214,40 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
 "ORDERDETAILS"."DELETED" AS "DELETED"
 FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="SYS_C008618" Association="Self.SYS_C008618">
+          <AssociationSet Name="SYS_C008643" Association="Self.SYS_C008643">
             <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
             <End Role="FLOWERS" EntitySet="FLOWERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008623" Association="Self.SYS_C008623">
+          <AssociationSet Name="SYS_C008648" Association="Self.SYS_C008648">
             <End Role="USERS" EntitySet="USERS" />
             <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008624" Association="Self.SYS_C008624">
+          <AssociationSet Name="SYS_C008649" Association="Self.SYS_C008649">
             <End Role="FLOWERS" EntitySet="FLOWERS" />
             <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008630" Association="Self.SYS_C008630">
+          <AssociationSet Name="SYS_C008654" Association="Self.SYS_C008654">
             <End Role="USERS" EntitySet="USERS" />
             <End Role="ORDERS" EntitySet="ORDERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008631" Association="Self.SYS_C008631">
+          <AssociationSet Name="SYS_C008655" Association="Self.SYS_C008655">
             <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
             <End Role="ORDERS" EntitySet="ORDERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008632" Association="Self.SYS_C008632">
-            <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
-            <End Role="ORDERS" EntitySet="ORDERS" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C008635" Association="Self.SYS_C008635">
+          <AssociationSet Name="SYS_C008658" Association="Self.SYS_C008658">
             <End Role="ORDERS" EntitySet="ORDERS" />
             <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008636" Association="Self.SYS_C008636">
+          <AssociationSet Name="SYS_C008659" Association="Self.SYS_C008659">
             <End Role="FLOWERS" EntitySet="FLOWERS" />
             <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008639" Association="Self.SYS_C008639">
+          <AssociationSet Name="SYS_C008662" Association="Self.SYS_C008662">
             <End Role="ORDERS" EntitySet="ORDERS" />
             <End Role="ORDERHISTORY" EntitySet="ORDERHISTORY" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -276,13 +257,14 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           </Key>
           <Property Name="DISCOUNT_ID" Type="Guid" Nullable="false" />
           <Property Name="CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DISCOUNT_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DISCOUNT_TYPE" Type="Boolean" />
           <Property Name="DISCOUNT_VALUE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MINIMUM_ORDER_AMOUNT" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="START_DATE" Type="DateTime" />
           <Property Name="END_DATE" Type="DateTime" />
           <Property Name="DESCRIPTION" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008631" FromRole="DISCOUNTCODES" ToRole="ORDERS" />
+          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008655" FromRole="DISCOUNTCODES" ToRole="ORDERS" />
         </EntityType>
         <EntityType Name="FLOWER">
           <Key>
@@ -296,9 +278,9 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="NEW_PRICE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DELETED" Type="Boolean" />
           <Property Name="FLOWERTYPE_ID" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="FLOWERTYPE" Relationship="Self.SYS_C008618" FromRole="FLOWERS" ToRole="FLOWERTYPES" />
-          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008624" FromRole="FLOWERS" ToRole="SHOPPINGCART" />
-          <NavigationProperty Name="ORDERDETAILS" Relationship="Self.SYS_C008636" FromRole="FLOWERS" ToRole="ORDERDETAILS" />
+          <NavigationProperty Name="FLOWERTYPE" Relationship="Self.SYS_C008643" FromRole="FLOWERS" ToRole="FLOWERTYPES" />
+          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008649" FromRole="FLOWERS" ToRole="SHOPPINGCART" />
+          <NavigationProperty Name="ORDERDETAILS" Relationship="Self.SYS_C008659" FromRole="FLOWERS" ToRole="ORDERDETAILS" />
         </EntityType>
         <EntityType Name="FLOWERTYPE">
           <Key>
@@ -307,7 +289,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="FLOWERTYPE_ID" Type="Guid" Nullable="false" />
           <Property Name="FLOWERTYPE_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="FLOWERS" Relationship="Self.SYS_C008618" FromRole="FLOWERTYPES" ToRole="FLOWERS" />
+          <NavigationProperty Name="FLOWERS" Relationship="Self.SYS_C008643" FromRole="FLOWERTYPES" ToRole="FLOWERS" />
         </EntityType>
         <EntityType Name="ORDERHISTORY">
           <Key>
@@ -317,8 +299,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="ORDER_ID" Type="Guid" Nullable="false" />
           <Property Name="CHANGE_DATE" Type="DateTime" />
           <Property Name="CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008639" FromRole="ORDERHISTORY" ToRole="ORDERS" />
+          <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008662" FromRole="ORDERHISTORY" ToRole="ORDERS" />
         </EntityType>
         <EntityType Name="ORDER">
           <Key>
@@ -332,32 +313,28 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="MESSAGE_TO_RECIPIENT" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="MESSAGE_TO_SHOP" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="HIDE_SENDER_INFO" Type="Boolean" />
-          <Property Name="PAYMENT_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PAYMENT_METHOD" Type="Boolean" />
           <Property Name="IS_PAID" Type="Boolean" />
           <Property Name="RECIPIENT_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RECIPIENT_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="RECIPIENT_ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DELETED" Type="Boolean" />
-          <Property Name="CART_ID" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="DISCOUNTCODE" Relationship="Self.SYS_C008631" FromRole="ORDERS" ToRole="DISCOUNTCODES" />
-          <NavigationProperty Name="ORDERHISTORies" Relationship="Self.SYS_C008639" FromRole="ORDERS" ToRole="ORDERHISTORY" />
-          <NavigationProperty Name="USER" Relationship="Self.SYS_C008630" FromRole="ORDERS" ToRole="USERS" />
-          <NavigationProperty Name="SHOPPINGCART" Relationship="Self.SYS_C008632" FromRole="ORDERS" ToRole="SHOPPINGCART" />
-          <NavigationProperty Name="ORDERDETAILS" Relationship="Self.SYS_C008635" FromRole="ORDERS" ToRole="ORDERDETAILS" />
+          <NavigationProperty Name="DISCOUNTCODE" Relationship="Self.SYS_C008655" FromRole="ORDERS" ToRole="DISCOUNTCODES" />
+          <NavigationProperty Name="ORDERHISTORies" Relationship="Self.SYS_C008662" FromRole="ORDERS" ToRole="ORDERHISTORY" />
+          <NavigationProperty Name="USER" Relationship="Self.SYS_C008654" FromRole="ORDERS" ToRole="USERS" />
+          <NavigationProperty Name="ORDERDETAILS" Relationship="Self.SYS_C008658" FromRole="ORDERS" ToRole="ORDERDETAILS" />
         </EntityType>
         <EntityType Name="SHOPPINGCART">
           <Key>
             <PropertyRef Name="CART_ID" />
           </Key>
-          <Property Name="CART_ID" Type="Guid" Nullable="false" />
-          <Property Name="USER_ID" Type="Guid" Nullable="false" />
-          <Property Name="FLOWER_ID" Type="Guid" Nullable="false" />
+          <Property Name="USER_ID" Type="Guid" />
+          <Property Name="FLOWER_ID" Type="Guid" />
           <Property Name="QUANTITY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="SUBTOTAL" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="FLOWER" Relationship="Self.SYS_C008624" FromRole="SHOPPINGCART" ToRole="FLOWERS" />
-          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008632" FromRole="SHOPPINGCART" ToRole="ORDERS" />
-          <NavigationProperty Name="USER" Relationship="Self.SYS_C008623" FromRole="SHOPPINGCART" ToRole="USERS" />
+          <Property Name="CART_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="FLOWER" Relationship="Self.SYS_C008649" FromRole="SHOPPINGCART" ToRole="FLOWERS" />
+          <NavigationProperty Name="USER" Relationship="Self.SYS_C008648" FromRole="SHOPPINGCART" ToRole="USERS" />
         </EntityType>
         <EntityType Name="USER">
           <Key>
@@ -368,8 +345,8 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="USER_EMAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="USER_PASSWORD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008630" FromRole="USERS" ToRole="ORDERS" />
-          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008623" FromRole="USERS" ToRole="SHOPPINGCART" />
+          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008654" FromRole="USERS" ToRole="ORDERS" />
+          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008648" FromRole="USERS" ToRole="SHOPPINGCART" />
         </EntityType>
         <EntityType Name="ORDERDETAIL">
           <Key>
@@ -381,10 +358,10 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="QUANTITY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="SUBTOTAL" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DELETED" Type="Boolean" />
-          <NavigationProperty Name="FLOWER" Relationship="Self.SYS_C008636" FromRole="ORDERDETAILS" ToRole="FLOWERS" />
-          <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008635" FromRole="ORDERDETAILS" ToRole="ORDERS" />
+          <NavigationProperty Name="FLOWER" Relationship="Self.SYS_C008659" FromRole="ORDERDETAILS" ToRole="FLOWERS" />
+          <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008658" FromRole="ORDERDETAILS" ToRole="ORDERS" />
         </EntityType>
-        <Association Name="SYS_C008631">
+        <Association Name="SYS_C008655">
           <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODE" Multiplicity="1" />
           <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
           <ReferentialConstraint>
@@ -396,7 +373,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008618">
+        <Association Name="SYS_C008643">
           <End Role="FLOWERTYPES" Type="Self.FLOWERTYPE" Multiplicity="1" />
           <End Role="FLOWERS" Type="Self.FLOWER" Multiplicity="*" />
           <ReferentialConstraint>
@@ -408,8 +385,8 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008624">
-          <End Role="FLOWERS" Type="Self.FLOWER" Multiplicity="1" />
+        <Association Name="SYS_C008649">
+          <End Role="FLOWERS" Type="Self.FLOWER" Multiplicity="0..1" />
           <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FLOWERS">
@@ -420,7 +397,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008636">
+        <Association Name="SYS_C008659">
           <End Role="FLOWERS" Type="Self.FLOWER" Multiplicity="1" />
           <End Role="ORDERDETAILS" Type="Self.ORDERDETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -432,7 +409,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008639">
+        <Association Name="SYS_C008662">
           <End Role="ORDERS" Type="Self.ORDER" Multiplicity="1" />
           <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -444,7 +421,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008630">
+        <Association Name="SYS_C008654">
           <End Role="USERS" Type="Self.USER" Multiplicity="1" />
           <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
           <ReferentialConstraint>
@@ -456,19 +433,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008632">
-          <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="1" />
-          <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SHOPPINGCART">
-              <PropertyRef Name="CART_ID" />
-            </Principal>
-            <Dependent Role="ORDERS">
-              <PropertyRef Name="CART_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_C008635">
+        <Association Name="SYS_C008658">
           <End Role="ORDERS" Type="Self.ORDER" Multiplicity="1" />
           <End Role="ORDERDETAILS" Type="Self.ORDERDETAIL" Multiplicity="*" />
           <ReferentialConstraint>
@@ -480,8 +445,8 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C008623">
-          <End Role="USERS" Type="Self.USER" Multiplicity="1" />
+        <Association Name="SYS_C008648">
+          <End Role="USERS" Type="Self.USER" Multiplicity="0..1" />
           <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="USERS">
@@ -501,39 +466,35 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <EntitySet Name="SHOPPINGCARTs" EntityType="Self.SHOPPINGCART" />
           <EntitySet Name="USERS" EntityType="Self.USER" />
           <EntitySet Name="ORDERDETAILS" EntityType="Self.ORDERDETAIL" />
-          <AssociationSet Name="SYS_C008631" Association="Self.SYS_C008631">
+          <AssociationSet Name="SYS_C008655" Association="Self.SYS_C008655">
             <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
             <End Role="ORDERS" EntitySet="ORDERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008618" Association="Self.SYS_C008618">
+          <AssociationSet Name="SYS_C008643" Association="Self.SYS_C008643">
             <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
             <End Role="FLOWERS" EntitySet="FLOWERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008624" Association="Self.SYS_C008624">
+          <AssociationSet Name="SYS_C008649" Association="Self.SYS_C008649">
             <End Role="FLOWERS" EntitySet="FLOWERS" />
             <End Role="SHOPPINGCART" EntitySet="SHOPPINGCARTs" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008636" Association="Self.SYS_C008636">
+          <AssociationSet Name="SYS_C008659" Association="Self.SYS_C008659">
             <End Role="FLOWERS" EntitySet="FLOWERS" />
             <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008639" Association="Self.SYS_C008639">
+          <AssociationSet Name="SYS_C008662" Association="Self.SYS_C008662">
             <End Role="ORDERS" EntitySet="ORDERS" />
             <End Role="ORDERHISTORY" EntitySet="ORDERHISTORies" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008630" Association="Self.SYS_C008630">
+          <AssociationSet Name="SYS_C008654" Association="Self.SYS_C008654">
             <End Role="USERS" EntitySet="USERS" />
             <End Role="ORDERS" EntitySet="ORDERS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008632" Association="Self.SYS_C008632">
-            <End Role="SHOPPINGCART" EntitySet="SHOPPINGCARTs" />
-            <End Role="ORDERS" EntitySet="ORDERS" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C008635" Association="Self.SYS_C008635">
+          <AssociationSet Name="SYS_C008658" Association="Self.SYS_C008658">
             <End Role="ORDERS" EntitySet="ORDERS" />
             <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C008623" Association="Self.SYS_C008623">
+          <AssociationSet Name="SYS_C008648" Association="Self.SYS_C008648">
             <End Role="USERS" EntitySet="USERS" />
             <End Role="SHOPPINGCART" EntitySet="SHOPPINGCARTs" />
           </AssociationSet>
@@ -551,6 +512,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
                 <ScalarProperty Name="CODE" ColumnName="CODE" />
                 <ScalarProperty Name="DISCOUNT_TYPE" ColumnName="DISCOUNT_TYPE" />
                 <ScalarProperty Name="DISCOUNT_VALUE" ColumnName="DISCOUNT_VALUE" />
+                <ScalarProperty Name="MINIMUM_ORDER_AMOUNT" ColumnName="MINIMUM_ORDER_AMOUNT" />
                 <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
                 <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
@@ -588,7 +550,6 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
                 <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
                 <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
                 <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
-                <ScalarProperty Name="DELETED" ColumnName="DELETED" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -609,19 +570,17 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
                 <ScalarProperty Name="RECIPIENT_PHONE" ColumnName="RECIPIENT_PHONE" />
                 <ScalarProperty Name="RECIPIENT_ADDRESS" ColumnName="RECIPIENT_ADDRESS" />
                 <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-                <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SHOPPINGCARTs">
             <EntityTypeMapping TypeName="Model.SHOPPINGCART">
               <MappingFragment StoreEntitySet="SHOPPINGCART">
-                <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
                 <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
                 <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
-                <ScalarProperty Name="DELETED" ColumnName="DELETED" />
+                <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

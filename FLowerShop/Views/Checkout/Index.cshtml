@@ -1,0 +1,185 @@
+﻿@model List<FLowerShop.Context.SHOPPINGCART>
+
+@{
+    ViewBag.Title = "Thanh toán";
+    int totalPrice = 30000;
+}
+
+<div class="container mt-3 mt-md-5">
+    <form>
+        <div class="row">
+            <div class="col-12 col-md-7">
+                @using (Html.BeginForm("AddOrder", "Checkout", FormMethod.Post))
+                {
+                    <h5 class="m-0">Thông tin người gửi</h5>
+                    <hr class="mt-2 mb-3" />
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="name">Họ tên:</label>
+                                <input type="text" class="form-control" id="name" name="name" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 mt-md-0">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="phone">Điện thoại:</label>
+                                <input type="text" class="form-control" id="phone" name="phone" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="fw-bold fs-6 form-label" for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" />
+                    </div>
+                    <h5 class="m-0 mt-4">Thông tin người nhận</h5>
+                    <hr class="mt-2 mb-3" />
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="shipping-name">Họ tên:</label>
+                                <input type="text" class="form-control" id="shipping-name" name="shipping-name" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 mt-md-0">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="shipping-phone">Điện thoại:</label>
+                                <input type="text" class="form-control" id="shipping-phone" name="shipping-phone" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="shipping-province">Tỉnh, thành phố</label>
+                                <select class="form-select">
+                                    <option disabled>--- Vui lòng chọn ---</option>
+                                    <option selected value="1">Tp. Hồ Chí Minh</option>
+                                    <option value="2">Hà Nội</option>
+                                    <option value="3">Nha Trang</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 mt-md-0">
+                            <div class="form-group">
+                                <label class="fw-bold fs-6 form-label" for="shipping-district">Quận/ Huyện:</label>
+                                <select class="form-select">
+                                    <option disabled>--- Vui lòng chọn ---</option>
+                                    <option selected value="1">Quận 9</option>
+                                    <option value="2">Quận 1</option>
+                                    <option value="3">Quận 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group my-3">
+                        <label class="fw-bold fs-6 form-label" for="shipping-address">Địa chỉ:</label>
+                        <input type="text" class="form-control" id="shipping-address" name="shipping-address" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold fs-6" for="shipping-custom-field">Lời nhắn [Cho người nhận]:</label>
+                        <textarea class="form-control" id="shipping-custom-field" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold fs-6" for="shipping-custom-field-for-shop">
+                            Yêu cầu, lưu ý [Cho
+                            BloomShop]:
+                        </label>
+                        <textarea class="form-control" id="shipping-custom-field-for-shop" rows="2"></textarea>
+                    </div>
+                    <label class="fw-bold fs-6" for="shipping-custom-field">Ẩn thông tin</label>
+                    <div class="form-check mb-5">
+                        <input class="form-check-input" type="checkbox" value="1" id="check-hide-sender" />
+                        <label class="form-check-label" for="check-hide-sender">
+                            Giấu thông tin người gửi
+                        </label>
+                    </div>
+                }
+            </div>
+            <div class="col-12 col-md-5">
+                <table class="table table-bordered">
+                    <h5 class="m-0">Chi tiết đơn hàng</h5>
+                    <hr class="mt-2 mb-3" />
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Tổng cộng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr class="text-center align-middle">
+                                    <td>
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                            <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
+                                                 alt="@item.FLOWER.FLOWER_IMAGE" />
+                                        </a>
+                                    </td>
+                                    <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
+                                    <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")</td>
+                                </tr>
+                                {
+                                    totalPrice += (int)item.SUBTOTAL.Value;
+                                }
+                            }
+                        }
+                        <tr class="text-end">
+                            <td colspan="2" class="fw-bold">Phí vận chuyển</td>
+                            <td>30,000VND</td>
+                        </tr>
+                        <tr class="text-end">
+                            <td colspan="2" class="fw-bold">Tổng cộng</td>
+                            <td>@totalPrice.ToString("N0")VNĐ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input type="text" name="coupon" placeholder="Mã giảm giá" id="input-coupon"
+                                   class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
+                            <button type="submit" class="btn bg-pink text-white">
+                                Áp dụng
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="form-payment-method" class="mt-4">
+                    <div class="form-check d-flex">
+                        <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-wallet" />
+                        <label class="form-check-label" for="pay-wallet">
+                            <img class="img-fluid ms-1" src="~/Content/assets/img/cheque.png" alt="momo"
+                                 style="max-width: 48px; max-height: 48px" />
+                            Ví điện tử
+                            <img class="img-fluid" src="~/Content/assets/img/momo.png" alt="momo"
+                                 style="max-width: 48px; max-height: 48px" />
+                        </label>
+                    </div>
+                    <div class="form-check d-flex">
+                        <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-cod" checked />
+                        <label class="form-check-label" for="pay-cod">
+                            <img class="img-fluid ms-1" src="~/Content/assets/img/cod.png" alt="momo"
+                                 style="max-width: 48px; max-height: 48px" />
+                            Thanh toán khi giao hàng
+                        </label>
+                    </div>
+                </form>
+                <hr>
+                <div class="col-auto float-end mb-3">
+                    <button type="submit" class="btn mb-3 bg-pink text-white">
+                        Xác nhận đơn hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

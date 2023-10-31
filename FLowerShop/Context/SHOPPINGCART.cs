@@ -14,22 +14,13 @@ namespace FLowerShop.Context
     
     public partial class SHOPPINGCART
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SHOPPINGCART()
-        {
-            this.ORDERS = new HashSet<ORDER>();
-        }
-    
-        public System.Guid CART_ID { get; set; }
-        public System.Guid USER_ID { get; set; }
-        public System.Guid FLOWER_ID { get; set; }
+        public Nullable<System.Guid> USER_ID { get; set; }
+        public Nullable<System.Guid> FLOWER_ID { get; set; }
         public Nullable<decimal> QUANTITY { get; set; }
         public Nullable<decimal> SUBTOTAL { get; set; }
-        public Nullable<bool> DELETED { get; set; }
+        public System.Guid CART_ID { get; set; }
     
         public virtual FLOWER FLOWER { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ORDER> ORDERS { get; set; }
         public virtual USER USER { get; set; }
     }
 }

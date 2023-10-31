@@ -8,6 +8,7 @@
           <ScalarProperty Name="CODE" ColumnName="CODE" />
           <ScalarProperty Name="DISCOUNT_TYPE" ColumnName="DISCOUNT_TYPE" />
           <ScalarProperty Name="DISCOUNT_VALUE" ColumnName="DISCOUNT_VALUE" />
+          <ScalarProperty Name="MINIMUM_ORDER_AMOUNT" ColumnName="MINIMUM_ORDER_AMOUNT" />
           <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
           <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
           <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
@@ -45,7 +46,6 @@
           <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
           <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
           <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
-          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -66,19 +66,17 @@
           <ScalarProperty Name="RECIPIENT_PHONE" ColumnName="RECIPIENT_PHONE" />
           <ScalarProperty Name="RECIPIENT_ADDRESS" ColumnName="RECIPIENT_ADDRESS" />
           <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="SHOPPINGCARTs">
       <EntityTypeMapping TypeName="Model.SHOPPINGCART">
         <MappingFragment StoreEntitySet="SHOPPINGCART">
-          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
           <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
           <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
           <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
           <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
-          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
+          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

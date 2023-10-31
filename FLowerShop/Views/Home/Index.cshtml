@@ -165,7 +165,7 @@
             {
                 <div class="item-product col-md-3 col-6 mb-4">
                     <div class="image position-relative mb-3">
-                        <a href="@Url.Action("Detail", "Flowers", new { flower_id = item.FLOWER_ID })">
+                        <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
                             <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                             @if (item.OLD_PRICE != null)
                             {
@@ -179,7 +179,7 @@
                     <div class="content">
                         <div class="description">
                             <div class="fw-bold text-center">
-                                <a href="./detail.html">@item.FLOWER_NAME</a>
+                                <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
                             </div>
                             <div class="price text-center fw-bold p-2">
                                 <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
@@ -189,7 +189,7 @@
                                 }
                             </div>
                             <div class="d-flex justify-content-center">
-                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flower_id = item.FLOWER_ID })">Đặt hàng</a>
+                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
                             </div>
                         </div>
                     </div>

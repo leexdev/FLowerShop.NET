@@ -6,8 +6,9 @@
     </Key>
     <Property Name="DISCOUNT_ID" Type="guid raw" Nullable="false" />
     <Property Name="CODE" Type="nvarchar2" MaxLength="20" />
-    <Property Name="DISCOUNT_TYPE" Type="nvarchar2" MaxLength="20" />
+    <Property Name="DISCOUNT_TYPE" Type="number" Precision="1" Scale="0" />
     <Property Name="DISCOUNT_VALUE" Type="number" Precision="38" Scale="0" />
+    <Property Name="MINIMUM_ORDER_AMOUNT" Type="number" Precision="38" Scale="0" />
     <Property Name="START_DATE" Type="date" />
     <Property Name="END_DATE" Type="date" />
     <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
@@ -55,7 +56,6 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
     <Property Name="CHANGE_DATE" Type="date" />
     <Property Name="CONTENT" Type="clob" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
   </EntityType>
   <EntityType Name="ORDERS">
     <Key>
@@ -69,24 +69,22 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     <Property Name="MESSAGE_TO_RECIPIENT" Type="nvarchar2" MaxLength="1000" />
     <Property Name="MESSAGE_TO_SHOP" Type="nvarchar2" MaxLength="1000" />
     <Property Name="HIDE_SENDER_INFO" Type="number" Precision="1" Scale="0" />
-    <Property Name="PAYMENT_METHOD" Type="nvarchar2" MaxLength="50" />
+    <Property Name="PAYMENT_METHOD" Type="number" Precision="1" Scale="0" />
     <Property Name="IS_PAID" Type="number" Precision="1" Scale="0" />
     <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="255" />
     <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
     <Property Name="RECIPIENT_ADDRESS" Type="clob" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
-    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
   </EntityType>
   <EntityType Name="SHOPPINGCART">
     <Key>
       <PropertyRef Name="CART_ID" />
     </Key>
-    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
-    <Property Name="USER_ID" Type="guid raw" Nullable="false" />
-    <Property Name="FLOWER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="USER_ID" Type="guid raw" />
+    <Property Name="FLOWER_ID" Type="guid raw" />
     <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
     <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
   </EntityType>
   <EntityType Name="USERS">
     <Key>
@@ -98,7 +96,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
   </EntityType>
-  <Association Name="SYS_C008618">
+  <Association Name="SYS_C008643">
     <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="1" />
     <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -110,8 +108,8 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008623">
-    <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+  <Association Name="SYS_C008648">
+    <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
     <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="USERS">
@@ -122,8 +120,8 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008624">
-    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
+  <Association Name="SYS_C008649">
+    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
     <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="FLOWERS">
@@ -134,7 +132,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008630">
+  <Association Name="SYS_C008654">
     <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -146,7 +144,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008631">
+  <Association Name="SYS_C008655">
     <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -158,19 +156,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008632">
-    <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="1" />
-    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SHOPPINGCART">
-        <PropertyRef Name="CART_ID" />
-      </Principal>
-      <Dependent Role="ORDERS">
-        <PropertyRef Name="CART_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="SYS_C008635">
+  <Association Name="SYS_C008658">
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -182,7 +168,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008636">
+  <Association Name="SYS_C008659">
     <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -194,7 +180,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008639">
+  <Association Name="SYS_C008662">
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
     <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
     <ReferentialConstraint>
@@ -223,39 +209,35 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
 "ORDERDETAILS"."DELETED" AS "DELETED"
 FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
     </EntitySet>
-    <AssociationSet Name="SYS_C008618" Association="Self.SYS_C008618">
+    <AssociationSet Name="SYS_C008643" Association="Self.SYS_C008643">
       <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
       <End Role="FLOWERS" EntitySet="FLOWERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008623" Association="Self.SYS_C008623">
+    <AssociationSet Name="SYS_C008648" Association="Self.SYS_C008648">
       <End Role="USERS" EntitySet="USERS" />
       <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008624" Association="Self.SYS_C008624">
+    <AssociationSet Name="SYS_C008649" Association="Self.SYS_C008649">
       <End Role="FLOWERS" EntitySet="FLOWERS" />
       <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008630" Association="Self.SYS_C008630">
+    <AssociationSet Name="SYS_C008654" Association="Self.SYS_C008654">
       <End Role="USERS" EntitySet="USERS" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008631" Association="Self.SYS_C008631">
+    <AssociationSet Name="SYS_C008655" Association="Self.SYS_C008655">
       <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008632" Association="Self.SYS_C008632">
-      <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
-      <End Role="ORDERS" EntitySet="ORDERS" />
-    </AssociationSet>
-    <AssociationSet Name="SYS_C008635" Association="Self.SYS_C008635">
+    <AssociationSet Name="SYS_C008658" Association="Self.SYS_C008658">
       <End Role="ORDERS" EntitySet="ORDERS" />
       <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008636" Association="Self.SYS_C008636">
+    <AssociationSet Name="SYS_C008659" Association="Self.SYS_C008659">
       <End Role="FLOWERS" EntitySet="FLOWERS" />
       <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008639" Association="Self.SYS_C008639">
+    <AssociationSet Name="SYS_C008662" Association="Self.SYS_C008662">
       <End Role="ORDERS" EntitySet="ORDERS" />
       <End Role="ORDERHISTORY" EntitySet="ORDERHISTORY" />
     </AssociationSet>

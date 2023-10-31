@@ -106,7 +106,7 @@ VALUES ('May mắn', 'hoa-chuc-mung-may-man-570x570.jpg', 'A beautiful red rose'
 INSERT INTO DiscountCodes (code, discount_type, discount_value, start_date, end_date, description, Deleted)
 VALUES ('CODE123', 'Percentage', 10, TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-12-31', 'YYYY-MM-DD'), 'Giảm 10% cho đơn hàng trên 500,000 VNĐ', 0);
 INSERT INTO DiscountCodes (code, discount_type, discount_value, start_date, end_date, description, Deleted)
-VALUES ('SALE50', 'Fixed', 50000, TO_DATE('2023-04-15', 'YYYY-MM-DD'), TO_DATE('2023-04-30', 'YYYY-MM-DD'), 'Giảm 50,000 VN? cho đơn hàng bất kỳ', 0);
+VALUES ('SALE50', 'Fixed', 50000, TO_DATE('2023-04-15', 'YYYY-MM-DD'), TO_DATE('2023-04-30', 'YYYY-MM-DD'), 'Giảm 50,000 VNĐ cho đơn hàng bất kỳ', 0);
 INSERT INTO DiscountCodes (code, discount_type, discount_value, start_date, end_date, description, Deleted)
 VALUES ('NEWUSER', 'Percentage', 15, TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-12-31', 'YYYY-MM-DD'), 'Giảm 15% cho người dùng mới', 0);
 
