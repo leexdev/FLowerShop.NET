@@ -52,7 +52,7 @@
                                 </div>
                             </td>
                             <td class="text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
-                            <td class="text-end total-price" data-flower-id="@item.FLOWER_ID">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                            <td class="text-end subtotal-price" data-flower-id="@item.FLOWER_ID">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
                         </tr>
                         @{
                             totalPrice += (int)item.SUBTOTAL.Value;
@@ -105,7 +105,6 @@
                 var shoppingCartId = input.getAttribute("data-shoppingCartId");
                 var flowerId = input.getAttribute("data-flower-id");
 
-                // Create an AJAX request
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", '/ShoppingCart/UpdateShoppingCart', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
@@ -115,13 +114,11 @@
                         var response = JSON.parse(xhr.responseText);
                         var newTotalPrice = response.newTotalPrice;
 
-                        // Update the total price for the specific flower
-                        var totalPriceElement = document.querySelector('.total-price[data-flower-id="' + flowerId + '"]');
+                        var totalPriceElement = document.querySelector('.subtotal-price[data-flower-id="' + flowerId + '"]');
                         if (totalPriceElement) {
                             totalPriceElement.textContent = formatPrice(newTotalPrice);
                         }
 
-                        // Update the grand total price
                         updateGrandTotalPrice();
                     } else {
                         console.error('Lỗi:', xhr.statusText);
@@ -139,11 +136,11 @@
     }
 
     function updateGrandTotalPrice() {
-        var flowerPrices = document.querySelectorAll('.total-price');
+        var flowerPrices = document.querySelectorAll('.subtotal-price');
         var totalPrice = 0;
 
         flowerPrices.forEach(function (priceElement) {
-            var price = parseFloat(priceElement.textContent.replace(/\D/g, '')); // Extract the numeric value
+            var price = parseFloat(priceElement.textContent.replace(/\D/g, ''));
             totalPrice += price;
         });
 

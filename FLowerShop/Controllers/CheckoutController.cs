@@ -9,10 +9,21 @@ namespace FLowerShop.Controllers
 {
     public class CheckoutController : BaseController
     {
-        FlowerShopEntities db = new FlowerShopEntities();
-        public ActionResult Index()
+        private readonly FlowerShopEntities db;
+
+        public CheckoutController()
+        {
+            db = new FlowerShopEntities();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             LoadCommonData();
+            base.OnActionExecuting(filterContext);
+        }
+
+        public ActionResult Index()
+        {
             var ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
             return View(ShoppingCarts);
         }

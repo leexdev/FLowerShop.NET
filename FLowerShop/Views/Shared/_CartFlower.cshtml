@@ -89,10 +89,10 @@
         }
 
         function updateCartCount(newCartCount) {
-            const cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = newCartCount;
-            }
+            const cartCountElement = document.querySelectorAll('.cart-count');
+            cartCountElement.forEach(function (element) {
+                element.textContent = newCartCount;
+            });
         }
 
         deleteButtons.forEach(function (button) {

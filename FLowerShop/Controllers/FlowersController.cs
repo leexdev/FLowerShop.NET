@@ -15,54 +15,92 @@ namespace FLowerShop.Controllers
 {
     public class FlowersController : BaseController
     {
-        FlowerShopEntities db = new FlowerShopEntities();
+        private readonly FlowerShopEntities db;
+
+        public FlowersController()
+        {
+            db = new FlowerShopEntities();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            LoadCommonData();
+            base.OnActionExecuting(filterContext);
+        }
 
         public ActionResult Detail(Guid? flowerId)
         {
-            LoadCommonData();
             if (flowerId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("_NotFound");
             }
-            DetailModel detailModel = new DetailModel();
-            var flower = db.FLOWERS.Find(flowerId);
+            var flower = db.FLOWERS.AsNoTracking().FirstOrDefault(f => f.FLOWER_ID == flowerId);
             if (flower == null)
             {
-                return HttpNotFound();
+                return View("_NotFound");
             }
-            detailModel.Flower = flower;
-            detailModel.Flowers = db.FLOWERS.Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId).ToList();
-            detailModel.DiscountCodes = db.DISCOUNTCODES.ToList();
+            var detailModel = new DetailModel
+            {
+                Flower = flower,
+                Flowers = db.FLOWERS.AsNoTracking().Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId).ToList(),
+                DiscountCodes = db.DISCOUNTCODES.AsNoTracking().ToList()
+            };
             return View(detailModel);
         }
 
         public ActionResult Search(string searchQuery, Guid? flowerTypeId)
         {
-            LoadCommonData();
-            SearchModel searchModel = new SearchModel();
+            var searchModel = new SearchModel();
 
-            var flowers = db.FLOWERS.ToList(); // Retrieve all flowers from the database
-
-            // Normalize the search query
-            var normalizedQuery = NormalizeString(searchQuery);
-
-            var filteredFlowers = flowers
-                .Where(f => NormalizeString(f.FLOWER_NAME).Contains(normalizedQuery) &&
-                    (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId))
+            var filteredFlowers = db.FLOWERS.AsNoTracking()
+                .Where(f => string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
+                .Where(f => !flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId)
                 .ToList();
 
-            var flowerType = db.FLOWERTYPES.ToList();
+            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
+
             searchModel.Flowers = filteredFlowers;
-            searchModel.FlowersType = flowerType;
+            searchModel.FlowersType = flowerTypes;
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SelectedFlowerTypeId = flowerTypeId.ToString();
 
             return View(searchModel);
         }
 
-        private string NormalizeString(string input)
+        public ActionResult FilterFLowers(int filterValue, string searchQuery, Guid? flowerTypeId)
         {
-            return new string(input.Normalize(NormalizationForm.FormD).Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark).ToArray());
+            var Flowers = db.FLOWERS.AsNoTracking()
+                .Where(f => string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
+                .Where(f => !flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId)
+                .ToList();
+            var filteredFlowers = new List<FLOWER>();
+
+            switch (filterValue)
+            {
+                case 1:
+                    filteredFlowers = Flowers.OrderBy(flower => flower.FLOWER_NAME).ToList();
+                    break;
+                case 2:
+                    filteredFlowers = Flowers.OrderByDescending(flower => flower.FLOWER_NAME).ToList();
+                    break;
+                case 3:
+                    filteredFlowers = Flowers.OrderBy(flower => flower.NEW_PRICE).ToList();
+                    break;
+                case 4:
+                    filteredFlowers = Flowers.OrderByDescending(flower => flower.NEW_PRICE).ToList();
+                    break;
+                default:
+                    filteredFlowers = Flowers;
+                    break;
+            }
+            var searchModel = new SearchModel()
+            {
+                Flowers = filteredFlowers.ToList()
+            };
+
+            return PartialView("_FlowerList", searchModel);
         }
+
+
     }
 }

@@ -1,4 +1,23 @@
-﻿<!doctype html>
+﻿@{ 
+    var currentUrl = Request.Url.AbsolutePath;
+
+    var shoppingCartIndexUrl = Url.Action("Index", "ShoppingCart");
+
+    bool isShoppingCartIndex = currentUrl.Equals(shoppingCartIndexUrl, StringComparison.OrdinalIgnoreCase);
+
+
+    int totalQuantity = 0;
+    if (ViewBag.lstFlowerCarts != null)
+    {
+        totalQuantity = 0;
+        foreach (var cart in ViewBag.lstFlowerCarts)
+        {
+            totalQuantity += cart.QUANTITY;
+        }
+    }
+}
+
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -108,16 +127,16 @@
                         }
                         <a class="d-md-none p-2 position-relative" href="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                1
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                @totalQuantity
                             </span>
                         </a>
-                        <button type="button" class="btn shadow-none position-relative ms-3 bg-milk d-none d-md-block">
+                        <button type="button" class="btn shadow-none position-relative ms-3 bg-milk @(isShoppingCartIndex ? "d-none" : "")">
                             <div class="dropdown">
                                 <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
-                                        @((ViewBag.lstFlowerCarts != null && ViewBag.lstFlowerCarts.Count > 0) ? ViewBag.lstFlowerCarts.Count : "0")
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                        @totalQuantity
                                     </span>
                                 </a>
                                 @Html.Partial("_CartFLower")
@@ -132,7 +151,6 @@
     <div id="content" style="min-height: 600px">
         @RenderBody()
     </div>
-
 
     <div id="footer">
         <footer class="text-center text-lg-start text-white" style="background-color: #252525">

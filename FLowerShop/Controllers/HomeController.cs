@@ -10,13 +10,24 @@ namespace FLowerShop.Controllers
 {
     public class HomeController : BaseController
     {
-        FlowerShopEntities db = new FlowerShopEntities();
+        private readonly FlowerShopEntities db;
+
+        public HomeController()
+        {
+            db = new FlowerShopEntities();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            LoadCommonData();
+            base.OnActionExecuting(filterContext);
+        }
+
         public ActionResult Index()
         {
             HomeModel objHomeModel = new HomeModel();
             objHomeModel.FlowerTypes = db.FLOWERTYPES.ToList();
             objHomeModel.Flowers = db.FLOWERS.ToList();
-            LoadCommonData();
             return View(objHomeModel);
         }
     }

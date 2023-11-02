@@ -68,8 +68,9 @@ namespace FLowerShop.Controllers
                     {
                         shoppingCart.QUANTITY = quantity.Value;
                         shoppingCart.SUBTOTAL = quantity.Value * shoppingCart.FLOWER.NEW_PRICE;
+                        int newCartCount = CalculateCartCount();
 
-                        var response = new { newTotalPrice = shoppingCart.SUBTOTAL.Value };
+                        var response = new { newTotalPrice = shoppingCart.SUBTOTAL.Value, cartCount = newCartCount };
                         return Json(response);
                     }
                 }
@@ -103,12 +104,9 @@ namespace FLowerShop.Controllers
             {
                 var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
 
-                if (shoppingCart != null)
-                {
-                    shoppingCarts.Remove(shoppingCart);
-                    int newCartCount = CalculateCartCount();
-                    return Json(new { success = true, message = "Xóa sản phẩm thành công", cartCount = newCartCount });
-                }
+                shoppingCarts.Remove(shoppingCart);
+                int newCartCount = CalculateCartCount();
+                return Json(new { success = true, message = "Xóa sản phẩm thành công", cartCount = newCartCount });
             }
 
             return Json(new { success = false, message = "Không thể xóa sản phẩm" });
