@@ -1,11 +1,9 @@
-﻿@using System.Web.Mvc.Html
-
+﻿
 @{
     int totalPrice = 0;
 }
-
-<ul class="dropdown-menu dropdown-menu-end table-cart-flower">
-    <table class="table mb-0" style="min-width: 500px;">
+<ul class="dropdown-menu dropdown-menu-end p-0">
+    <table class="table mb-0 table-cart-flower" style="min-width: 500px;">
         @if (ViewBag.lstFlowerCarts != null && ViewBag.lstFlowerCarts.Count > 0)
         {
             <tbody>
@@ -15,7 +13,7 @@
                         <td class="text-center">
                             <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
                                 <img class="img-thumbnail img-cart-flower"
-                                     src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                        src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
                             </a>
                         </td>
                         <td class="align-middle text-center">
@@ -23,21 +21,18 @@
                                 @item.FLOWER.FLOWER_NAME
                             </a>
                         </td>
-                        <td class="text-center align-middle">
+                        <td class="text-center align-middle quantity" data-flower-id="@item.FLOWER_ID">
                             @item.QUANTITY
                         </td>
-                        <td class="text-center align-middle subtotal-value">
+                        <td class="text-center align-middle subtotal-price" data-flower-id="@item.FLOWER_ID">
                             @item.SUBTOTAL.ToString("N0")VNĐ
                         </td>
-                        @using (Html.BeginForm("DeleteProduct", "ShoppingCart", FormMethod.Post))
-                        {
-                            <td class="text-start align-middle">
-                                <button class="btn bg-pink shadow-none btn-delete-product liveToastBtn"
-                                        data-shoppingCartId="@item.CART_ID">
-                                    <i class="fa-solid fa-x text-white"></i>
-                                </button>
-                            </td>
-                        }
+                        <td class="text-start align-middle">
+                            <button class="btn bg-pink shadow-none btn-delete-product liveToastBtn"
+                                    data-shoppingCartId="@item.CART_ID" data-flower-id="@item.FLOWER_ID">
+                                <i class="fa-solid fa-x text-white"></i>
+                            </button>
+                        </td>
                     </tr>
                     totalPrice += (int)@item.SUBTOTAL;
                 }
@@ -45,7 +40,7 @@
                     <td class="fw-bold text-end" colspan="3">
                         Tổng cộng
                     </td>
-                    <td class="text-center" id="total-price">
+                    <td class="text-center total-price-grand">
                         @totalPrice.ToString("N0")VNĐ
                     </td>
                     <td></td>
@@ -71,60 +66,49 @@
 </ul>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
+        attachDeleteEvent();
+    });
+
+    function attachDeleteEvent() {
         const deleteButtons = document.querySelectorAll('.btn-delete-product');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const shoppingCartId = button.getAttribute('data-shoppingCartId');
 
-        function updateTotalPrice() {
-            const totalElements = document.querySelectorAll('.subtotal-value');
-            let newTotalPrice = 0;
-
-            totalElements.forEach(function (element) {
-                const valueWithoutVND = element.textContent.replace('VNĐ', '');
-                const valueWithoutCommas = valueWithoutVND.replace(/,/g, '');
-                newTotalPrice += parseFloat(valueWithoutCommas);
-            });
-
-            const totalPriceElement = document.getElementById('total-price');
-            totalPriceElement.textContent = newTotalPrice.toLocaleString() + 'VNĐ';
-        }
-
-        function updateCartCount(newCartCount) {
-            const cartCountElement = document.querySelectorAll('.cart-count');
-            cartCountElement.forEach(function (element) {
-                element.textContent = newCartCount;
-            });
-        }
-
-        deleteButtons.forEach(function (button) {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const shoppingCartId = this.getAttribute('data-shoppingCartId');
-
-                fetch('/ShoppingCart/DeleteProduct', {
+                fetch('/ShoppingCart/DeleteFlower', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ shoppingCartId: shoppingCartId }),
                 })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        const row = this.closest('tr');
-                        row.remove();
-                        updateTotalPrice();
-                        updateCartCount(result.cartCount);
-                        if (document.querySelectorAll('.btn-delete-product').length === 0) {
-                            window.location.href = '@Url.Action("Index", "ShoppingCart")';
-                        }
-                    } else {
-                        alert('Error: ' + result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => response.text())
+                    .then(result => {
+                        var cartContainer = document.getElementById('table-list-cart-flower');
+                        cartContainer.innerHTML = '';
+                        cartContainer.innerHTML = result;
+
+                        var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+                        dropdownHeaders.forEach(header => {
+                            new bootstrap.Dropdown(header);
+                        });
+
+                        let totalQuantity = 0;
+                        document.getElementById('toast-message').textContent = 'Xóa giỏ hàng thành công';
+                        document.querySelectorAll('.quantity').forEach(e => {
+                            const quantity = parseInt(e.textContent);
+                            totalQuantity += quantity;
+                        });
+
+                        document.querySelectorAll('.cart-count').forEach(e => {
+                            e.textContent = totalQuantity;
+                        });
+
+                        attachDeleteEvent();
+                    });
             });
         });
-    });
+    }
+
 </script>

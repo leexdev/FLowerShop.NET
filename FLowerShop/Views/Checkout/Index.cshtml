@@ -119,7 +119,7 @@
                                         </a>
                                     </td>
                                     <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
-                                    <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")</td>
+                                    <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
                                 </tr>
                                 {
                                     totalPrice += (int)item.SUBTOTAL.Value;

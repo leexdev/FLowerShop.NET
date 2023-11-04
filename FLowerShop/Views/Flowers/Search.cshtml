@@ -46,7 +46,9 @@
             </div>
         </div>
         <div class="product-list mt-3">
-            @Html.Partial("_FLowerList")
+            <div id="filteredProducts">
+                @Html.Partial("_FLowerList")
+            </div>
         </div>
         <nav class="d-flex justify-content-center">
             <ul class="pagination">
@@ -65,9 +67,9 @@
                 </li>
             </ul>
         </nav>
-    }
-    else
-    {
+        }
+        else
+        {
         <p>Không có sản phẩm phù hợp với tiêu chí tìm kiếm.</p>
-    }
-</div>
+        }
+    </div>

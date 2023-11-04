@@ -1,4 +1,5 @@
 ﻿using FLowerShop.Context;
+using FLowerShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,24 @@ namespace FLowerShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProductSC(int? quantity, Guid? flowerId)
+        public ActionResult BuyFLower(int? quantity, Guid? flowerId)
+        {
+            var buyFlower = new SHOPPINGCART();
+            buyFlower.FLOWER_ID = flowerId;
+            buyFlower.QUANTITY = quantity;
+            buyFlower.USER_ID = Session["UserId"] as Guid?;
+            buyFlower.FLOWER = db.FLOWERS.FirstOrDefault(f => f.FLOWER_ID == flowerId);
+            if (buyFlower.FLOWER != null)
+            {
+                buyFlower.SUBTOTAL = buyFlower.FLOWER.NEW_PRICE * buyFlower.QUANTITY;
+            }
+
+            Session["BuyFlower"] = buyFlower;
+            return RedirectToAction("Index", "Checkout");
+        }
+
+        [HttpPost]
+        public ActionResult AddFlowerSC(int? quantity, Guid? flowerId)
         {
             List<SHOPPINGCART> shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
             if (shoppingCarts == null)
@@ -49,8 +67,18 @@ namespace FLowerShop.Controllers
             {
                 shoppingCart.SUBTOTAL = shoppingCart.FLOWER.NEW_PRICE * shoppingCart.QUANTITY;
             }
+            var totalPriceGrand = 0;
+            foreach (var item in shoppingCarts)
+            {
+                totalPriceGrand += (int)item.SUBTOTAL.Value;
+            }
             Session["ShoppingCart"] = shoppingCarts;
-            return RedirectToAction("Index", "Checkout");
+            var detailModel = new DetailModel
+            {
+                ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>
+            };
+            LoadCommonData();
+            return PartialView("_CartFlower", detailModel);
         }
 
         [HttpPost]
@@ -68,19 +96,51 @@ namespace FLowerShop.Controllers
                     {
                         shoppingCart.QUANTITY = quantity.Value;
                         shoppingCart.SUBTOTAL = quantity.Value * shoppingCart.FLOWER.NEW_PRICE;
-                        int newCartCount = CalculateCartCount();
 
-                        var response = new { newTotalPrice = shoppingCart.SUBTOTAL.Value, cartCount = newCartCount };
-                        return Json(response);
+                        var totalPriceGrand = 0;
+                        foreach (var item in shoppingCarts)
+                        {
+                            totalPriceGrand += (int)item.SUBTOTAL.Value;
+                        }
+
+                        int newCartCount = CalculateCartCount();
+                        return Json(new { TotalPrice = shoppingCart.SUBTOTAL.Value, Quantity = shoppingCart.QUANTITY.Value, CartCount = newCartCount, TotalPriceGrand = totalPriceGrand });
                     }
                 }
             }
             return Json(new { error = "Không thể cập nhật giỏ hàng" });
         }
 
+        [HttpPost]
+        public ActionResult DeleteFLower(Guid? shoppingCartId)
+        {
+            var shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
+
+            if (shoppingCarts != null)
+            {
+                var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
+
+                shoppingCarts.Remove(shoppingCart);
+                int newCartCount = CalculateCartCount();
+                var totalPriceGrand = 0;
+                foreach (var item in shoppingCarts)
+                {
+                    totalPriceGrand += (int)item.SUBTOTAL.Value;
+                }
+                Session["ShoppingCart"] = shoppingCarts;
+                var detailModel = new DetailModel
+                {
+                    ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>
+                };
+                LoadCommonData();
+                return PartialView("_CartFlower", detailModel);
+            }
+            return HttpNotFound();
+        }
+
 
         [HttpPost]
-        public ActionResult DeleteProductSC(Guid? shoppingCartId)
+        public ActionResult DeleteFlowerSC(Guid? shoppingCartId)
         {
             var shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
 
@@ -95,29 +155,11 @@ namespace FLowerShop.Controllers
             return HttpNotFound();
         }
 
-        [HttpPost]
-        public ActionResult DeleteProduct(Guid? shoppingCartId)
-        {
-            var shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
-
-            if (shoppingCarts != null)
-            {
-                var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
-
-                shoppingCarts.Remove(shoppingCart);
-                int newCartCount = CalculateCartCount();
-                return Json(new { success = true, message = "Xóa sản phẩm thành công", cartCount = newCartCount });
-            }
-
-            return Json(new { success = false, message = "Không thể xóa sản phẩm" });
-        }
-
         private int CalculateCartCount()
         {
-            // Lấy danh sách giỏ hàng từ Session hoặc database
             var shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
 
-            if (shoppingCarts != null)
+            if (shoppingCarts.Count > 0)
             {
                 int cartCount = (int)shoppingCarts.Sum(cart => cart.QUANTITY);
                 return cartCount;
@@ -125,7 +167,5 @@ namespace FLowerShop.Controllers
 
             return 0;
         }
-
-
     }
 }

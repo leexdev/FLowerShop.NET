@@ -76,10 +76,10 @@
                 <div class="call-us-box d-flex align-items-center mb-4">
                     <div class="fw-bold text-capitalize me-2">Chat ngay:</div>
                     <a href="https://m.me/leex.dev">
-                        <img class="rounded-circle me-2" src="~/Content/assets/img/ms.png" alt="" style="width: 36px; height: 36px;">
+                        <img class="rounded-circle me-2" src="~/Content/assets/img/ms.png" alt="ms.png" style="width: 36px; height: 36px;">
                     </a>
                     <a href="https://zalo.me/leex.dev">
-                        <img class="rounded-circle" src="~/Content/assets/img/zalo.png" alt="" style="width: 36px; height: 36px;">
+                        <img class="rounded-circle" src="~/Content/assets/img/zalo.png" alt="zalo.png" style="width: 36px; height: 36px;">
                     </a>
                 </div>
 
@@ -88,12 +88,13 @@
                     <p>Miễn phí giao hoa khu vực TP.HCM</p>
                 </div>
 
-                @using (Html.BeginForm("AddProductSC", "ShoppingCart", FormMethod.Post, new { id = "form-product", @class = "d-flex" }))
+                @using (Html.BeginForm("BuyFLower", "ShoppingCart", FormMethod.Post, new { id = "form-product", @class = "d-flex" }))
                 {
                     @Html.Hidden("flowerId", Model.Flower.FLOWER_ID)
-                    @Html.TextBox("quantity", 1, new { @id = "input-quantity", @class = "form-control shadow-none me-2", @min="1", @max="99", @type="number" })
-                    <button type="submit" class="btn btn-warning text-white fw-bold px-4 py-2 me-2">Đặt hàng</button>
+                    <input id="input-quantity" class="form-control shadow-none me-2" type="number" name="quantity" value="1" min="1" max="99">
+                    <button type="submit" class="btn btn-warning text-white fw-bold px-4 py-2 me-2">Mua ngay</button>
                 }
+                <button type="submit" class="btn btn-success text-white fw-bold px-4 py-2 me-2 liveToastBtn" id="btn-add-to-cart" data-flowerId="@Model.Flower.FLOWER_ID">Thêm vào giỏ hàng</button>
 
                 <div class="pdp-featured py-4 row">
                     <div class="pdp-featured-item col-12 col-xl-6 row mb-3 mb-xl-0">
@@ -169,3 +170,46 @@
         }
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const addButton = document.getElementById('btn-add-to-cart');
+        const quantity = document.getElementById('input-quantity');
+
+        addButton.addEventListener('click', () => {
+            const flowerIdValue = addButton.getAttribute('data-flowerId');
+            const quantityValue = quantity.value;
+
+            fetch('/ShoppingCart/AddFlowerSC', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ quantity: quantityValue, flowerId: flowerIdValue })
+            })
+                .then(response => response.text())
+                .then(result => {
+                    var cartContainer = document.getElementById('table-list-cart-flower');
+                    cartContainer.innerHTML = '';
+                    cartContainer.innerHTML = result;
+
+                    var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+                    dropdownHeaders.forEach(header => {
+                        new bootstrap.Dropdown(header);
+                    });
+
+                    let totalQuantity = 0;
+                    document.getElementById('toast-message').textContent = 'Thêm vào giỏ hàng thành công';
+                    document.querySelectorAll('.quantity').forEach(e => {
+                        const quantity = parseInt(e.textContent);
+                        totalQuantity += quantity;
+                    });
+
+                    document.querySelectorAll('.cart-count').forEach(e => {
+                        e.textContent = totalQuantity;
+                    });
+                    attachDeleteEvent();
+                });
+        });
+    });
+</script>

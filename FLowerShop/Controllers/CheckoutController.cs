@@ -24,8 +24,22 @@ namespace FLowerShop.Controllers
 
         public ActionResult Index()
         {
-            var ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
-            return View(ShoppingCarts);
+            if (Session["BuyFlower"] == null && Session["ShoppingCart"] == null)
+            {
+                return RedirectToAction("Index", "ShoppingCart");
+            }
+
+            var flower = new List<SHOPPINGCART>();
+
+            if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
+            {
+                flower.Add(Session["BuyFlower"] as SHOPPINGCART);
+            }
+            else if (Session["ShoppingCart"] != null && Session["ShoppingCart"] is List<SHOPPINGCART>)
+            {
+                flower = Session["ShoppingCart"] as List<SHOPPINGCART>;
+            }
+            return View(flower);
         }
     }
 }

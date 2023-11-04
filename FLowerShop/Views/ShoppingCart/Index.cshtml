@@ -42,7 +42,7 @@
                                            name="quantity"
                                            data-shoppingCartId="@item.CART_ID"
                                            data-flower-id="@item.FLOWER_ID"/>
-                                    @using (Html.BeginForm("DeleteProductSC", "ShoppingCart", FormMethod.Post))
+                                    @using (Html.BeginForm("DeleteFlowerSC", "ShoppingCart", FormMethod.Post))
                                     {
                                         @Html.Hidden("shoppingCartId", item.CART_ID)
                                         <button type="submit" class="btn bg-pink shadow-none">
@@ -96,37 +96,57 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
         var quantityInputs = document.querySelectorAll(".quantity-flower");
 
-        quantityInputs.forEach(function (input) {
-            input.addEventListener("change", function () {
+        quantityInputs.forEach(input => {
+            input.addEventListener("change", () => {
                 var quantity = input.value;
                 var shoppingCartId = input.getAttribute("data-shoppingCartId");
                 var flowerId = input.getAttribute("data-flower-id");
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", '/ShoppingCart/UpdateShoppingCart', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
+                fetch('/ShoppingCart/UpdateShoppingCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity: quantity, shoppingCartId: shoppingCartId })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        var totalPrice = result.TotalPrice;
+                        var cartcount = result.CartCount;
+                        var totalPriceGrand = result.TotalPriceGrand;
 
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        var newTotalPrice = response.newTotalPrice;
+                        var totalPriceElements = document.querySelectorAll('.subtotal-price');
+                        totalPriceElements.forEach(e => {
+                            var dataFlowerId = e.getAttribute('data-flower-id');
+                            if (dataFlowerId === flowerId) {
+                                e.textContent = formatPrice(totalPrice);
+                            }
+                        });
 
-                        var totalPriceElement = document.querySelector('.subtotal-price[data-flower-id="' + flowerId + '"]');
-                        if (totalPriceElement) {
-                            totalPriceElement.textContent = formatPrice(newTotalPrice);
-                        }
+                        var quantityElements = document.querySelectorAll('.quantity');
+                        quantityElements.forEach(e =>{
+                            var dataFlowerId = e.getAttribute('data-flower-id');
+                            if (dataFlowerId === flowerId) {
+                                e.textContent = quantity;
+                            }
+                        });
 
-                        updateGrandTotalPrice();
-                    } else {
-                        console.error('Lỗi:', xhr.statusText);
-                    }
-                };
+                        var cartcountElement = document.querySelectorAll('.cart-count');
+                        cartcountElement.forEach(e => {
+                            e.textContent = cartcount;
+                        });
 
-                var data = JSON.stringify({ quantity: quantity, shoppingCartId: shoppingCartId });
-                xhr.send(data);
+                        var totalPriceGrandElement = document.querySelectorAll('.total-price-grand');
+                        totalPriceGrandElement.forEach(e => {
+                            e.textContent = formatPrice(totalPriceGrand);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                    });
             });
         });
     });
@@ -134,20 +154,4 @@
     function formatPrice(price) {
         return price.toLocaleString() + "VNĐ";
     }
-
-    function updateGrandTotalPrice() {
-        var flowerPrices = document.querySelectorAll('.subtotal-price');
-        var totalPrice = 0;
-
-        flowerPrices.forEach(function (priceElement) {
-            var price = parseFloat(priceElement.textContent.replace(/\D/g, ''));
-            totalPrice += price;
-        });
-
-        var grandTotalPriceElement = document.querySelector('.total-price-grand');
-        if (grandTotalPriceElement) {
-            grandTotalPriceElement.textContent = formatPrice(totalPrice);
-        }
-    }
-
 </script>

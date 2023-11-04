@@ -1,11 +1,4 @@
 ﻿@{ 
-    var currentUrl = Request.Url.AbsolutePath;
-
-    var shoppingCartIndexUrl = Url.Action("Index", "ShoppingCart");
-
-    bool isShoppingCartIndex = currentUrl.Equals(shoppingCartIndexUrl, StringComparison.OrdinalIgnoreCase);
-
-
     int totalQuantity = 0;
     if (ViewBag.lstFlowerCarts != null)
     {
@@ -64,16 +57,7 @@
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="
-                               @if (ViewBag.lstFlowerCarts != null &&  ViewBag.lstFlowerCarts.Count > 0)
-                               {
-                                    @Url.Action("Index", "Checkout")
-                               }
-                               else
-                                {
-                                    @Url.Action("Index", "ShoppingCart")
-                                }
-                            " title="Thanh toán">
+                            <a href="@Url.Action("Index", "Checkout")" title="Thanh toán">
                                 <i class="fa-solid fa-share"></i>
                                 <span class="d-none d-md-inline">Thanh toán</span>
                             </a>
@@ -127,11 +111,11 @@
                         }
                         <a class="d-md-none p-2 position-relative" href="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" data-count="@ViewBag.lstFlowerCartsCount">
                                 @totalQuantity
                             </span>
                         </a>
-                        <button type="button" class="btn shadow-none position-relative ms-3 bg-milk @(isShoppingCartIndex ? "d-none" : "")">
+                        <button type="button" class="btn shadow-none position-relative ms-3 bg-milk d-block">
                             <div class="dropdown">
                                 <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
@@ -139,7 +123,9 @@
                                         @totalQuantity
                                     </span>
                                 </a>
-                                @Html.Partial("_CartFLower")
+                                <div id="table-list-cart-flower">
+                                    @Html.Partial("_CartFLower")
+                                </div>
                             </div>
                         </button>
                     </div>
@@ -254,9 +240,7 @@
     <div class="toast-container position-fixed top-0 end-0 p-3" style="margin-top: 90px; z-index: 1">
         <div class="toast liveToast align-items-center">
             <div class="d-flex bg-success">
-                <div class="toast-body">
-                    Xóa khỏi giỏ hàng thành công
-                </div>
+                <div class="toast-body" id="toast-message"></div>
                 <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>

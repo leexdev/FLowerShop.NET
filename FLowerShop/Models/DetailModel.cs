@@ -11,5 +11,6 @@ namespace FLowerShop.Models
         public FLOWER Flower { get; set; }
         public List<DISCOUNTCODE> DiscountCodes { get; set; }
         public List<FLOWER> Flowers { get; set; }
+        public List<SHOPPINGCART> ShoppingCarts { get; set; }
     }
 }
