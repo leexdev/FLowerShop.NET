@@ -1,99 +1,10 @@
-﻿@model List<FLowerShop.Context.SHOPPINGCART>
-
-@{
+﻿@{
     ViewBag.Title = "Giỏ hàng";
-    int totalPrice = 0;
 }
 
-<div class="container my-5">
-    @if (Model != null && Model.Count > 0)
-    {
-        <div class="overflow-auto">
-            <table class="table table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>Hình ảnh</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Tổng cộng</th>
-                    </tr>
-                </thead>
-                @foreach (var item in Model)
-                {
-                    <tbody>
-                        <tr class="text-center align-middle">
-                            <td>
-                                <a href="./detail.html">
-                                    <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
-                                         alt="@item.FLOWER.FLOWER_IMAGE" />
-                                </a>
-                            </td>
-                            <td class="text-danger">
-                                <a href="@Url.Action("Detail", "Flowers", new { flowerid = item.FLOWER_ID })">@item.FLOWER.FLOWER_NAME</a>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center">
-                                    <input class="form-control w-auto quantity-flower"
-                                           value="@item.QUANTITY"
-                                           min="1"
-                                           max="99"
-                                           type="number"
-                                           name="quantity"
-                                           data-shoppingCartId="@item.CART_ID"
-                                           data-flower-id="@item.FLOWER_ID"/>
-                                    @using (Html.BeginForm("DeleteFlowerSC", "ShoppingCart", FormMethod.Post))
-                                    {
-                                        @Html.Hidden("shoppingCartId", item.CART_ID)
-                                        <button type="submit" class="btn bg-pink shadow-none">
-                                            <i class="fa-solid fa-x text-white"></i>
-                                        </button>
-                                    }
-                                </div>
-                            </td>
-                            <td class="text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
-                            <td class="text-end subtotal-price" data-flower-id="@item.FLOWER_ID">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
-                        </tr>
-                        @{
-                            totalPrice += (int)item.SUBTOTAL.Value;
-                        }
-                    </tbody>
-                }
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-end fw-bold">Tổng cộng</td>
-                        <td class="text-end total-price-grand">@totalPrice.ToString("N0")VNĐ</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div class="d-inline-block pt-2 pd-2 w-100">
-            <div class="float-start">
-                <a href="@Url.Action("Index", "Home")" class="btn shadow-none btn-secondary">
-                    Tiếp tục mua sắm
-                </a>
-            </div>
-            <div class="float-end">
-                <a href="@Url.Action("Index", "Checkout")" class="btn shadow-none bg-pink text-white">
-                    Thanh toán
-                </a>
-            </div>
-        </div>
-    }
-    else
-    {
-        <h3 class="text-center">Giỏ hàng của bạn đang trống.</h3>
-        <div class="d-inline-block pt-2 pd-2 w-100">
-            <div class="float-end">
-                <a href="@Url.Action("Index", "Home")" class="btn shadow-none bg-pink text-white">
-                    Tiếp tục
-                </a>
-            </div>
-        </div>
-    }
-
+<div id="shopping-cart-flower">
+    @Html.Partial("_ShoppingCartFLower")
 </div>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -114,15 +25,11 @@
                 })
                     .then(response => response.json())
                     .then(result => {
-                        var totalPrice = result.TotalPrice;
-                        var cartcount = result.CartCount;
-                        var totalPriceGrand = result.TotalPriceGrand;
-
                         var totalPriceElements = document.querySelectorAll('.subtotal-price');
                         totalPriceElements.forEach(e => {
                             var dataFlowerId = e.getAttribute('data-flower-id');
                             if (dataFlowerId === flowerId) {
-                                e.textContent = formatPrice(totalPrice);
+                                e.textContent = formatPrice(result.TotalPrice);
                             }
                         });
 
@@ -136,12 +43,12 @@
 
                         var cartcountElement = document.querySelectorAll('.cart-count');
                         cartcountElement.forEach(e => {
-                            e.textContent = cartcount;
+                            e.textContent = result.CartCount;
                         });
 
                         var totalPriceGrandElement = document.querySelectorAll('.total-price-grand');
                         totalPriceGrandElement.forEach(e => {
-                            e.textContent = formatPrice(totalPriceGrand);
+                            e.textContent = formatPrice(result.TotalPriceGrand);
                         });
                     })
                     .catch(error => {

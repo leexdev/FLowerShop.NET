@@ -187,29 +187,30 @@
                 },
                 body: JSON.stringify({ quantity: quantityValue, flowerId: flowerIdValue })
             })
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(result => {
                     var cartContainer = document.getElementById('table-list-cart-flower');
-                    cartContainer.innerHTML = '';
-                    cartContainer.innerHTML = result;
+                    cartContainer.innerHTML = result.CartFlower;
+
+                    document.querySelectorAll('.total-price-grand').forEach(e => {
+                        e.textContent = formatPrice(result.PriceGrand);
+                    });
+
+                    document.querySelectorAll('.cart-count').forEach(e => {
+                        e.textContent = result.CartCount;
+                    });
 
                     var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
                     dropdownHeaders.forEach(header => {
                         new bootstrap.Dropdown(header);
                     });
 
-                    let totalQuantity = 0;
                     document.getElementById('toast-message').textContent = 'Thêm vào giỏ hàng thành công';
-                    document.querySelectorAll('.quantity').forEach(e => {
-                        const quantity = parseInt(e.textContent);
-                        totalQuantity += quantity;
-                    });
-
-                    document.querySelectorAll('.cart-count').forEach(e => {
-                        e.textContent = totalQuantity;
-                    });
-                    attachDeleteEvent();
                 });
         });
     });
+
+    function formatPrice(price) {
+        return price.toLocaleString() + "VNĐ";
+    }
 </script>

@@ -67,18 +67,26 @@ namespace FLowerShop.Controllers
             {
                 shoppingCart.SUBTOTAL = shoppingCart.FLOWER.NEW_PRICE * shoppingCart.QUANTITY;
             }
+
             var totalPriceGrand = 0;
             foreach (var item in shoppingCarts)
             {
                 totalPriceGrand += (int)item.SUBTOTAL.Value;
             }
+
             Session["ShoppingCart"] = shoppingCarts;
-            var detailModel = new DetailModel
-            {
-                ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>
-            };
             LoadCommonData();
-            return PartialView("_CartFlower", detailModel);
+            int newCartCount = CalculateCartCount();
+            var flowerList = Session["ShoppingCart"] as List<SHOPPINGCART>;
+            var cartFlowerModel = new CartFlowerModel
+            {
+                FlowerCarts = shoppingCarts
+            };
+
+            var cartFlowerPartial = this.RenderToString("_CartFlower", cartFlowerModel);
+            var flowerListPartial = this.RenderToString("_ShoppingCartFLower", flowerList);
+
+            return Json(new { CartFlower = cartFlowerPartial, FlowerList = flowerListPartial, PriceGrand = totalPriceGrand, CartCount = newCartCount });
         }
 
         [HttpPost]
@@ -121,37 +129,18 @@ namespace FLowerShop.Controllers
                 var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
 
                 shoppingCarts.Remove(shoppingCart);
-                int newCartCount = CalculateCartCount();
-                var totalPriceGrand = 0;
-                foreach (var item in shoppingCarts)
-                {
-                    totalPriceGrand += (int)item.SUBTOTAL.Value;
-                }
                 Session["ShoppingCart"] = shoppingCarts;
-                var detailModel = new DetailModel
-                {
-                    ShoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>
-                };
                 LoadCommonData();
-                return PartialView("_CartFlower", detailModel);
+                var CartFlowers = new CartFlowerModel
+                {
+                    FlowerCarts = shoppingCarts
+                };
+                var cartFlowerPartial = this.RenderToString("_CartFlower", CartFlowers);
+                var flowerListPartial = this.RenderToString("_ShoppingCartFLower", shoppingCarts);
+
+                return Json(new { CartFlower = cartFlowerPartial, FlowerList = flowerListPartial, CartCount = CalculateCartCount() });
             }
-            return HttpNotFound();
-        }
 
-
-        [HttpPost]
-        public ActionResult DeleteFlowerSC(Guid? shoppingCartId)
-        {
-            var shoppingCarts = Session["ShoppingCart"] as List<SHOPPINGCART>;
-
-            if (shoppingCarts != null)
-            {
-                var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
-
-                shoppingCarts.Remove(shoppingCart);
-
-                return RedirectToAction("Index");
-            }
             return HttpNotFound();
         }
 
@@ -161,7 +150,7 @@ namespace FLowerShop.Controllers
 
             if (shoppingCarts.Count > 0)
             {
-                int cartCount = (int)shoppingCarts.Sum(cart => cart.QUANTITY);
+                int cartCount = shoppingCarts.Count;
                 return cartCount;
             }
 

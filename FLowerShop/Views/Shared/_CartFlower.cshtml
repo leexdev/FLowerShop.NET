@@ -1,19 +1,20 @@
-﻿
+﻿@model FLowerShop.Models.CartFlowerModel
+
 @{
     int totalPrice = 0;
 }
 <ul class="dropdown-menu dropdown-menu-end p-0">
     <table class="table mb-0 table-cart-flower" style="min-width: 500px;">
-        @if (ViewBag.lstFlowerCarts != null && ViewBag.lstFlowerCarts.Count > 0)
+        @if (Model.FlowerCarts != null && Model.FlowerCarts.Count > 0)
         {
             <tbody>
-                @foreach (var item in ViewBag.lstFlowerCarts)
+                @foreach (var item in Model.FlowerCarts)
                 {
                     <tr>
                         <td class="text-center">
                             <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
                                 <img class="img-thumbnail img-cart-flower"
-                                        src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                     src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
                             </a>
                         </td>
                         <td class="align-middle text-center">
@@ -25,7 +26,7 @@
                             @item.QUANTITY
                         </td>
                         <td class="text-center align-middle subtotal-price" data-flower-id="@item.FLOWER_ID">
-                            @item.SUBTOTAL.ToString("N0")VNĐ
+                            @item.SUBTOTAL.Value.ToString("N0")VNĐ
                         </td>
                         <td class="text-start align-middle">
                             <button class="btn bg-pink shadow-none btn-delete-product liveToastBtn"
@@ -34,7 +35,7 @@
                             </button>
                         </td>
                     </tr>
-                    totalPrice += (int)@item.SUBTOTAL;
+                    totalPrice += (int)@item.SUBTOTAL.Value;
                 }
                 <tr>
                     <td class="fw-bold text-end" colspan="3">
@@ -67,13 +68,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        attachDeleteEvent();
-    });
-
-    function attachDeleteEvent() {
-        const deleteButtons = document.querySelectorAll('.btn-delete-product');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', () => {
+        document.getElementById('table-list-cart-flower').addEventListener('click', (event) => {
+            if (event.target.classList.contains('btn-delete-product') || event.target.parentElement.classList.contains('btn-delete-product')) {
+                const button = event.target.classList.contains('btn-delete-product') ? event.target : event.target.parentElement;
                 const shoppingCartId = button.getAttribute('data-shoppingCartId');
 
                 fetch('/ShoppingCart/DeleteFlower', {
@@ -81,34 +78,32 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ shoppingCartId: shoppingCartId }),
+                    body: JSON.stringify({ shoppingCartId }),
                 })
-                    .then(response => response.text())
-                    .then(result => {
-                        var cartContainer = document.getElementById('table-list-cart-flower');
-                        cartContainer.innerHTML = '';
-                        cartContainer.innerHTML = result;
+                .then(response => response.json())
+                .then(result => {
 
-                        var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
-                        dropdownHeaders.forEach(header => {
-                            new bootstrap.Dropdown(header);
-                        });
+                    const shoppingCartFlower = document.getElementById('shopping-cart-flower');
+                    if (window.location.pathname.startsWith('/ShoppingCart')) {
+                        shoppingCartFlower.innerHTML = result.FlowerList;
+                    }
 
-                        let totalQuantity = 0;
-                        document.getElementById('toast-message').textContent = 'Xóa giỏ hàng thành công';
-                        document.querySelectorAll('.quantity').forEach(e => {
-                            const quantity = parseInt(e.textContent);
-                            totalQuantity += quantity;
-                        });
+                    const cartContainer = document.getElementById('table-list-cart-flower');
+                    cartContainer.innerHTML = result.CartFlower;
 
-                        document.querySelectorAll('.cart-count').forEach(e => {
-                            e.textContent = totalQuantity;
-                        });
-
-                        attachDeleteEvent();
+                    var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+                    dropdownHeaders.forEach(header => {
+                        new bootstrap.Dropdown(header);
                     });
-            });
-        });
-    }
 
+                    document.getElementById('toast-message').textContent = 'Xóa khỏi giỏ hàng thành công';
+
+                    document.querySelectorAll('.cart-count').forEach(e => {
+                        e.textContent = result.CartCount;
+                    });
+                });
+            }
+        });
+    });
 </script>
+

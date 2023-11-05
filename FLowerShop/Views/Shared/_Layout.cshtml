@@ -1,11 +1,15 @@
 ﻿@{ 
-    int totalQuantity = 0;
-    if (ViewBag.lstFlowerCarts != null)
+    var cartFlowerModel = new FLowerShop.Models.CartFlowerModel();
+    cartFlowerModel.FlowerCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
+    int cartcount = 0;
+
+    if (Session["ShoppingCart"] != null)
     {
-        totalQuantity = 0;
-        foreach (var cart in ViewBag.lstFlowerCarts)
+        List<FLowerShop.Context.SHOPPINGCART> shoppingCartItems = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
+
+        if (shoppingCartItems != null)
         {
-            totalQuantity += cart.QUANTITY;
+            cartcount = shoppingCartItems.Count;
         }
     }
 }
@@ -16,7 +20,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FLower Shop</title>
+    <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/assets/css/main.css">
     <link rel="stylesheet" href="~/Content/assets/css/homepage.css">
@@ -91,7 +95,7 @@
                             <ul class="dropdown-menu bg-milk">
                                 @foreach (var item in ViewBag.lstFLowerTypes)
                                 {
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "FlowerTypes", new {flowerTypeId = item.FLOWERTYPE_ID})">@item.FLOWERTYPE_NAME</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })">@item.FLOWERTYPE_NAME</a></li>
                                 }
                             </ul>
                         </li>
@@ -103,7 +107,7 @@
                         </li>
                     </ul>
                     <div class="d-flex mb-3 mb-md-0">
-                        @using (Html.BeginForm("Search", "FLowers", FormMethod.Get, new {@class = "d-flex"}))
+                        @using (Html.BeginForm("Search", "FLowers", FormMethod.Get, new { @class = "d-flex" }))
                         {
                             <input class="border border-3 border-top-0 border-start-0 border-end-0 bg-milk" type="search" name="searchQuery"
                                    placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
@@ -111,8 +115,8 @@
                         }
                         <a class="d-md-none p-2 position-relative" href="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" data-count="@ViewBag.lstFlowerCartsCount">
-                                @totalQuantity
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                @cartcount
                             </span>
                         </a>
                         <button type="button" class="btn shadow-none position-relative ms-3 bg-milk d-block">
@@ -120,11 +124,11 @@
                                 <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
-                                        @totalQuantity
+                                        @cartcount
                                     </span>
                                 </a>
                                 <div id="table-list-cart-flower">
-                                    @Html.Partial("_CartFLower")
+                                    @Html.Partial("_CartFLower", cartFlowerModel)
                                 </div>
                             </div>
                         </button>
