@@ -93,7 +93,7 @@
                     @Html.Hidden("flowerId", Model.Flower.FLOWER_ID)
                     <input id="input-quantity" class="form-control shadow-none me-2" type="number" name="quantity" value="1" min="1" max="99">
                     <button type="submit" class="btn btn-warning text-white fw-bold px-4 py-2 me-2">Mua ngay</button>
-                    <button type="button" class="btn btn-success text-white fw-bold px-4 py-2 me-2 liveToastBtn" id="btn-add-to-cart" data-flowerId="@Model.Flower.FLOWER_ID">Thêm vào giỏ hàng</button>
+                    <button type="button" class="btn btn-success text-white fw-bold px-4 py-2 me-2" id="btn-add-to-cart" data-flowerId="@Model.Flower.FLOWER_ID">Thêm vào giỏ hàng</button>
                 }
 
                 <div class="pdp-featured py-4 row">
@@ -193,31 +193,15 @@
                     cartContainer.innerHTML = result.CartFlower;
 
                     document.querySelectorAll('.total-price-grand').forEach(e => {
-                        e.textContent = formatPrice(result.PriceGrand);
+                        e.textContent = result.PriceGrand.toLocaleString() + "VNĐ";
                     });
-
-                    
 
                     var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
                     dropdownHeaders.forEach(header => {
                         new bootstrap.Dropdown(header);
                     });
 
-                    const toastContainer = document.querySelector(".toast-container");
-                    const newToast = document.createElement("div");
-                    newToast.classList.add("toast", "align-items-center", "liveToast");
-                    newToast.innerHTML = `
-                    <div class="d-flex bg-success">
-                        <div class="toast-body">Thêm vào giỏ hàng thành công</div>
-                        <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                `;
-                    toastContainer.appendChild(newToast);
-                    const bootstrapToast = new bootstrap.Toast(newToast);
-                    bootstrapToast.show();
-                    newToast.addEventListener("hidden.bs.toast", function () {
-                        toastContainer.removeChild(newToast);
-                    });
+                    toastMessage("Thêm vào giỏ hàng thành công");
 
                     document.querySelectorAll('.cart-count').forEach(e => {
                         e.textContent = result.CartCount;
@@ -225,8 +209,4 @@
                 });
         });
     });
-
-    function formatPrice(price) {
-        return price.toLocaleString() + "VNĐ";
-    }
 </script>

@@ -98,7 +98,7 @@ namespace FLowerShop.Controllers
                 Flowers = filteredFlowers.ToList()
             };
 
-            return PartialView("_FlowerList", searchModel);
+            return PartialView("_FlowerSearch", searchModel);
         }
 
         private List<FLOWER> SortFlowers(List<FLOWER> flowers, int filterValue)

@@ -29,7 +29,7 @@
                             @item.SUBTOTAL.Value.ToString("N0")VNĐ
                         </td>
                         <td class="text-start align-middle">
-                            <button class="btn bg-pink shadow-none btn-delete-product liveToastBtn"
+                            <button class="btn bg-pink shadow-none btn-delete-product"
                                     data-shoppingCartId="@item.CART_ID" data-flower-id="@item.FLOWER_ID">
                                 <i class="fa-solid fa-x text-white"></i>
                             </button>
@@ -84,7 +84,12 @@
                     .then(result => {
                         const shoppingCartFlower = document.getElementById('shopping-cart-flower');
                         if (window.location.pathname.startsWith('/ShoppingCart')) {
-                            shoppingCartFlower.innerHTML = result.FlowerList;
+                            shoppingCartFlower.innerHTML = result.ShoppingCartFlower;
+                        }
+
+                        const checkoutFlower = document.getElementById('table-flower-checkout');
+                        if (window.location.pathname.startsWith('/Checkout')) {
+                            checkoutFlower.innerHTML = result.CheckoutFlower;
                         }
 
                         const cartContainer = document.getElementById('table-list-cart-flower');
@@ -95,29 +100,42 @@
                             new bootstrap.Dropdown(header);
                         });
 
-                        const toastContainer = document.querySelector(".toast-container");
-                        const newToast = document.createElement("div");
-                        newToast.classList.add("toast", "align-items-center", "liveToast");
-                        newToast.innerHTML = `
-                    <div class="d-flex bg-success">
-                        <div class="toast-body">Xóa khỏi giỏ hàng thành công</div>
-                        <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                `;
-                        toastContainer.appendChild(newToast);
-                        const bootstrapToast = new bootstrap.Toast(newToast);
-                        bootstrapToast.show();
-                        newToast.addEventListener("hidden.bs.toast", function () {
-                            toastContainer.removeChild(newToast);
-                        });
+                        toastMessage("Xóa khỏi giỏ hàng thành công");
+
+                        if (result.CartCount == 0 && result.CheckBuyFlower == false) {
+                            window.location.href = '@Url.Action("Index", "ShoppingCart")';
+                        }
 
                         document.querySelectorAll('.cart-count').forEach(e => {
                             e.textContent = result.CartCount;
                         });
-                    })
+                    });
+
             }
         });
     });
 
+    function toastMessage(message) {
+        const toastContainer = document.getElementById("toastContainer");
+        const newToast = document.createElement("div");
+        newToast.innerHTML = `<div class="d-flex bg-success mb-3 pe-5">
+                            <div class="toast-body">
+                              ${message}
+                            </div>
+                          </div>`;
+
+        if (toastContainer.firstChild) {
+            toastContainer.insertBefore(newToast, toastContainer.firstChild);
+        } else {
+            toastContainer.appendChild(newToast);
+        }
+
+        const bootstrapToast = new bootstrap.Toast(newToast);
+        bootstrapToast.show();
+
+        newToast.addEventListener("hidden.bs.toast", function () {
+            toastContainer.removeChild(newToast);
+        });
+    }
 </script>
 

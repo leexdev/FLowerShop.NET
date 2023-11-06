@@ -60,15 +60,13 @@ namespace FLowerShop.Controllers
             var totalPriceGrand = CalculateTotalPrice(shoppingCarts);
             int newCartCount = shoppingCarts.Count;
 
-            var cartFlowerModel = new CartFlowerModel
+            return Json(new
             {
-                FlowerCarts = shoppingCarts
-            };
-
-            var cartFlowerPartial = this.RenderToString("_CartFlower", cartFlowerModel);
-            var flowerListPartial = this.RenderToString("_ShoppingCartFLower", shoppingCarts);
-
-            return Json(new { CartFlower = cartFlowerPartial, FlowerList = flowerListPartial, PriceGrand = totalPriceGrand, CartCount = newCartCount });
+                CartFlower = RenderToString("_CartFlower", new CartFlowerModel { FlowerCarts = shoppingCarts }),
+                FlowerList = RenderToString("_ShoppingCartFLower", shoppingCarts),
+                PriceGrand = totalPriceGrand,
+                CartCount = newCartCount
+            });
         }
 
         [HttpPost]
@@ -84,7 +82,14 @@ namespace FLowerShop.Controllers
                 UpdateShoppingCartData(shoppingCarts);
                 int totalPriceGrand = CalculateTotalPrice(shoppingCarts);
                 int newCartCount = shoppingCarts.Count;
-                return Json(new { TotalPrice = shoppingCart.SUBTOTAL, Quantity = shoppingCart.QUANTITY, CartCount = newCartCount, TotalPriceGrand = totalPriceGrand });
+
+                return Json(new
+                {
+                    TotalPrice = shoppingCart.SUBTOTAL,
+                    Quantity = shoppingCart.QUANTITY,
+                    CartCount = newCartCount,
+                    TotalPriceGrand = totalPriceGrand
+                });
             }
 
             return Json(new { error = "Không thể cập nhật giỏ hàng" });
@@ -100,17 +105,38 @@ namespace FLowerShop.Controllers
             {
                 shoppingCarts.Remove(shoppingCart);
                 UpdateShoppingCartData(shoppingCarts);
-                int newCartCount = shoppingCarts.Count;
+
+                if (shoppingCarts.Count == 0)
+                {
+                    Session["ShoppingCart"] = null;
+                }
 
                 var cartFlowerModel = new CartFlowerModel
                 {
                     FlowerCarts = shoppingCarts
                 };
 
-                var cartFlowerPartial = this.RenderToString("_CartFlower", cartFlowerModel);
-                var flowerListPartial = this.RenderToString("_ShoppingCartFLower", shoppingCarts);
+                var checkoutFlowers = new List<SHOPPINGCART>();
+                var checkBuyFlower = false;
 
-                return Json(new { CartFlower = cartFlowerPartial, FlowerList = flowerListPartial, CartCount = newCartCount });
+                if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
+                {
+                    checkoutFlowers.Add(Session["BuyFlower"] as SHOPPINGCART);
+                    checkBuyFlower = true;
+                }
+                else
+                {
+                    checkoutFlowers = new List<SHOPPINGCART>(shoppingCarts);
+                }
+
+                return Json(new
+                {
+                    CartFlower = RenderToString("_CartFlower", cartFlowerModel),
+                    ShoppingCartFlower = RenderToString("_ShoppingCartFLower", shoppingCarts),
+                    CheckoutFlower = RenderToString("_CheckoutFlower", checkoutFlowers),
+                    CartCount = shoppingCarts.Count,
+                    CheckBuyFlower = checkBuyFlower
+                });
             }
 
             return Json(new { error = "Mục không tồn tại trong giỏ hàng" });
@@ -128,6 +154,16 @@ namespace FLowerShop.Controllers
                 return Session["ShoppingCart"] as List<SHOPPINGCART>;
             }
             return new List<SHOPPINGCART>();
+        }
+
+        private void UpdateShoppingCartData(List<SHOPPINGCART> shoppingCarts)
+        {
+            Session["ShoppingCart"] = shoppingCarts;
+        }
+
+        private int CalculateTotalPrice(List<SHOPPINGCART> shoppingCarts)
+        {
+            return shoppingCarts.Sum(cart => (int)cart.SUBTOTAL);
         }
 
         private SHOPPINGCART CreateBuyFlower(int? quantity, Guid? flowerId)
@@ -167,16 +203,5 @@ namespace FLowerShop.Controllers
         {
             return db.FLOWERS.FirstOrDefault(f => f.FLOWER_ID == flowerId);
         }
-
-        private void UpdateShoppingCartData(List<SHOPPINGCART> shoppingCarts)
-        {
-            Session["ShoppingCart"] = shoppingCarts;
-        }
-
-        private int CalculateTotalPrice(List<SHOPPINGCART> shoppingCarts)
-        {
-            return shoppingCarts.Sum(cart => (int)cart.SUBTOTAL);
-        }
     }
-
 }

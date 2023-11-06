@@ -299,8 +299,9 @@
     <Content Include="Views\Checkout\Index.cshtml" />
     <Content Include="Views\Flowers\Search.cshtml" />
     <Content Include="Views\Shared\_NotFound.cshtml" />
-    <Content Include="Views\Shared\_FLowerList.cshtml" />
+    <Content Include="Views\Shared\_FLowerSearch.cshtml" />
     <Content Include="Views\Shared\_ShoppingCartFLower.cshtml" />
+    <Content Include="Views\Shared\_CheckoutFlower.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
