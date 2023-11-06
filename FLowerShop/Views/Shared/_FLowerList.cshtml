@@ -39,32 +39,26 @@
 </div>
     
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
         var filterSelect = document.getElementById("filterSelect");
         var searchQuery = document.getElementById("search-flower-name");
         var flowerTypeId = document.getElementById("flowerTypeId");
         var filteredProducts = document.getElementById("filteredProducts");
 
-        filterSelect.addEventListener("change", function () {
-            var selectedValue = filterSelect.value;
-            var searchQueryValue = searchQuery.value;
-            var flowerTypeIdValue = flowerTypeId.value
+        filterSelect.addEventListener("change", () => {
+            const selectedValue = filterSelect.value;
+            const searchQueryValue = searchQuery.value;
+            const flowerTypeIdValue = flowerTypeId.value;
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", `/Flowers/FilterFLowers?filterValue=${selectedValue}&searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}`, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    filteredProducts.innerHTML = xhr.responseText;
-                    console.log(xhr.responseText);
-                } else {
-                    console.error("Lỗi:", xhr.statusText);
-                }
-            };
-
-            xhr.send();
+            fetch(`/FLowers/FilterFLowers?filterValue=${selectedValue}&searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}`, {
+                method: 'GET',
+            })
+                .then(response => response.text())
+                .then(result => {
+                    filteredProducts.innerHTML = result;
+                });
         });
     });
+
 
 </script>

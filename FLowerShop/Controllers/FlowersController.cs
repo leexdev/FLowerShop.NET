@@ -91,33 +91,31 @@ namespace FLowerShop.Controllers
                     && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId))
                 .ToList();
 
-            List<FLOWER> sortedFlowers;
-
-            switch (filterValue)
-            {
-                case 1:
-                    sortedFlowers = filteredFlowers.OrderBy(flower => flower.FLOWER_NAME).ToList();
-                    break;
-                case 2:
-                    sortedFlowers = filteredFlowers.OrderByDescending(flower => flower.FLOWER_NAME).ToList();
-                    break;
-                case 3:
-                    sortedFlowers = filteredFlowers.OrderBy(flower => flower.NEW_PRICE).ToList();
-                    break;
-                case 4:
-                    sortedFlowers = filteredFlowers.OrderByDescending(flower => flower.NEW_PRICE).ToList();
-                    break;
-                default:
-                    sortedFlowers = filteredFlowers;
-                    break;
-            }
+            filteredFlowers = SortFlowers(filteredFlowers, filterValue);
 
             var searchModel = new SearchModel
             {
-                Flowers = sortedFlowers.ToList()
+                Flowers = filteredFlowers.ToList()
             };
 
             return PartialView("_FlowerList", searchModel);
+        }
+
+        private List<FLOWER> SortFlowers(List<FLOWER> flowers, int filterValue)
+        {
+            switch (filterValue)
+            {
+                case 1:
+                    return flowers.OrderBy(flower => flower.FLOWER_NAME).ToList();
+                case 2:
+                    return flowers.OrderByDescending(flower => flower.FLOWER_NAME).ToList();
+                case 3:
+                    return flowers.OrderBy(flower => flower.NEW_PRICE).ToList();
+                case 4:
+                    return flowers.OrderByDescending(flower => flower.NEW_PRICE).ToList();
+                default:
+                    return flowers;
+            }
         }
     }
 

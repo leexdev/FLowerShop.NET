@@ -1,4 +1,6 @@
-﻿@{ 
+﻿@using System.Linq;
+
+@{
     var cartFlowerModel = new FLowerShop.Models.CartFlowerModel();
     cartFlowerModel.FlowerCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
     int cartcount = 0;
@@ -160,11 +162,18 @@
                             <h6 class="text-uppercase fw-bold">Sản phẩm</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto"
                                 style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            @foreach(var item in ViewBag.lstFLowerTypes)
-                            {
-                                <p>
-                                    <a href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" class="text-white link-select">@item.FLOWERTYPE_NAME</a>
-                                </p>
+                            @{
+                                var flowerTypes = ViewBag.lstFLowerTypes as List<FLowerShop.Context.FLOWERTYPE>;
+                                if (flowerTypes != null)
+                                {
+                                    var top5FlowerTypes = flowerTypes.Take(5);
+                                    foreach (var item in top5FlowerTypes)
+                                    {
+                                        <p>
+                                            <a href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" class="text-white link-select">@item.FLOWERTYPE_NAME</a>
+                                        </p>
+                                    }
+                                }
                             }
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -236,17 +245,17 @@
     </div>
 
     <div class="toast-container position-fixed top-0 end-0 p-3" style="margin-top: 90px; z-index: 1">
-        <div class="toast liveToast align-items-center">
-            <div class="d-flex bg-success">
-                <div class="toast-body" id="toast-message"></div>
-                <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+        <div class="liveToast align-items-center ">
+
         </div>
     </div>
+
+    <button id="showToastButton" class="btn btn-primary">Hiện Toast</button>
 
     <script src="~/Content/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/Content/assets/js/main.js"></script>
 
+    
 </body>
 
 </html>

@@ -95,7 +95,6 @@
             if (event.target.classList.contains('btn-delete-product') || event.target.parentElement.classList.contains('btn-delete-product')) {
                 const button = event.target.classList.contains('btn-delete-product') ? event.target : event.target.parentElement;
                 const shoppingCartId = button.getAttribute('data-shoppingCartId');
-                const flowerId = button.getAttribute('data-flower-id');
 
                 fetch('/ShoppingCart/DeleteFlower', {
                     method: 'POST',
@@ -117,7 +116,22 @@
                             new bootstrap.Dropdown(header);
                         });
 
-                        document.getElementById('toast-message').textContent = 'Xóa khỏi giỏ hàng thành công';
+                        // Tạo và hiển thị toast
+                        const toastContainer = document.querySelector(".toast-container");
+                        const newToast = document.createElement("div");
+                        newToast.classList.add("toast", "align-items-center", "liveToast");
+                        newToast.innerHTML = `
+                <div class="d-flex bg-success">
+                    <div class="toast-body">Xóa khỏi giỏ hàng thành công</div>
+                    <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+                        toastContainer.appendChild(newToast);
+                        const bootstrapToast = new bootstrap.Toast(newToast);
+                        bootstrapToast.show();
+                        newToast.addEventListener("hidden.bs.toast", function () {
+                            toastContainer.removeChild(newToast);
+                        });
 
                         document.querySelectorAll('.cart-count').forEach(e => {
                             e.textContent = result.CartCount;
@@ -125,5 +139,6 @@
                     });
             }
         });
+
     });
 </script>

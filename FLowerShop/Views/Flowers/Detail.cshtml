@@ -196,16 +196,32 @@
                         e.textContent = formatPrice(result.PriceGrand);
                     });
 
-                    document.querySelectorAll('.cart-count').forEach(e => {
-                        e.textContent = result.CartCount;
-                    });
+                    
 
                     var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
                     dropdownHeaders.forEach(header => {
                         new bootstrap.Dropdown(header);
                     });
 
-                    document.getElementById('toast-message').textContent = 'Thêm vào giỏ hàng thành công';
+                    const toastContainer = document.querySelector(".toast-container");
+                    const newToast = document.createElement("div");
+                    newToast.classList.add("toast", "align-items-center", "liveToast");
+                    newToast.innerHTML = `
+                    <div class="d-flex bg-success">
+                        <div class="toast-body">Thêm vào giỏ hàng thành công</div>
+                        <button type="button" class="btn-close me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                `;
+                    toastContainer.appendChild(newToast);
+                    const bootstrapToast = new bootstrap.Toast(newToast);
+                    bootstrapToast.show();
+                    newToast.addEventListener("hidden.bs.toast", function () {
+                        toastContainer.removeChild(newToast);
+                    });
+
+                    document.querySelectorAll('.cart-count').forEach(e => {
+                        e.textContent = result.CartCount;
+                    });
                 });
         });
     });
