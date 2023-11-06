@@ -34,6 +34,7 @@ namespace FLowerShop.Controllers
             if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
             {
                 flower.Add(Session["BuyFlower"] as SHOPPINGCART);
+                Session.Remove("BuyFlower");
             }
             else if (Session["ShoppingCart"] != null && Session["ShoppingCart"] is List<SHOPPINGCART>)
             {

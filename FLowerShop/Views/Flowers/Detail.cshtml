@@ -93,8 +93,8 @@
                     @Html.Hidden("flowerId", Model.Flower.FLOWER_ID)
                     <input id="input-quantity" class="form-control shadow-none me-2" type="number" name="quantity" value="1" min="1" max="99">
                     <button type="submit" class="btn btn-warning text-white fw-bold px-4 py-2 me-2">Mua ngay</button>
+                    <button type="button" class="btn btn-success text-white fw-bold px-4 py-2 me-2 liveToastBtn" id="btn-add-to-cart" data-flowerId="@Model.Flower.FLOWER_ID">Thêm vào giỏ hàng</button>
                 }
-                <button type="submit" class="btn btn-success text-white fw-bold px-4 py-2 me-2 liveToastBtn" id="btn-add-to-cart" data-flowerId="@Model.Flower.FLOWER_ID">Thêm vào giỏ hàng</button>
 
                 <div class="pdp-featured py-4 row">
                     <div class="pdp-featured-item col-12 col-xl-6 row mb-3 mb-xl-0">

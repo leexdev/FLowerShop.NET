@@ -25,10 +25,17 @@ namespace FLowerShop.Controllers
 
         public ActionResult Index()
         {
-            HomeModel objHomeModel = new HomeModel();
-            objHomeModel.FlowerTypes = db.FLOWERTYPES.ToList();
-            objHomeModel.Flowers = db.FLOWERS.ToList();
+            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
+            var flowers = db.FLOWERS.AsNoTracking().ToList();
+
+            var objHomeModel = new HomeModel
+            {
+                FlowerTypes = flowerTypes,
+                Flowers = flowers
+            };
+
             return View(objHomeModel);
         }
     }
+
 }

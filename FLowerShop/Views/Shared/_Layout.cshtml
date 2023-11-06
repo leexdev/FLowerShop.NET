@@ -49,19 +49,19 @@
                                     <span class="d-none d-md-inline">Tài khoản</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="@Url.Action("Register", "Account")">Đăng ký</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Login", "Account")">Đăng nhập</a></li>
+                                    <li><a class="dropdown-item link-select" href="@Url.Action("Register", "Account")" data-url="@Url.Action("Register", "Account")">Đăng ký</a></li>
+                                    <li><a class="dropdown-item link-select" href="@Url.Action("Login", "Account")" data-url="@Url.Action("Login", "Account")">Đăng nhập</a></li>
                                 </ul>
                             </div>
                         </li>
                         <li class="list-inline-item">
-                            <a href="@Url.Action("Index", "ShoppingCart")" title="Giỏ hàng">
+                            <a class="link-select" href="@Url.Action("Index", "ShoppingCart")" title="Giỏ hàng" data-url="@Url.Action("Index", "ShoppingCart")">
                                 <i class="fa-solid fa-bag-shopping"></i>
                                 <span class="d-none d-md-inline">Giỏ hàng</span>
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="@Url.Action("Index", "Checkout")" title="Thanh toán">
+                            <a class="link-select" href="@Url.Action("Index", "Checkout")" title="Thanh toán" data-url="@Url.Action("Index", "Checkout")">
                                 <i class="fa-solid fa-share"></i>
                                 <span class="d-none d-md-inline">Thanh toán</span>
                             </a>
@@ -72,7 +72,7 @@
         </nav>
         <nav id="main-header" class="navbar d-block navbar-expand-lg bg-body-tertiary p-0">
             <div class="container">
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                <a class="navbar-brand link-select" href="@Url.Action("Index", "Home")" data-url="@Url.Action("Index", "Home")">
                     <img src="~/Content/assets/img/logo-bloom.png" alt="Logo" style="width: 120px">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
@@ -82,10 +82,10 @@
                 <div class="collapse navbar-collapse" id="navbarMenu">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                            <a class="nav-link link-select" href="@Url.Action("Index", "Home")" data-url="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Giới thiệu</a>
+                            <a class="nav-link link-select" href="#">Giới thiệu</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -95,15 +95,15 @@
                             <ul class="dropdown-menu bg-milk">
                                 @foreach (var item in ViewBag.lstFLowerTypes)
                                 {
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })">@item.FLOWERTYPE_NAME</a></li>
+                                    <li><a class="dropdown-item link-select" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" data-url="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })">@item.FLOWERTYPE_NAME</a></li>
                                 }
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Tin tức</a>
+                            <a class="nav-link link-select" href="#">Tin tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Liên hệ</a>
+                            <a class="nav-link link-select" href="#">Liên hệ</a>
                         </li>
                     </ul>
                     <div class="d-flex mb-3 mb-md-0">
@@ -113,13 +113,13 @@
                                    placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
                             <button class="bg-pink text-white rounded-1 p-2 d-flex align-items-center border-0">Tìm kiếm</button>
                         }
-                        <a class="d-md-none p-2 position-relative" href="@Url.Action("Index", "ShoppingCart")">
+                        <a class="d-md-none d-block p-2 position-relative link-select" href="@Url.Action("Index", "ShoppingCart")" data-url="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
                                 @cartcount
                             </span>
                         </a>
-                        <button type="button" class="btn shadow-none position-relative ms-3 bg-milk d-block">
+                        <button type="button" class="btn d-none d-md-block shadow-none position-relative ms-3 bg-milk d-block">
                             <div class="dropdown">
                                 <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
@@ -160,31 +160,25 @@
                             <h6 class="text-uppercase fw-bold">Sản phẩm</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto"
                                 style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                <a href="#!" class="text-white">Hoa tang lễ</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Hoa cưới</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Hoa chúc mừng</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Hoa khai trương</a>
-                            </p>
+                            @foreach(var item in ViewBag.lstFLowerTypes)
+                            {
+                                <p>
+                                    <a href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" class="text-white link-select">@item.FLOWERTYPE_NAME</a>
+                                </p>
+                            }
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 class="text-uppercase fw-bold">Giới thiệu</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto"
                                 style="width: 60px; background-color: #7c4dff; height: 2px" />
                             <p>
-                                <a href="#!" class="text-white">Giới thiệu</a>
+                                <a href="#!" class="text-white link-select">Giới thiệu</a>
                             </p>
                             <p>
-                                <a href="#!" class="text-white">Tin tức</a>
+                                <a href="#!" class="text-white link-select">Tin tức</a>
                             </p>
                             <p>
-                                <a href="#!" class="text-white">Hỗ trợ</a>
+                                <a href="#!" class="text-white link-select">Hỗ trợ</a>
                             </p>
                         </div>
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
@@ -252,6 +246,9 @@
 
     <script src="~/Content/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/Content/assets/js/main.js"></script>
+
 </body>
 
 </html>
+
+

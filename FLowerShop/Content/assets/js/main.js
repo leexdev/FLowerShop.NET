@@ -27,3 +27,17 @@ window.onpopstate = function (event) {
 };
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    var navLinks = document.querySelectorAll("a.link-select");
+    navLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            var currentUrl = window.location.pathname;
+            var targetUrl = this.getAttribute("data-url");
+            if (currentUrl !== targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    });
+});
