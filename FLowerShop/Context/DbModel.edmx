@@ -100,6 +100,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
           <Property Name="USER_EMAIL" Type="nvarchar2" MaxLength="255" />
           <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
           <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+          <Property Name="USER_PHONE" Type="nvarchar2" MaxLength="15" />
         </EntityType>
         <Association Name="SYS_C008643">
           <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="1" />
@@ -347,6 +348,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <Property Name="DELETED" Type="Boolean" />
           <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008654" FromRole="USERS" ToRole="ORDERS" />
           <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008648" FromRole="USERS" ToRole="SHOPPINGCART" />
+          <Property Name="USER_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ORDERDETAIL">
           <Key>
@@ -587,6 +589,7 @@ FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
           <EntitySetMapping Name="USERS">
             <EntityTypeMapping TypeName="Model.USER">
               <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
                 <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />

@@ -25,7 +25,6 @@ namespace FLowerShop.Controllers
 
         public ActionResult Index()
         {
-            Session.Remove("BuyFlower");
             var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
             var flowers = db.FLOWERS.AsNoTracking().ToList();
 

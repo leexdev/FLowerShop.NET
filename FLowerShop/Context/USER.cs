@@ -24,12 +24,24 @@ namespace FLowerShop.Context
         }
     
         public System.Guid USER_ID { get; set; }
+
+        [DisplayName("Họ tên:")]
+        [MinLength(1, ErrorMessage = "Tên phải có từ 1 đến 32 ký tự!")]
+        [MaxLength(32, ErrorMessage = "Tên phải có từ 1 đến 32 ký tự!")]
+        [Required(ErrorMessage = "Vui lòng nhập tên")]
         public string USER_NAME { get; set; }
-        [DisplayName("Địa chỉ Email")]
-        [EmailAddress]
+
+        [DisplayName("Địa chỉ Email:")]
+        [EmailAddress(ErrorMessage = "Địa chỉ Email không hợp lệ!")]
         public string USER_EMAIL { get; set; }
         public string USER_PASSWORD { get; set; }
         public Nullable<bool> DELETED { get; set; }
+
+        [DisplayName("Điện thoại:")]
+        [MinLength(10, ErrorMessage = "Điện thoại phải có từ 10 đến 12 số!")]
+        [MaxLength(12, ErrorMessage = "Điện thoại phải có từ 10 đến 12 số!")]
+        [Required(ErrorMessage = "Vui lòng nhập SĐT")]
+        public string USER_PHONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }

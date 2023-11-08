@@ -95,6 +95,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     <Property Name="USER_EMAIL" Type="nvarchar2" MaxLength="255" />
     <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="USER_PHONE" Type="nvarchar2" MaxLength="15" />
   </EntityType>
   <Association Name="SYS_C008643">
     <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="1" />

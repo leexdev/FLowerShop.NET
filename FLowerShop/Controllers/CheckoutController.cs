@@ -1,4 +1,5 @@
 ﻿using FLowerShop.Context;
+using FLowerShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,13 +35,26 @@ namespace FLowerShop.Controllers
             if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
             {
                 flower.Add(Session["BuyFlower"] as SHOPPINGCART);
-
+                Session["FlowerCheckout"] = Session["BuyFlower"];
+                Session.Remove("BuyFlower");
             }
             else if (Session["ShoppingCart"] != null && Session["ShoppingCart"] is List<SHOPPINGCART>)
             {
                 flower = Session["ShoppingCart"] as List<SHOPPINGCART>;
             }
-            return View(flower);
+
+            var orderModel = new OrderModel
+            {
+                ShoppingCarts = flower,
+            };
+
+            return View(orderModel);
+        }
+
+        [HttpPost]
+        public ActionResult AddOrder(ORDER order)
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }

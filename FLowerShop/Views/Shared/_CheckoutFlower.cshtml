@@ -1,4 +1,4 @@
-﻿@{
+﻿@{ 
     int totalPrice = 0;
 }
 
@@ -10,22 +10,29 @@
             <th scope="col">Hình ảnh</th>
             <th scope="col">Tên sản phẩm</th>
             <th scope="col">Tổng cộng</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Count > 0)
+        @if (Model.ShoppingCarts != null && Model.ShoppingCarts.Count > 0)
         {
-            foreach (var item in Model)
+            foreach (var item in Model.ShoppingCarts)
             {
                 <tr class="text-center align-middle">
                     <td>
                         <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
                             <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
-                                 alt="@item.FLOWER.FLOWER_IMAGE" />
+                                    alt="@item.FLOWER.FLOWER_IMAGE" />
                         </a>
                     </td>
                     <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
                     <td class="text-end">@item.SUBTOTAL.ToString("N0")VNĐ</td>
+                    <td>
+                        <button type="button" class="btn bg-pink shadow-none btn-delete-product"
+                                data-shoppingCartId="@item.CART_ID">
+                            <i class="fa-solid fa-x text-white"></i>
+                        </button>
+                    </td>
                 </tr>
                 {
                     totalPrice += (int)item.SUBTOTAL;
@@ -34,11 +41,48 @@
         }
         <tr class="text-end">
             <td colspan="2" class="fw-bold">Phí vận chuyển</td>
-            <td>30,000VND</td>
+            <td colspan="2">30,000VND</td>
         </tr>
         <tr class="text-end">
             <td colspan="2" class="fw-bold">Tổng cộng</td>
-            <td>@totalPrice.ToString("N0")VNĐ</td>
+            <td colspan="2">@totalPrice.ToString("N0")VNĐ</td>
         </tr>
     </tbody>
 </table>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('table-flower-checkout').addEventListener('click', (event) => {
+            if (event.target.classList.contains('btn-delete-product') || event.target.parentElement.classList.contains('btn-delete-product')) {
+                const button = event.target.classList.contains('btn-delete-product') ? event.target : event.target.parentElement;
+                const shoppingCartId = button.getAttribute('data-shoppingCartId');
+
+                fetch('/ShoppingCart/DeleteFlower', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ shoppingCartId }),
+                })
+                    .then(response => response.json())
+                    .then(result => {
+
+                        const checkoutFlower = document.getElementById('table-flower-checkout');
+                        checkoutFlower.innerHTML = result.CheckoutFlower;
+
+                        toastMessage("Xóa khỏi giỏ hàng thành công");
+
+                        if (result.CartCount == 0) {
+                            window.location.href = '@Url.Action("Index", "ShoppingCart")';
+                        }
+
+                        document.querySelectorAll('.cart-count').forEach(e => {
+                            e.textContent = result.CartCount;
+                        });
+                    });
+
+            }
+        });
+    });
+</script>

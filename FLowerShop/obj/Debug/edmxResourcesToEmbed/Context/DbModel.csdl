@@ -96,6 +96,7 @@
     <Property Name="DELETED" Type="Boolean" />
     <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008654" FromRole="USERS" ToRole="ORDERS" />
     <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008648" FromRole="USERS" ToRole="SHOPPINGCART" />
+    <Property Name="USER_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="ORDERDETAIL">
     <Key>

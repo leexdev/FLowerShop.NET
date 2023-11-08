@@ -5,10 +5,10 @@
 }
 <ul class="dropdown-menu dropdown-menu-end p-0">
     <table class="table mb-0 table-cart-flower" style="min-width: 500px;">
-        @if (Model.FlowerCarts != null && Model.FlowerCarts.Count > 0)
+        @if (Model.ShoppingCarts != null && Model.ShoppingCarts.Count > 0)
         {
             <tbody>
-                @foreach (var item in Model.FlowerCarts)
+                @foreach (var item in Model.ShoppingCarts)
                 {
                     <tr>
                         <td class="text-center">
@@ -30,7 +30,7 @@
                         </td>
                         <td class="text-start align-middle">
                             <button class="btn bg-pink shadow-none btn-delete-product"
-                                    data-shoppingCartId="@item.CART_ID" data-flower-id="@item.FLOWER_ID">
+                                    data-shoppingCartId="@item.CART_ID">
                                 <i class="fa-solid fa-x text-white"></i>
                             </button>
                         </td>
@@ -87,13 +87,8 @@
                             shoppingCartFlower.innerHTML = result.ShoppingCartFlower;
                         }
 
-                        const checkoutFlower = document.getElementById('table-flower-checkout');
-                        if (window.location.pathname.startsWith('/Checkout')) {
-                            checkoutFlower.innerHTML = result.CheckoutFlower;
-                        }
-
-                        const cartContainer = document.getElementById('table-list-cart-flower');
-                        cartContainer.innerHTML = result.CartFlower;
+                        const cartFlower = document.getElementById('table-list-cart-flower');
+                        cartFlower.innerHTML = result.CartFlower;
 
                         var dropdownHeaders = document.querySelectorAll('[data-bs-toggle="dropdown"]');
                         dropdownHeaders.forEach(header => {
@@ -102,7 +97,7 @@
 
                         toastMessage("Xóa khỏi giỏ hàng thành công");
 
-                        if (result.CartCount == 0 && result.CheckBuyFlower == false) {
+                        if (result.CartCount == 0) {
                             window.location.href = '@Url.Action("Index", "ShoppingCart")';
                         }
 

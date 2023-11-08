@@ -213,6 +213,7 @@
     <Compile Include="Models\CartFlowerModel.cs" />
     <Compile Include="Models\DetailModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\NoCacheAttribute.cs" />

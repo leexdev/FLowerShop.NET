@@ -27,6 +27,7 @@ namespace FLowerShop.Controllers
 
         public ActionResult Index()
         {
+            Session.Remove("BuyFlower");
             var shoppingCarts = GetShoppingCarts();
             return View(shoppingCarts);
         }
@@ -62,7 +63,7 @@ namespace FLowerShop.Controllers
 
             return Json(new
             {
-                CartFlower = RenderToString("_CartFlower", new CartFlowerModel { FlowerCarts = shoppingCarts }),
+                CartFlower = RenderToString("_CartFlower", new CartFlowerModel { ShoppingCarts = shoppingCarts }),
                 FlowerList = RenderToString("_ShoppingCartFLower", shoppingCarts),
                 PriceGrand = totalPriceGrand,
                 CartCount = newCartCount
@@ -113,29 +114,20 @@ namespace FLowerShop.Controllers
 
                 var cartFlowerModel = new CartFlowerModel
                 {
-                    FlowerCarts = shoppingCarts
+                    ShoppingCarts = shoppingCarts
                 };
 
-                var checkoutFlowers = new List<SHOPPINGCART>();
-                var checkBuyFlower = false;
-
-                if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
+                var checkoutFlowerModel = new OrderModel
                 {
-                    checkoutFlowers.Add(Session["BuyFlower"] as SHOPPINGCART);
-                    checkBuyFlower = true;
-                }
-                else
-                {
-                    checkoutFlowers = new List<SHOPPINGCART>(shoppingCarts);
-                }
+                    ShoppingCarts = shoppingCarts
+                };
 
                 return Json(new
                 {
                     CartFlower = RenderToString("_CartFlower", cartFlowerModel),
                     ShoppingCartFlower = RenderToString("_ShoppingCartFLower", shoppingCarts),
-                    CheckoutFlower = RenderToString("_CheckoutFlower", checkoutFlowers),
-                    CartCount = shoppingCarts.Count,
-                    CheckBuyFlower = checkBuyFlower
+                    CheckoutFlower = RenderToString("_CheckoutFlower", checkoutFlowerModel),
+                    CartCount = shoppingCarts.Count
                 });
             }
 

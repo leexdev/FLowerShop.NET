@@ -30,7 +30,7 @@ namespace FLowerShop.Controllers
 
         public ActionResult Detail(Guid? flowerId)
         {
-            if (flowerId == null)
+            if (flowerId == null)   
             {
                 return View("_NotFound");
             }

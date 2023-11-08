@@ -1,8 +1,6 @@
-﻿@using System.Linq;
-
-@{
+﻿@{
     var cartFlowerModel = new FLowerShop.Models.CartFlowerModel();
-    cartFlowerModel.FlowerCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
+    cartFlowerModel.ShoppingCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
     int cartcount = 0;
 
     if (Session["ShoppingCart"] != null)
@@ -115,15 +113,15 @@
                                    placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
                             <button class="bg-pink text-white rounded-1 p-2 d-flex align-items-center border-0">Tìm kiếm</button>
                         }
-                        <a class="d-md-none d-block p-2 position-relative link-select" href="@Url.Action("Index", "ShoppingCart")" data-url="@Url.Action("Index", "ShoppingCart")">
+                        <a class="p-2 position-relative shopping-cart link-select d-block d-md-none" data-url="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
                                 @cartcount
                             </span>
                         </a>
-                        <button type="button" class="btn d-none d-md-block shadow-none position-relative ms-3 bg-milk d-block">
+                        <button type="button" class="btn shadow-none shopping-cart position-relative ms-3 bg-milk d-none d-md-block">
                             <div class="dropdown">
-                                <a class="dropdown-header" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="dropdown-header" role="button" @(Request.Path == Url.Action("Index", "Checkout") ? $"href={Url.Action("Index", "ShoppingCart")}" : "data-bs-toggle=dropdown") aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
                                         @cartcount
@@ -251,8 +249,6 @@
 
     <script src="~/Content/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/Content/assets/js/main.js"></script>
-
-
 </body>
 
 </html>

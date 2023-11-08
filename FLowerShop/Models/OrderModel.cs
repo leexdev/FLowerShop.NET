@@ -6,8 +6,11 @@ using System.Web;
 
 namespace FLowerShop.Models
 {
-    public class CartFlowerModel
+    public class OrderModel
     {
         public List<SHOPPINGCART> ShoppingCarts { get; set; }
+        public List<ORDERDETAIL> OrderDetails { get; set; }
+        public USER User { get; set; }
+        public ORDER Order { get; set; }
     }
 }

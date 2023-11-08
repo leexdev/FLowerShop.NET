@@ -20,6 +20,7 @@ CREATE TABLE Users (
     user_name NVARCHAR2(255),
     user_email NVARCHAR2(255),
     user_password NVARCHAR2(255),
+    user_phone nvarchar(15),
     Deleted NUMBER(1) DEFAULT 0
 );
 
@@ -51,7 +52,7 @@ CREATE TABLE Orders (
     discount_id RAW(16) DEFAULT SYS_GUID() REFERENCES DiscountCodes(discount_id) NOT NULL,
     message_to_recipient NVARCHAR2(1000), -- L?i nh?n cho ng??i nh?n
     message_to_shop NVARCHAR2(1000), -- L?i nh?n cho shop
-    hide_sender_info NUMBER(1), -- ?n thông tin ng??i g?i (0 ho?c 1)
+    hide_sender_info NUMBER(1) default 0, -- ?n thông tin ng??i g?i (0 ho?c 1)
     payment_method NVARCHAR2(50), -- Hình th?c thanh toán
     is_paid NUMBER(1), -- Tr?ng thái ?ã thanh toán (0 ho?c 1)
     recipient_name NVARCHAR2(255),
