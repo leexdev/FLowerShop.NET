@@ -27,7 +27,6 @@ namespace FLowerShop.Controllers
 
         public ActionResult Index()
         {
-            Session.Remove("BuyFlower");
             var shoppingCarts = GetShoppingCarts();
             return View(shoppingCarts);
         }

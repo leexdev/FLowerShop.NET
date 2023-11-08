@@ -1,17 +1,19 @@
-# Hướng dẫn sử dụng FLowerShop using ASP.NET MVC
+# How to Use FlowerShop ASP.NET MVC using Oracle Database
 
-## Cài đặt
+## Installation
 - [Oracle Database 21c Express Edition](https://www.oracle.com/database/technologies/xe-downloads.html)
 - [SQL Developer](https://www.oracle.com/database/sqldeveloper/technologies/download/)
 - [ODT for Visual Studio](https://marketplace.visualstudio.com/items?itemName=OracleCorporation.OracleDeveloperToolsForVisualStudio2022)
 
-## Bước 1
-- Vào SQL Developer tạo User mới với Username: C##ADMIN và Password: 123 và phân quyền: connect, dba, resource cho user đó.
-- Tạo New Connection với tên là: FLowerShopDB.
+## Step 1
+- Open SQL Developer and create a new user with Username: C##ADMIN and Password: 123, granting connect, dba, and resource privileges to this user.
+- Create a New Connection with the name: FLowerShopDB and log in using the Username and Password you just created.
+- Execute the FlowerShopDB.sql file using SQL Developer.
 
-## Bước 2
-- Mở chương trình bằng Visual Studio.
-- Mở file Web.config sửa TNS_ADMIN đúng với đường dẫn máy của mình. VD: TNS_ADMIN=C:\Users\LE\Oracle\network\admin.
+## Step 2
+- Open the program in Visual Studio.
+- Open the Web.config file and update the TNS_ADMIN to match your machine's path. For example, TNS_ADMIN=C:\Users\LE\Oracle\network\admin.
+- Open the source code in Visual Studio by navigating to Context -> DbModel -> Right-click -> Update Model from Database.
 
-## Bước 3
-- Chạy chương trình.
+## Step 3
+- Run the program.

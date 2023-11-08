@@ -5,12 +5,10 @@
 }
 
 <div class="container mt-3 mt-md-5">
-    <form>
+    @using (Html.BeginForm("Index", "Checkout", FormMethod.Post, new {id = "form-checkout"}))
+    {
         <div class="row">
-            @using (Html.BeginForm("AddOrder", "Checkout", FormMethod.Post))
-            {
             <div class="col-12 col-md-7">
-
                 <h5 class="m-0">Thông tin người gửi</h5>
                 <hr class="mt-2 mb-3" />
                 <div class="row mb-3">
@@ -89,9 +87,10 @@
                     @Html.LabelFor(model => model.Order.MESSAGE_TO_SHOP, new { @class = "fw-bold fs-6" })
                     @Html.TextAreaFor(model => model.Order.MESSAGE_TO_SHOP, new { @class = "form-control", rows = "2" })
                 </div>
-                @Html.Label("Ẩn thông tin", new { @class = "fw-bold fs-6" })
+                @Html.LabelFor(model => model.Order.HIDE_SENDER_INFO, new { @class = "fw-bold fs-6" })
                 <div class="form-check mb-5">
-                    @Html.CheckBox("check-hide-sender", new { @class = "form-check-input", value = "1", @id = "check-hide-sender" })
+                    <input type="checkbox" class="form-check-input" id="check-hide-sender" name="Order.HIDE_SENDER_INFO" value="true" @(Model.Order.HIDE_SENDER_INFO == true ? "checked" : null)>
+                    <input type="hidden" name="Order.HIDE_SENDER_INFO" value="false">
                     @Html.Label("Giấu thông tin người gửi", new { @class = "form-check-label", @for = "check-hide-sender" })
                 </div>
             </div>
@@ -99,17 +98,16 @@
                 <div id="table-flower-checkout">
                     @Html.Partial("_CheckoutFlower")
                 </div>
-                <form>
+                <form id="form-coupon">
                     <div class="row">
                         <div class="col-12 col-md-3">
                             <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" name="coupon" placeholder="Mã giảm giá" id="input-coupon"
-                                   class="form-control" />
+                            <input type="text" name="coupon" placeholder="Mã giảm giá" class="form-control" />
                         </div>
                         <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
-                            <button type="submit" class="btn bg-pink text-white">
+                            <button type="submit" class="btn bg-pink text-white btn-select-coupon">
                                 Áp dụng
                             </button>
                         </div>
@@ -121,29 +119,28 @@
                         <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-wallet" />
                         <label class="form-check-label" for="pay-wallet">
                             <img class="img-fluid ms-1" src="~/Content/assets/img/cheque.png" alt="momo"
-                                 style="max-width: 48px; max-height: 48px" />
+                                    style="max-width: 48px; max-height: 48px" />
                             Ví điện tử
                             <img class="img-fluid" src="~/Content/assets/img/momo.png" alt="momo"
-                                 style="max-width: 48px; max-height: 48px" />
+                                    style="max-width: 48px; max-height: 48px" />
                         </label>
                     </div>
                     <div class="form-check d-flex">
                         <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-cod" checked />
                         <label class="form-check-label" for="pay-cod">
                             <img class="img-fluid ms-1" src="~/Content/assets/img/cod.png" alt="momo"
-                                 style="max-width: 48px; max-height: 48px" />
+                                    style="max-width: 48px; max-height: 48px" />
                             Thanh toán khi giao hàng
                         </label>
                     </div>
                 </form>
                 <hr>
                 <div class="col-auto float-end mb-3">
-                    <button type="submit" class="btn mb-3 bg-pink text-white">
+                    <button type="submit" id="btn-checkout-form" class="btn mb-3 bg-pink text-white">
                         Xác nhận đơn hàng
                     </button>
                 </div>
             </div>
-             }
         </div>
-    </form>
+    }
 </div>

@@ -33,6 +33,7 @@ namespace FLowerShop.Context
 
         [DisplayName("Địa chỉ Email:")]
         [EmailAddress(ErrorMessage = "Địa chỉ Email không hợp lệ!")]
+        [Required(ErrorMessage = "Vui lòng nhập Email")]
         public string USER_EMAIL { get; set; }
         public string USER_PASSWORD { get; set; }
         public Nullable<bool> DELETED { get; set; }

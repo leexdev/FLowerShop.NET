@@ -23,7 +23,6 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/assets/css/main.css">
-    <link rel="stylesheet" href="~/Content/assets/css/homepage.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -36,7 +35,7 @@
                 <div class="nav float-start">
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            HOTLINE: <a href="tel:1900633045">1900 797 797 </a> | <a href="tel:0865 160 360">0797 797 979</a>
+                            HOTLINE: <a href="tel:1900633045">1900 797 797 </a>
                         </li>
                     </ul>
                 </div>
@@ -95,7 +94,7 @@
                             <ul class="dropdown-menu bg-milk">
                                 @foreach (var item in ViewBag.lstFLowerTypes)
                                 {
-                                    <li><a class="dropdown-item link-select" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" data-url="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })">@item.FLOWERTYPE_NAME</a></li>
+                                    <li><a class="dropdown-item link-select" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" data-url="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID, flowertypeName = @item.FLOWERTYPE_NAME })">@item.FLOWERTYPE_NAME</a></li>
                                 }
                             </ul>
                         </li>
@@ -113,13 +112,13 @@
                                    placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style=" outline: none;">
                             <button class="bg-pink text-white rounded-1 p-2 d-flex align-items-center border-0">Tìm kiếm</button>
                         }
-                        <a class="p-2 position-relative shopping-cart link-select d-block d-md-none" data-url="@Url.Action("Index", "ShoppingCart")">
+                        <a class="p-2 position-relative shopping-cart link-select ms-3 d-block d-md-none" data-url="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
                                 @cartcount
                             </span>
                         </a>
-                        <button type="button" class="btn shadow-none shopping-cart position-relative ms-3 bg-milk d-none d-md-block">
+                        <button type="button" class="btn shadow-none shopping-cart position-relative bg-milk d-none d-md-block">
                             <div class="dropdown">
                                 <a class="dropdown-header" role="button" @(Request.Path == Url.Action("Index", "Checkout") ? $"href={Url.Action("Index", "ShoppingCart")}" : "data-bs-toggle=dropdown") aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>

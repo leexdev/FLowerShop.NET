@@ -78,10 +78,6 @@ body {
   transform: scale(1.22);
 }
 
-.item-product {
-  max-width: 271px;
-}
-
 .price-new {
   color: #f50101;
 }

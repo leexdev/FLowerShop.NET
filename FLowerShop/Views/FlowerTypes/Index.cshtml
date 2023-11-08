@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = ViewBag.FlowerTypeName;
+}
+
+<div class="container mt-3">
+    <h2 class="text-center">
+        <span class="category-title d-inline-block border-bottom">Hoa khai trương</span>
+    </h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="d-flex justify-content-end align-items-center mt-3">
+            <span class="me-2">Sắp xếp theo</span>
+            <div class="filter-flower">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Mặc định</option>
+                    <option value="1">Tên (A - Z)</option>
+                    <option value="2">Tên (Z - A)</option>
+                    <option value="3">Giá (Thấp > Cao)</option>
+                    <option value="4">Giá (Cao > Thấp)</option>
+                </select>
+            </div>
+        </div>
+        <div class="product-list mt-3">
+            <div id="discount-flower">
+                <div class="list-product row">
+                    @foreach(var item in Model)
+                    {
+                        <div class="item-product col-md-3 col-6 mb-4">
+                            <div class="image position-relative mb-3">
+                                <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                    <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                    @if (item.OLD_PRICE != null)
+                                    {
+                                        var oldPrice = item.OLD_PRICE;
+                                        var newPrice = item.NEW_PRICE;
+                                        var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                        <span class="percent-off-rounded">@discount.ToString("N0")%<br>GIẢM</span>
+                                    }
+                                </a>
+                            </div>
+                            <div class="content">
+                                <div class="description">
+                                    <div class="fw-bold text-center">
+                                        <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                    </div>
+                                    <div class="price text-center fw-bold p-2">
+                                        <span class="price-new">@item.NEW_PRICE.ToString("N0")VND</span>
+                                        @if (item.OLD_PRICE != null)
+                                        {
+                                            <span class="price-old">@item.OLD_PRICE.ToString("N0")VND</span>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    <nav class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    }
+    else
+    {
+        <p class="mt-3">Không có sản phẩm nào trong danh mục này.</p>
+    }
+</div>

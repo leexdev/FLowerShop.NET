@@ -12,5 +12,10 @@ namespace FLowerShop.Models
         public List<ORDERDETAIL> OrderDetails { get; set; }
         public USER User { get; set; }
         public ORDER Order { get; set; }
+
+        public OrderModel()
+        {
+            Order = new ORDER(); // Khởi tạo đối tượng Order trong hàm khởi tạo.
+        }
     }
 }

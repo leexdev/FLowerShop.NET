@@ -1,54 +1,62 @@
 ﻿@{ 
-    int totalPrice = 0;
+    int totalPrice = 30000;
 }
 
-<table class="table table-bordered">
-    <h5 class="m-0">Chi tiết đơn hàng</h5>
-    <hr class="mt-2 mb-3" />
-    <thead>
-        <tr class="text-center">
-            <th scope="col">Hình ảnh</th>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Tổng cộng</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.ShoppingCarts != null && Model.ShoppingCarts.Count > 0)
-        {
-            foreach (var item in Model.ShoppingCarts)
-            {
-                <tr class="text-center align-middle">
-                    <td>
-                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
-                            <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
-                                    alt="@item.FLOWER.FLOWER_IMAGE" />
-                        </a>
-                    </td>
-                    <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
-                    <td class="text-end">@item.SUBTOTAL.ToString("N0")VNĐ</td>
-                    <td>
-                        <button type="button" class="btn bg-pink shadow-none btn-delete-product"
-                                data-shoppingCartId="@item.CART_ID">
-                            <i class="fa-solid fa-x text-white"></i>
-                        </button>
-                    </td>
-                </tr>
+<div class="overflow-auto">
+    <table class="table table-bordered">
+        <h5 class="m-0">Chi tiết đơn hàng</h5>
+        <hr class="mt-2 mb-3" />
+        <thead>
+            <tr class="text-center">
+                <th scope="col">Hình ảnh</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Tổng cộng</th>
+                @if (Session["BuyFlower"] == null)
                 {
-                    totalPrice += (int)item.SUBTOTAL;
+                    <th scope="col"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ShoppingCarts != null && Model.ShoppingCarts.Count > 0)
+            {
+                foreach (var item in Model.ShoppingCarts)
+                {
+                    <tr class="text-center align-middle">
+                        <td>
+                            <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE"
+                                     alt="@item.FLOWER.FLOWER_IMAGE" />
+                            </a>
+                        </td>
+                        <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
+                        <td class="text-end">@item.SUBTOTAL.ToString("N0")VNĐ</td>
+                        @if (Session["BuyFlower"] == null)
+                        {
+                            <td>
+                                <button type="button" class="btn bg-pink shadow-none btn-delete-product"
+                                        data-shoppingCartId="@item.CART_ID">
+                                    <i class="fa-solid fa-x text-white"></i>
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                    {
+                        totalPrice += (int)item.SUBTOTAL;
+                    }
                 }
             }
-        }
-        <tr class="text-end">
-            <td colspan="2" class="fw-bold">Phí vận chuyển</td>
-            <td colspan="2">30,000VND</td>
-        </tr>
-        <tr class="text-end">
-            <td colspan="2" class="fw-bold">Tổng cộng</td>
-            <td colspan="2">@totalPrice.ToString("N0")VNĐ</td>
-        </tr>
-    </tbody>
-</table>
+            <tr class="text-end">
+                <td colspan="2" class="fw-bold">Phí vận chuyển</td>
+                <td colspan="2">30,000VND</td>
+            </tr>
+            <tr class="text-end">
+                <td colspan="2" class="fw-bold">Tổng cộng</td>
+                <td colspan="2">@totalPrice.ToString("N0")VNĐ</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 <script>
@@ -71,6 +79,8 @@
                         const checkoutFlower = document.getElementById('table-flower-checkout');
                         checkoutFlower.innerHTML = result.CheckoutFlower;
 
+                        console.log(result.CheckoutFlower)
+
                         toastMessage("Xóa khỏi giỏ hàng thành công");
 
                         if (result.CartCount == 0) {
@@ -85,4 +95,19 @@
             }
         });
     });
+    window.addEventListener('unload', function () {
+        let formSubmitted = false;
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btn-checkout-form').addEventListener('click', function () {
+                formSubmitted = true;
+            });
+        });
+        if (!formSubmitted) {
+            fetch('/Checkout/ExitCheckout', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+        }
+    });
+
 </script>

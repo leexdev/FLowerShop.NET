@@ -23,6 +23,35 @@ namespace FLowerShop.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        [HttpPost]
+        public ActionResult ExitCheckout()
+        {
+            Session.Remove("BuyFlower");
+            return Json(new { success = true });
+        }
+
+        public ActionResult ExitCheckoutTest()
+        {
+            Session.Remove("BuyFlower");
+            return Json(new { success = true });
+        }
+
+        private List<SHOPPINGCART> GetShoppingCartItems()
+        {
+            var shoppingCartItems = new List<SHOPPINGCART>();
+
+            if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
+            {
+                shoppingCartItems.Add(Session["BuyFlower"] as SHOPPINGCART);
+            }
+            else if (Session["ShoppingCart"] != null && Session["ShoppingCart"] is List<SHOPPINGCART>)
+            {
+                shoppingCartItems = Session["ShoppingCart"] as List<SHOPPINGCART>;
+            }
+
+            return shoppingCartItems;
+        }
+
         public ActionResult Index()
         {
             if (Session["BuyFlower"] == null && Session["ShoppingCart"] == null)
@@ -30,18 +59,7 @@ namespace FLowerShop.Controllers
                 return RedirectToAction("Index", "ShoppingCart");
             }
 
-            var flower = new List<SHOPPINGCART>();
-
-            if (Session["BuyFlower"] != null && Session["BuyFlower"] is SHOPPINGCART)
-            {
-                flower.Add(Session["BuyFlower"] as SHOPPINGCART);
-                Session["FlowerCheckout"] = Session["BuyFlower"];
-                Session.Remove("BuyFlower");
-            }
-            else if (Session["ShoppingCart"] != null && Session["ShoppingCart"] is List<SHOPPINGCART>)
-            {
-                flower = Session["ShoppingCart"] as List<SHOPPINGCART>;
-            }
+            var flower = GetShoppingCartItems();
 
             var orderModel = new OrderModel
             {
@@ -52,9 +70,21 @@ namespace FLowerShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrder(ORDER order)
+        public ActionResult Index(ORDER order, ORDERDETAIL orderDetail, USER user, string coupon)
         {
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var flower = GetShoppingCartItems();
+
+            var orderModel = new OrderModel
+            {
+                ShoppingCarts = flower,
+            };
+
+            return View(orderModel);
         }
     }
 }
