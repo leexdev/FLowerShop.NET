@@ -15,11 +15,11 @@ namespace FLowerShop.Controllers
 {
     public class FlowersController : BaseController
     {
-        private readonly FlowerShopEntities db;
+        private readonly FLowerShopEntities db;
 
         public FlowersController()
         {
-            db = new FlowerShopEntities();
+            db = new FLowerShopEntities();
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

@@ -95,19 +95,4 @@
             }
         });
     });
-    window.addEventListener('unload', function () {
-        let formSubmitted = false;
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('btn-checkout-form').addEventListener('click', function () {
-                formSubmitted = true;
-            });
-        });
-        if (!formSubmitted) {
-            fetch('/Checkout/ExitCheckout', {
-                method: 'POST',
-                credentials: 'same-origin'
-            });
-        }
-    });
-
 </script>

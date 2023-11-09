@@ -15,7 +15,7 @@ namespace FLowerShop.Models
 
         public OrderModel()
         {
-            Order = new ORDER(); // Khởi tạo đối tượng Order trong hàm khởi tạo.
+            Order = new ORDER();
         }
     }
 }

@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Details";
     <link href="~/Content/assets/css/product.css" rel="stylesheet" type="text/css" />
+    string discountType;
+    string miniumOrder;
 }
 
 <div class="container my-5">
@@ -65,7 +67,26 @@
                                             Giảm @(item.DISCOUNT_TYPE == true ? item.DISCOUNT_VALUE + "%" : (item.DISCOUNT_VALUE / 1000) + "K")
                                         </div>
                                         <div class="cp-description text-dark fs-6">
-                                            @item.DESCRIPTION
+                                            @{ 
+                                                if(item.DISCOUNT_TYPE == true)
+                                                {
+                                                    discountType = "%";
+                                                }
+                                                else
+                                                {
+                                                    discountType = "VNĐ";
+                                                }
+
+                                                if (item.MINIMUM_ORDER_AMOUNT == 0)
+                                                {
+                                                    miniumOrder = "cho tất cả đơn hàng";
+                                                }
+                                                else
+                                                {
+                                                    miniumOrder = "cho đơn hàng từ " + item.MINIMUM_ORDER_AMOUNT.ToString() + "VNĐ";
+                                                }
+                                            }
+                                            Giảm @item.DISCOUNT_VALUE@discountType @miniumOrder (@item.DESCRIPTION)
                                         </div>
                                     </div>
                                 </li>

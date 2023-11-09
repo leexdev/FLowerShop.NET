@@ -4,22 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bdcc9c1364074d83b3cafbce17a6c050" Name="Diagram1" ZoomLevel="86">
+      <Diagram DiagramId="d4e7f4db3e2e4b8582d3dbf2022d79be" Name="Diagram1">
         <EntityTypeShape EntityType="Model.DISCOUNTCODE" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.FLOWER" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.FLOWERTYPE" Width="1.5" PointX="3.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ORDERHISTORY" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ORDER" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ORDERDETAIL" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ORDERHISTORY" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ORDER" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.SHOPPINGCART" Width="1.5" PointX="6" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.USER" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ORDERDETAIL" Width="1.5" PointX="8.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.USER" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <AssociationConnector Association="Model.SYS_C008655" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008643" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008649" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008659" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C008658" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008662" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008654" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.SYS_C008658" ManuallyRouted="false" />
         <AssociationConnector Association="Model.SYS_C008648" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

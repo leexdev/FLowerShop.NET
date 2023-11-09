@@ -27,8 +27,8 @@ namespace FLowerShop.Context
         public Nullable<decimal> MINIMUM_ORDER_AMOUNT { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
-        public string DESCRIPTION { get; set; }
         public Nullable<bool> DELETED { get; set; }
+        public string DESCRIPTION { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }

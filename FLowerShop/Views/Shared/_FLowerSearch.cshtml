@@ -53,12 +53,10 @@
             fetch(`/FLowers/FilterFLowers?filterValue=${selectedValue}&searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}`, {
                 method: 'GET',
             })
-                .then(response => response.text())
-                .then(result => {
-                    filteredProducts.innerHTML = result;
-                });
+            .then(response => response.text())
+            .then(result => {
+                filteredProducts.innerHTML = result;
+            });
         });
     });
-
-
 </script>

@@ -305,6 +305,7 @@
     <Content Include="Views\Shared\_ShoppingCartFLower.cshtml" />
     <Content Include="Views\Shared\_CheckoutFlower.cshtml" />
     <Content Include="Views\FlowerTypes\Index.cshtml" />
+    <Content Include="Views\Shared\OrderSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

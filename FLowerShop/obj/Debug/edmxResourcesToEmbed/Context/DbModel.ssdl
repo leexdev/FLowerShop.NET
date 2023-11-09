@@ -11,8 +11,8 @@
     <Property Name="MINIMUM_ORDER_AMOUNT" Type="number" Precision="38" Scale="0" />
     <Property Name="START_DATE" Type="date" />
     <Property Name="END_DATE" Type="date" />
-    <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
   </EntityType>
   <EntityType Name="FLOWERS">
     <Key>
@@ -35,18 +35,16 @@
     <Property Name="FLOWERTYPE_NAME" Type="nvarchar2" MaxLength="255" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="ORDERDETAILS">
     <Key>
-      <PropertyRef Name="ORDER_ID" />
-      <PropertyRef Name="FLOWER_ID" />
+      <PropertyRef Name="ORDERDETAIL_ID" />
     </Key>
-    <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
-    <Property Name="FLOWER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="ORDER_ID" Type="guid raw" />
+    <Property Name="FLOWER_ID" Type="guid raw" />
     <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
     <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="ORDERDETAIL_ID" Type="guid raw" Nullable="false" />
   </EntityType>
   <EntityType Name="ORDERHISTORY">
     <Key>
@@ -62,19 +60,21 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
       <PropertyRef Name="ORDER_ID" />
     </Key>
     <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
-    <Property Name="USER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="USER_ID" Type="guid raw" />
     <Property Name="ORDER_DATE" Type="date" />
     <Property Name="TOTAL_AMOUNT" Type="number" Precision="10" Scale="2" />
-    <Property Name="DISCOUNT_ID" Type="guid raw" Nullable="false" />
+    <Property Name="DISCOUNT_ID" Type="guid raw" />
     <Property Name="MESSAGE_TO_RECIPIENT" Type="nvarchar2" MaxLength="1000" />
     <Property Name="MESSAGE_TO_SHOP" Type="nvarchar2" MaxLength="1000" />
     <Property Name="HIDE_SENDER_INFO" Type="number" Precision="1" Scale="0" />
     <Property Name="PAYMENT_METHOD" Type="number" Precision="1" Scale="0" />
-    <Property Name="IS_PAID" Type="number" Precision="1" Scale="0" />
-    <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="32" />
     <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
     <Property Name="RECIPIENT_ADDRESS" Type="clob" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="SENDER_NAME" Type="varchar2" MaxLength="32" />
+    <Property Name="SENDER_PHONE" Type="varchar2" MaxLength="15" />
+    <Property Name="SENDER_EMAIL" Type="varchar2" MaxLength="255" />
   </EntityType>
   <EntityType Name="SHOPPINGCART">
     <Key>
@@ -134,7 +134,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008654">
-    <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+    <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="USERS">
@@ -146,7 +146,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008655">
-    <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="1" />
+    <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="0..1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DISCOUNTCODES">
@@ -158,7 +158,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008658">
-    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="0..1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ORDERS">
@@ -170,7 +170,7 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008659">
-    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="1" />
+    <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="FLOWERS">
@@ -197,19 +197,11 @@ warning 6002: The table/view 'C##ADMIN.ORDERDETAILS' does not have a primary key
     <EntitySet Name="DISCOUNTCODES" EntityType="Self.DISCOUNTCODES" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="FLOWERS" EntityType="Self.FLOWERS" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="FLOWERTYPES" EntityType="Self.FLOWERTYPES" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="ORDERDETAILS" EntityType="Self.ORDERDETAILS" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="ORDERHISTORY" EntityType="Self.ORDERHISTORY" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="SHOPPINGCART" EntityType="Self.SHOPPINGCART" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="USERS" EntityType="Self.USERS" Schema="C##ADMIN" store:Type="Tables" />
-    <EntitySet Name="ORDERDETAILS" EntityType="Self.ORDERDETAILS" store:Type="Tables" store:Schema="C##ADMIN">
-      <DefiningQuery>SELECT 
-"ORDERDETAILS"."ORDER_ID" AS "ORDER_ID", 
-"ORDERDETAILS"."FLOWER_ID" AS "FLOWER_ID", 
-"ORDERDETAILS"."QUANTITY" AS "QUANTITY", 
-"ORDERDETAILS"."SUBTOTAL" AS "SUBTOTAL", 
-"ORDERDETAILS"."DELETED" AS "DELETED"
-FROM "C##ADMIN"."ORDERDETAILS" "ORDERDETAILS"</DefiningQuery>
-    </EntitySet>
     <AssociationSet Name="SYS_C008643" Association="Self.SYS_C008643">
       <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
       <End Role="FLOWERS" EntitySet="FLOWERS" />

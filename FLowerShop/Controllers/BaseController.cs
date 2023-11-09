@@ -13,7 +13,7 @@ namespace FLowerShop.Controllers
     {
         protected void LoadCommonData()
         {
-            using (var db = new FlowerShopEntities())
+            using (var db = new FLowerShopEntities())
             {
                 ViewBag.lstFlowerTypes = db.FLOWERTYPES.ToList();
             }

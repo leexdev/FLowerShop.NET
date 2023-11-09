@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-3 mt-md-5">
-    @using (Html.BeginForm("Index", "Checkout", FormMethod.Post, new {id = "form-checkout"}))
+    @using (Html.BeginForm("Index", "Checkout", FormMethod.Post, new { id = "form-checkout" }))
     {
         <div class="row">
             <div class="col-12 col-md-7">
@@ -14,23 +14,23 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.User.USER_NAME, new { @class = "fw-bold fs-6 form-label" })
-                            @Html.TextBoxFor(model => model.User.USER_NAME, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.User.USER_NAME, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Order.SENDER_NAME, new { @class = "fw-bold fs-6 form-label" })
+                            @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Order.SENDER_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 mt-md-0">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.User.USER_PHONE, new { @class = "fw-bold fs-6 form-label" })
-                            @Html.TextBoxFor(model => model.User.USER_PHONE, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.User.USER_PHONE, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Order.SENDER_PHONE, new { @class = "fw-bold fs-6 form-label" })
+                            @Html.TextBoxFor(model => model.Order.SENDER_PHONE, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Order.SENDER_PHONE, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.User.USER_EMAIL, new { @class = "fw-bold fs-6 form-label" })
-                    @Html.TextBoxFor(model => model.User.USER_EMAIL, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.User.USER_EMAIL, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Order.SENDER_EMAIL, new { @class = "fw-bold fs-6 form-label" })
+                    @Html.TextBoxFor(model => model.Order.SENDER_EMAIL, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Order.SENDER_EMAIL, "", new { @class = "text-danger" })
                 </div>
                 <h5 class="m-0 mt-4">Thông tin người nhận</h5>
                 <hr class="mt-2 mb-3" />
@@ -89,7 +89,7 @@
                 </div>
                 @Html.LabelFor(model => model.Order.HIDE_SENDER_INFO, new { @class = "fw-bold fs-6" })
                 <div class="form-check mb-5">
-                    <input type="checkbox" class="form-check-input" id="check-hide-sender" name="Order.HIDE_SENDER_INFO" value="true" @(Model.Order.HIDE_SENDER_INFO == true ? "checked" : null)>
+                    <input type="checkbox" class="form-check-input" id="check-hide-sender" name="Order.HIDE_SENDER_INFO" value="true">
                     <input type="hidden" name="Order.HIDE_SENDER_INFO" value="false">
                     @Html.Label("Giấu thông tin người gửi", new { @class = "form-check-label", @for = "check-hide-sender" })
                 </div>
@@ -104,36 +104,35 @@
                             <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" name="coupon" placeholder="Mã giảm giá" class="form-control" />
+                            <input type="text" id="couponName" name="couponName" placeholder="Mã giảm giá" class="form-control" />
                         </div>
                         <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
-                            <button type="submit" class="btn bg-pink text-white btn-select-coupon">
+                            <button type="button" id="btn-add-coupon" class="btn bg-pink text-white btn-select-coupon">
                                 Áp dụng
                             </button>
                         </div>
                     </div>
                 </form>
-
-                <form id="form-payment-method" class="mt-4">
-                    <div class="form-check d-flex">
-                        <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-wallet" />
+                <div class="form-check mt-4">
+                    <div class="d-flex">
+                        <input class="form-check-input my-auto" type="radio" value="true" name="Order.PAYMENT_METHOD" id="pay-wallet" />
                         <label class="form-check-label" for="pay-wallet">
                             <img class="img-fluid ms-1" src="~/Content/assets/img/cheque.png" alt="momo"
-                                    style="max-width: 48px; max-height: 48px" />
+                                 style="max-width: 48px; max-height: 48px" />
                             Ví điện tử
                             <img class="img-fluid" src="~/Content/assets/img/momo.png" alt="momo"
-                                    style="max-width: 48px; max-height: 48px" />
+                                 style="max-width: 48px; max-height: 48px" />
                         </label>
                     </div>
-                    <div class="form-check d-flex">
-                        <input class="form-check-input my-auto" type="radio" name="flexRadioCheckout" id="pay-cod" checked />
+                    <div class="d-flex">
+                        <input class="form-check-input my-auto" type="radio" value="false" name="Order.PAYMENT_METHOD" id="pay-cod" checked />
                         <label class="form-check-label" for="pay-cod">
                             <img class="img-fluid ms-1" src="~/Content/assets/img/cod.png" alt="momo"
-                                    style="max-width: 48px; max-height: 48px" />
+                                 style="max-width: 48px; max-height: 48px" />
                             Thanh toán khi giao hàng
                         </label>
                     </div>
-                </form>
+                </div>
                 <hr>
                 <div class="col-auto float-end mb-3">
                     <button type="submit" id="btn-checkout-form" class="btn mb-3 bg-pink text-white">
@@ -144,3 +143,38 @@
         </div>
     }
 </div>
+
+<script>
+    let formSubmitted = false;
+
+    document.getElementById('btn-checkout-form').addEventListener('click', function () {
+        formSubmitted = true;
+    });
+
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            event.preventDefault();
+            event.returnValue = '';
+            
+            @if (Session["BuyFlower"] != null)
+            {
+                <text>
+                    fetch('/Checkout/ExitCheckout', {
+                        method: 'POST',
+                        credentials: 'same-origin'
+                    });
+                </text>
+            }
+        }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        var couponBtn = document.getElementById('btn-add-coupon');
+        couponBtn.addEventListener('click', () => {
+            var couponName = document.getElementById('couponName').value;
+            console.log(couponName);
+            //fetch('/Checkout/CheckCoupon')
+        });
+    });
+</script>

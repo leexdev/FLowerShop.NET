@@ -14,11 +14,12 @@ namespace FLowerShop.Context
     
     public partial class ORDERDETAIL
     {
-        public System.Guid ORDER_ID { get; set; }
-        public System.Guid FLOWER_ID { get; set; }
+        public Nullable<System.Guid> ORDER_ID { get; set; }
+        public Nullable<System.Guid> FLOWER_ID { get; set; }
         public Nullable<decimal> QUANTITY { get; set; }
         public Nullable<decimal> SUBTOTAL { get; set; }
         public Nullable<bool> DELETED { get; set; }
+        public System.Guid ORDERDETAIL_ID { get; set; }
     
         public virtual FLOWER FLOWER { get; set; }
         public virtual ORDER ORDER { get; set; }
