@@ -97,10 +97,6 @@
 
                         toastMessage("Xóa khỏi giỏ hàng thành công");
 
-                        if (result.CartCount == 0) {
-                            window.location.href = '@Url.Action("Index", "ShoppingCart")';
-                        }
-
                         document.querySelectorAll('.cart-count').forEach(e => {
                             e.textContent = result.CartCount;
                         });
@@ -124,7 +120,7 @@
         } else {
             toastContainer.appendChild(newToast);
         }
-
+    
         const bootstrapToast = new bootstrap.Toast(newToast);
         bootstrapToast.show();
 

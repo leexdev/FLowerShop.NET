@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="FLowerShopEntities">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="FlowerShopEntities">
     <EntitySetMapping Name="DISCOUNTCODES">
       <EntityTypeMapping TypeName="Model.DISCOUNTCODE">
         <MappingFragment StoreEntitySet="DISCOUNTCODES">
-          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
           <ScalarProperty Name="DISCOUNT_ID" ColumnName="DISCOUNT_ID" />
           <ScalarProperty Name="CODE" ColumnName="CODE" />
           <ScalarProperty Name="DISCOUNT_TYPE" ColumnName="DISCOUNT_TYPE" />
@@ -12,6 +11,8 @@
           <ScalarProperty Name="MINIMUM_ORDER_AMOUNT" ColumnName="MINIMUM_ORDER_AMOUNT" />
           <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
           <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+          <ScalarProperty Name="CODE_COUNT" ColumnName="CODE_COUNT" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
           <ScalarProperty Name="DELETED" ColumnName="DELETED" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -25,8 +26,8 @@
           <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
           <ScalarProperty Name="OLD_PRICE" ColumnName="OLD_PRICE" />
           <ScalarProperty Name="NEW_PRICE" ColumnName="NEW_PRICE" />
-          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
           <ScalarProperty Name="FLOWERTYPE_ID" ColumnName="FLOWERTYPE_ID" />
+          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -42,12 +43,12 @@
     <EntitySetMapping Name="ORDERDETAILS">
       <EntityTypeMapping TypeName="Model.ORDERDETAIL">
         <MappingFragment StoreEntitySet="ORDERDETAILS">
+          <ScalarProperty Name="ORDERDETAIL_ID" ColumnName="ORDERDETAIL_ID" />
           <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
           <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
           <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
           <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
           <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-          <ScalarProperty Name="ORDERDETAIL_ID" ColumnName="ORDERDETAIL_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -73,24 +74,35 @@
           <ScalarProperty Name="MESSAGE_TO_SHOP" ColumnName="MESSAGE_TO_SHOP" />
           <ScalarProperty Name="HIDE_SENDER_INFO" ColumnName="HIDE_SENDER_INFO" />
           <ScalarProperty Name="PAYMENT_METHOD" ColumnName="PAYMENT_METHOD" />
+          <ScalarProperty Name="SENDER_NAME" ColumnName="SENDER_NAME" />
+          <ScalarProperty Name="SENDER_PHONE" ColumnName="SENDER_PHONE" />
+          <ScalarProperty Name="SENDER_EMAIL" ColumnName="SENDER_EMAIL" />
           <ScalarProperty Name="RECIPIENT_NAME" ColumnName="RECIPIENT_NAME" />
           <ScalarProperty Name="RECIPIENT_PHONE" ColumnName="RECIPIENT_PHONE" />
           <ScalarProperty Name="RECIPIENT_ADDRESS" ColumnName="RECIPIENT_ADDRESS" />
           <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-          <ScalarProperty Name="SENDER_NAME" ColumnName="SENDER_NAME" />
-          <ScalarProperty Name="SENDER_PHONE" ColumnName="SENDER_PHONE" />
-          <ScalarProperty Name="SENDER_EMAIL" ColumnName="SENDER_EMAIL" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="SHOPPINGCARTs">
       <EntityTypeMapping TypeName="Model.SHOPPINGCART">
         <MappingFragment StoreEntitySet="SHOPPINGCART">
+          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
           <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
           <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
           <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
           <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
-          <ScalarProperty Name="CART_ID" ColumnName="CART_ID" />
+          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USERDISCOUNTs">
+      <EntityTypeMapping TypeName="Model.USERDISCOUNT">
+        <MappingFragment StoreEntitySet="USERDISCOUNT">
+          <ScalarProperty Name="USERDISCOUNT_ID" ColumnName="USERDISCOUNT_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="DISCOUNT_ID" ColumnName="DISCOUNT_ID" />
+          <ScalarProperty Name="DELETED" ColumnName="DELETED" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -100,9 +112,9 @@
           <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
           <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
           <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />
+          <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
           <ScalarProperty Name="USER_PASSWORD" ColumnName="USER_PASSWORD" />
           <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-          <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -11,8 +11,9 @@
     <Property Name="MINIMUM_ORDER_AMOUNT" Type="number" Precision="38" Scale="0" />
     <Property Name="START_DATE" Type="date" />
     <Property Name="END_DATE" Type="date" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="CODE_COUNT" Type="number" Precision="38" Scale="0" />
     <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="255" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="FLOWERS">
     <Key>
@@ -24,8 +25,8 @@
     <Property Name="DESCRIPTION" Type="clob" />
     <Property Name="OLD_PRICE" Type="number" Precision="38" Scale="0" />
     <Property Name="NEW_PRICE" Type="number" Precision="38" Scale="0" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
-    <Property Name="FLOWERTYPE_ID" Type="guid raw" Nullable="false" />
+    <Property Name="FLOWERTYPE_ID" Type="guid raw" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="FLOWERTYPES">
     <Key>
@@ -33,18 +34,18 @@
     </Key>
     <Property Name="FLOWERTYPE_ID" Type="guid raw" Nullable="false" />
     <Property Name="FLOWERTYPE_NAME" Type="nvarchar2" MaxLength="255" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="ORDERDETAILS">
     <Key>
       <PropertyRef Name="ORDERDETAIL_ID" />
     </Key>
+    <Property Name="ORDERDETAIL_ID" Type="guid raw" Nullable="false" />
     <Property Name="ORDER_ID" Type="guid raw" />
     <Property Name="FLOWER_ID" Type="guid raw" />
     <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
     <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
-    <Property Name="ORDERDETAIL_ID" Type="guid raw" Nullable="false" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="ORDERHISTORY">
     <Key>
@@ -62,29 +63,39 @@
     <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
     <Property Name="USER_ID" Type="guid raw" />
     <Property Name="ORDER_DATE" Type="date" />
-    <Property Name="TOTAL_AMOUNT" Type="number" Precision="10" Scale="2" />
+    <Property Name="TOTAL_AMOUNT" Type="number" Precision="38" Scale="0" />
     <Property Name="DISCOUNT_ID" Type="guid raw" />
     <Property Name="MESSAGE_TO_RECIPIENT" Type="nvarchar2" MaxLength="1000" />
     <Property Name="MESSAGE_TO_SHOP" Type="nvarchar2" MaxLength="1000" />
     <Property Name="HIDE_SENDER_INFO" Type="number" Precision="1" Scale="0" />
     <Property Name="PAYMENT_METHOD" Type="number" Precision="1" Scale="0" />
-    <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="32" />
+    <Property Name="SENDER_NAME" Type="nvarchar2" MaxLength="255" />
+    <Property Name="SENDER_PHONE" Type="nvarchar2" MaxLength="15" />
+    <Property Name="SENDER_EMAIL" Type="nvarchar2" MaxLength="255" />
+    <Property Name="RECIPIENT_NAME" Type="nvarchar2" MaxLength="255" />
     <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
     <Property Name="RECIPIENT_ADDRESS" Type="clob" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
-    <Property Name="SENDER_NAME" Type="varchar2" MaxLength="32" />
-    <Property Name="SENDER_PHONE" Type="varchar2" MaxLength="15" />
-    <Property Name="SENDER_EMAIL" Type="varchar2" MaxLength="255" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="SHOPPINGCART">
     <Key>
       <PropertyRef Name="CART_ID" />
     </Key>
+    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
     <Property Name="USER_ID" Type="guid raw" />
     <Property Name="FLOWER_ID" Type="guid raw" />
     <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" />
     <Property Name="SUBTOTAL" Type="number" Precision="38" Scale="0" />
-    <Property Name="CART_ID" Type="guid raw" Nullable="false" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USERDISCOUNT">
+    <Key>
+      <PropertyRef Name="USERDISCOUNT_ID" />
+    </Key>
+    <Property Name="USERDISCOUNT_ID" Type="guid raw" Nullable="false" />
+    <Property Name="USER_ID" Type="guid raw" />
+    <Property Name="DISCOUNT_ID" Type="guid raw" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="USERS">
     <Key>
@@ -93,12 +104,12 @@
     <Property Name="USER_ID" Type="guid raw" Nullable="false" />
     <Property Name="USER_NAME" Type="nvarchar2" MaxLength="255" />
     <Property Name="USER_EMAIL" Type="nvarchar2" MaxLength="255" />
-    <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
-    <Property Name="DELETED" Type="number" Precision="1" Scale="0" />
     <Property Name="USER_PHONE" Type="nvarchar2" MaxLength="15" />
+    <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
+    <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
   </EntityType>
-  <Association Name="SYS_C008643">
-    <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="1" />
+  <Association Name="SYS_C008736">
+    <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="0..1" />
     <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="FLOWERTYPES">
@@ -109,7 +120,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008648">
+  <Association Name="SYS_C008741">
     <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
     <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
     <ReferentialConstraint>
@@ -121,7 +132,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008649">
+  <Association Name="SYS_C008742">
     <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
     <End Role="SHOPPINGCART" Type="Self.SHOPPINGCART" Multiplicity="*" />
     <ReferentialConstraint>
@@ -133,7 +144,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008654">
+  <Association Name="SYS_C008747">
     <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -145,7 +156,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008655">
+  <Association Name="SYS_C008748">
     <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="0..1" />
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -157,7 +168,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008658">
+  <Association Name="SYS_C008751">
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="0..1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -169,7 +180,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008659">
+  <Association Name="SYS_C008752">
     <End Role="FLOWERS" Type="Self.FLOWERS" Multiplicity="0..1" />
     <End Role="ORDERDETAILS" Type="Self.ORDERDETAILS" Multiplicity="*" />
     <ReferentialConstraint>
@@ -181,7 +192,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SYS_C008662">
+  <Association Name="SYS_C008755">
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
     <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
     <ReferentialConstraint>
@@ -193,6 +204,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="SYS_C008758">
+    <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+    <End Role="USERDISCOUNT" Type="Self.USERDISCOUNT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USERS">
+        <PropertyRef Name="USER_ID" />
+      </Principal>
+      <Dependent Role="USERDISCOUNT">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SYS_C008759">
+    <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODES" Multiplicity="0..1" />
+    <End Role="USERDISCOUNT" Type="Self.USERDISCOUNT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DISCOUNTCODES">
+        <PropertyRef Name="DISCOUNT_ID" />
+      </Principal>
+      <Dependent Role="USERDISCOUNT">
+        <PropertyRef Name="DISCOUNT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="DISCOUNTCODES" EntityType="Self.DISCOUNTCODES" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="FLOWERS" EntityType="Self.FLOWERS" Schema="C##ADMIN" store:Type="Tables" />
@@ -201,38 +236,47 @@
     <EntitySet Name="ORDERHISTORY" EntityType="Self.ORDERHISTORY" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="SHOPPINGCART" EntityType="Self.SHOPPINGCART" Schema="C##ADMIN" store:Type="Tables" />
+    <EntitySet Name="USERDISCOUNT" EntityType="Self.USERDISCOUNT" Schema="C##ADMIN" store:Type="Tables" />
     <EntitySet Name="USERS" EntityType="Self.USERS" Schema="C##ADMIN" store:Type="Tables" />
-    <AssociationSet Name="SYS_C008643" Association="Self.SYS_C008643">
+    <AssociationSet Name="SYS_C008736" Association="Self.SYS_C008736">
       <End Role="FLOWERTYPES" EntitySet="FLOWERTYPES" />
       <End Role="FLOWERS" EntitySet="FLOWERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008648" Association="Self.SYS_C008648">
+    <AssociationSet Name="SYS_C008741" Association="Self.SYS_C008741">
       <End Role="USERS" EntitySet="USERS" />
       <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008649" Association="Self.SYS_C008649">
+    <AssociationSet Name="SYS_C008742" Association="Self.SYS_C008742">
       <End Role="FLOWERS" EntitySet="FLOWERS" />
       <End Role="SHOPPINGCART" EntitySet="SHOPPINGCART" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008654" Association="Self.SYS_C008654">
+    <AssociationSet Name="SYS_C008747" Association="Self.SYS_C008747">
       <End Role="USERS" EntitySet="USERS" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008655" Association="Self.SYS_C008655">
+    <AssociationSet Name="SYS_C008748" Association="Self.SYS_C008748">
       <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008658" Association="Self.SYS_C008658">
+    <AssociationSet Name="SYS_C008751" Association="Self.SYS_C008751">
       <End Role="ORDERS" EntitySet="ORDERS" />
       <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008659" Association="Self.SYS_C008659">
+    <AssociationSet Name="SYS_C008752" Association="Self.SYS_C008752">
       <End Role="FLOWERS" EntitySet="FLOWERS" />
       <End Role="ORDERDETAILS" EntitySet="ORDERDETAILS" />
     </AssociationSet>
-    <AssociationSet Name="SYS_C008662" Association="Self.SYS_C008662">
+    <AssociationSet Name="SYS_C008755" Association="Self.SYS_C008755">
       <End Role="ORDERS" EntitySet="ORDERS" />
       <End Role="ORDERHISTORY" EntitySet="ORDERHISTORY" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008758" Association="Self.SYS_C008758">
+      <End Role="USERS" EntitySet="USERS" />
+      <End Role="USERDISCOUNT" EntitySet="USERDISCOUNT" />
+    </AssociationSet>
+    <AssociationSet Name="SYS_C008759" Association="Self.SYS_C008759">
+      <End Role="DISCOUNTCODES" EntitySet="DISCOUNTCODES" />
+      <End Role="USERDISCOUNT" EntitySet="USERDISCOUNT" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -19,18 +19,21 @@ namespace FLowerShop.Context
         {
             this.ORDERS = new HashSet<ORDER>();
             this.SHOPPINGCARTs = new HashSet<SHOPPINGCART>();
+            this.USERDISCOUNTs = new HashSet<USERDISCOUNT>();
         }
     
         public System.Guid USER_ID { get; set; }
         public string USER_NAME { get; set; }
         public string USER_EMAIL { get; set; }
-        public string USER_PASSWORD { get; set; }
-        public Nullable<bool> DELETED { get; set; }
         public string USER_PHONE { get; set; }
+        public string USER_PASSWORD { get; set; }
+        public bool DELETED { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SHOPPINGCART> SHOPPINGCARTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<USERDISCOUNT> USERDISCOUNTs { get; set; }
     }
 }

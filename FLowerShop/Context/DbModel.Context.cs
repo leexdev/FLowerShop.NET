@@ -13,10 +13,10 @@ namespace FLowerShop.Context
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FLowerShopEntities : DbContext
+    public partial class FlowerShopEntities : DbContext
     {
-        public FLowerShopEntities()
-            : base("name=FLowerShopEntities")
+        public FlowerShopEntities()
+            : base("name=FlowerShopEntities")
         {
         }
     
@@ -32,6 +32,7 @@ namespace FLowerShop.Context
         public virtual DbSet<ORDERHISTORY> ORDERHISTORies { get; set; }
         public virtual DbSet<ORDER> ORDERS { get; set; }
         public virtual DbSet<SHOPPINGCART> SHOPPINGCARTs { get; set; }
+        public virtual DbSet<USERDISCOUNT> USERDISCOUNTs { get; set; }
         public virtual DbSet<USER> USERS { get; set; }
     }
 }

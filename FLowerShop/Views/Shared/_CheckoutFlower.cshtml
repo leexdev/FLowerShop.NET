@@ -3,7 +3,7 @@
 }
 
 <div class="overflow-auto">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="table-flower-checkout">
         <h5 class="m-0">Chi tiết đơn hàng</h5>
         <hr class="mt-2 mb-3" />
         <thead>
@@ -11,10 +11,6 @@
                 <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Tổng cộng</th>
-                @if (Session["BuyFlower"] == null)
-                {
-                    <th scope="col"></th>
-                }
             </tr>
         </thead>
         <tbody>
@@ -31,15 +27,6 @@
                         </td>
                         <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
                         <td class="text-end">@item.SUBTOTAL.ToString("N0")VNĐ</td>
-                        @if (Session["BuyFlower"] == null)
-                        {
-                            <td>
-                                <button type="button" class="btn bg-pink shadow-none btn-delete-product"
-                                        data-shoppingCartId="@item.CART_ID">
-                                    <i class="fa-solid fa-x text-white"></i>
-                                </button>
-                            </td>
-                        }
                     </tr>
                     {
                         totalPrice += (int)item.SUBTOTAL;
@@ -52,47 +39,8 @@
             </tr>
             <tr class="text-end">
                 <td colspan="2" class="fw-bold">Tổng cộng</td>
-                <td colspan="2">@totalPrice.ToString("N0")VNĐ</td>
+                <td colspan="2" id="total-price-checkout">@totalPrice.ToString("N0")VNĐ</td>
             </tr>
         </tbody>
     </table>
 </div>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('table-flower-checkout').addEventListener('click', (event) => {
-            if (event.target.classList.contains('btn-delete-product') || event.target.parentElement.classList.contains('btn-delete-product')) {
-                const button = event.target.classList.contains('btn-delete-product') ? event.target : event.target.parentElement;
-                const shoppingCartId = button.getAttribute('data-shoppingCartId');
-
-                fetch('/ShoppingCart/DeleteFlower', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ shoppingCartId }),
-                })
-                    .then(response => response.json())
-                    .then(result => {
-
-                        const checkoutFlower = document.getElementById('table-flower-checkout');
-                        checkoutFlower.innerHTML = result.CheckoutFlower;
-
-                        console.log(result.CheckoutFlower)
-
-                        toastMessage("Xóa khỏi giỏ hàng thành công");
-
-                        if (result.CartCount == 0) {
-                            window.location.href = '@Url.Action("Index", "ShoppingCart")';
-                        }
-
-                        document.querySelectorAll('.cart-count').forEach(e => {
-                            e.textContent = result.CartCount;
-                        });
-                    });
-
-            }
-        });
-    });
-</script>

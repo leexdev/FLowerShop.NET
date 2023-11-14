@@ -95,7 +95,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-5">
-                <div id="table-flower-checkout">
+                <div id="list-flower-checkout">
                     @Html.Partial("_CheckoutFlower")
                 </div>
                 <form id="form-coupon">
@@ -111,6 +111,7 @@
                                 Áp dụng
                             </button>
                         </div>
+                        <label class="mt-2" id="coupon-alert"></label>
                     </div>
                 </form>
                 <div class="form-check mt-4">
@@ -152,29 +153,69 @@
     });
 
     window.addEventListener('beforeunload', function (event) {
+        event.preventDefault();
         if (!formSubmitted) {
-            event.preventDefault();
-            event.returnValue = '';
-            
-            @if (Session["BuyFlower"] != null)
-            {
-                <text>
-                    fetch('/Checkout/ExitCheckout', {
-                        method: 'POST',
-                        credentials: 'same-origin'
-                    });
-                </text>
+            if ('@Session["BuyFlower"]' !== null) {
+                fetch('/Checkout/ExitCheckout', {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                });
             }
         }
     });
 
-
     document.addEventListener('DOMContentLoaded', () => {
-        var couponBtn = document.getElementById('btn-add-coupon');
+        let couponBtn = document.getElementById('btn-add-coupon');
         couponBtn.addEventListener('click', () => {
-            var couponName = document.getElementById('couponName').value;
-            console.log(couponName);
-            //fetch('/Checkout/CheckCoupon')
+            let couponName = document.getElementById('couponName').value;
+            fetch('/Checkout/CheckCoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ couponName }),
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.TotalPriceGrand != null) {
+                        document.getElementById('total-price-checkout').innerText = formatPrice(result.TotalPriceGrand);
+                    }
+                    let couponAlert = document.getElementById('coupon-alert');
+
+                    let table = document.getElementById('table-flower-checkout');
+                    let rowToRemove = document.getElementById('coupon-row');
+
+                    if (rowToRemove && rowToRemove.parentNode) {
+                        rowToRemove.parentNode.removeChild(rowToRemove);
+                    }
+
+                    if (result.CouponSuccess) {
+                        couponAlert.innerText = result.CouponSuccess;
+                        couponAlert.className = '';
+                        couponAlert.classList.add("mt-2", "text-success")
+
+                        var discountRow = table.insertRow(table.rows.length - 1);
+                        discountRow.id = 'coupon-row';
+                        discountRow.className = 'text-end';
+
+                        discountRow.insertCell(0).colSpan = 2;
+                        discountRow.cells[0].className = 'fw-bold';
+                        discountRow.cells[0].innerText = 'Mã giảm giá';
+
+                        discountRow.insertCell(1).colSpan = 2;
+                        discountRow.cells[1].innerText = '-' + formatPrice(result.CouponValue);
+
+                    }
+                    else {
+                        couponAlert.innerText = result.CouponError;
+                        couponAlert.className = '';
+                        couponAlert.classList.add("mt-2", "text-danger");
+                    }
+                })
         });
     });
+
+    function formatPrice(price) {
+        return price.toLocaleString() + "VNĐ";
+    }
 </script>

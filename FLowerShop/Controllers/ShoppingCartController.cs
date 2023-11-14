@@ -12,11 +12,11 @@ namespace FLowerShop.Controllers
 {
     public class ShoppingCartController : BaseController
     {
-        private readonly FLowerShopEntities db;
+        private readonly FlowerShopEntities db;
 
         public ShoppingCartController()
         {
-            db = new FLowerShopEntities();
+            db = new FlowerShopEntities();
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -116,16 +116,10 @@ namespace FLowerShop.Controllers
                     ShoppingCarts = shoppingCarts
                 };
 
-                var checkoutFlowerModel = new OrderModel
-                {
-                    ShoppingCarts = shoppingCarts
-                };
-
                 return Json(new
                 {
                     CartFlower = RenderToString("_CartFlower", cartFlowerModel),
                     ShoppingCartFlower = RenderToString("_ShoppingCartFLower", shoppingCarts),
-                    CheckoutFlower = RenderToString("_CheckoutFlower", checkoutFlowerModel),
                     CartCount = shoppingCarts.Count
                 });
             }
@@ -169,7 +163,6 @@ namespace FLowerShop.Controllers
             {
                 buyFlower.SUBTOTAL = buyFlower.FLOWER.NEW_PRICE * buyFlower.QUANTITY;
             }
-
             return buyFlower;
         }
 

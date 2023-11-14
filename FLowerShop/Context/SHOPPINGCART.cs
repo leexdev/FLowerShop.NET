@@ -14,11 +14,12 @@ namespace FLowerShop.Context
     
     public partial class SHOPPINGCART
     {
+        public System.Guid CART_ID { get; set; }
         public Nullable<System.Guid> USER_ID { get; set; }
         public Nullable<System.Guid> FLOWER_ID { get; set; }
         public Nullable<decimal> QUANTITY { get; set; }
         public Nullable<decimal> SUBTOTAL { get; set; }
-        public System.Guid CART_ID { get; set; }
+        public bool DELETED { get; set; }
     
         public virtual FLOWER FLOWER { get; set; }
         public virtual USER USER { get; set; }

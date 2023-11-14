@@ -27,8 +27,8 @@ namespace FLowerShop.Context
         public string DESCRIPTION { get; set; }
         public Nullable<decimal> OLD_PRICE { get; set; }
         public Nullable<decimal> NEW_PRICE { get; set; }
-        public Nullable<bool> DELETED { get; set; }
-        public System.Guid FLOWERTYPE_ID { get; set; }
+        public Nullable<System.Guid> FLOWERTYPE_ID { get; set; }
+        public bool DELETED { get; set; }
     
         public virtual FLOWERTYPE FLOWERTYPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

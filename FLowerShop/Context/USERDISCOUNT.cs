@@ -12,19 +12,14 @@ namespace FLowerShop.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class FLOWERTYPE
+    public partial class USERDISCOUNT
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FLOWERTYPE()
-        {
-            this.FLOWERS = new HashSet<FLOWER>();
-        }
-    
-        public System.Guid FLOWERTYPE_ID { get; set; }
-        public string FLOWERTYPE_NAME { get; set; }
+        public System.Guid USERDISCOUNT_ID { get; set; }
+        public Nullable<System.Guid> USER_ID { get; set; }
+        public Nullable<System.Guid> DISCOUNT_ID { get; set; }
         public bool DELETED { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FLOWER> FLOWERS { get; set; }
+        public virtual DISCOUNTCODE DISCOUNTCODE { get; set; }
+        public virtual USER USER { get; set; }
     }
 }
