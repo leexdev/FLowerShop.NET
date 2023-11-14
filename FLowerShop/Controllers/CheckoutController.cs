@@ -14,12 +14,12 @@ namespace FLowerShop.Controllers
     public class CheckoutController : BaseController
     {
         private readonly FlowerShopEntities db;
-        private readonly EmailService _emailService;
+        private readonly EmailService emailService;
 
         public CheckoutController()
         {
             db = new FlowerShopEntities();
-            _emailService = new EmailService();
+            emailService = new EmailService();
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -104,7 +104,7 @@ namespace FLowerShop.Controllers
                     order.DISCOUNT_ID = coupon.DISCOUNT_ID;
                 }
 
-                order.TOTAL_AMOUNT = totalPriceGrand;
+                order.TOTAL_AMOUNT = totalPriceGrand + 30000;
 
                 foreach (var item in flower)
                 {
@@ -114,7 +114,8 @@ namespace FLowerShop.Controllers
                         ORDER_ID = order.ORDER_ID,
                         FLOWER_ID = (Guid)item.FLOWER_ID,
                         QUANTITY = item.QUANTITY,
-                        SUBTOTAL = item.SUBTOTAL
+                        SUBTOTAL = item.SUBTOTAL,
+                        FLOWER = db.FLOWERS.FirstOrDefault()
                     };
                     db.ORDERDETAILS.Add(orderDetail);
                 }
@@ -122,56 +123,24 @@ namespace FLowerShop.Controllers
                 db.ORDERS.Add(order);
                 db.SaveChanges();
                 string toEmail = "leex.dev@gmail.com";
-                string subject = "Subject of the email";
-                string body = "Body of the email";
+                string subject = "Bạn có đơn hàng mới!";
+                string body = "Thông tin đơn hàng";
 
                 var checkoutFlower = new OrderModel
                 {
-                    ShoppingCarts = flower
+                    Order = order
                 };
-                
-                string htmlBody = RenderToString("_CheckoutFlower", checkoutFlower);
 
-                _emailService.SendEmail(toEmail, subject, body, htmlBody);
+                string htmlBody = RenderToString("_MailText", checkoutFlower);
+
+                emailService.SendEmail(toEmail, subject, body, htmlBody);
+
                 return View("OrderSuccess");
             }
         }
 
-
-        //[HttpPost]
-        //public ActionResult DeleteFLower(Guid? shoppingCartId)
-        //{
-        //    var shoppingCarts = GetShoppingCartItems();
-        //    var shoppingCart = shoppingCarts.FirstOrDefault(s => s.CART_ID == shoppingCartId);
-
-        //    if (shoppingCart != null)
-        //    {
-        //        shoppingCarts.Remove(shoppingCart);
-        //        UpdateShoppingCartData(shoppingCarts);
-
-        //        if (shoppingCarts.Count == 0)
-        //        {
-        //            Session["ShoppingCart"] = null;
-        //        }
-
-
-        //        var checkoutFlowerModel = new OrderModel
-        //        {
-        //            ShoppingCarts = shoppingCarts
-        //        };
-
-        //        return Json(new
-        //        {
-        //            CheckoutFlower = RenderToString("_CheckoutFlower", checkoutFlowerModel),
-        //            CartCount = shoppingCarts.Count
-        //        });
-        //    }
-
-        //    return PartialView("_NotFound");
-        //}
-
-        [HttpPost]  
-        public ActionResult CheckCoupon(string couponName)
+        [HttpPost]
+        public JsonResult CheckCoupon(string couponName)
         {
             var coupon = db.DISCOUNTCODES.FirstOrDefault(c => c.CODE == couponName.ToUpper());
             var flower = GetShoppingCartItems();
@@ -180,8 +149,6 @@ namespace FLowerShop.Controllers
             decimal? totalPriceGrandNew = 0;
             decimal? couponValue = 0;
 
-            //if (Session["UserId"] == null)
-            //    return Json(new { CouponError = "Vui lòng đăng nhập để sử dụng mã giảm giá" });
             if (coupon != null)
             {
                 var userId = Session["UserId"] as Guid?;
@@ -200,6 +167,6 @@ namespace FLowerShop.Controllers
 
             return Json(new { TotalPriceGrand = totalPriceGrand + 30000, CouponError = "Mã giảm giá không tồn tại!" });
         }
-
     }
+
 }

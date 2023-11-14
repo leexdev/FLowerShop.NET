@@ -7,7 +7,7 @@ public class EmailService
     public void SendEmail(string toEmail, string subject, string body, string htmlBody)
     {
         MailMessage mail = new MailMessage();
-        mail.From = new MailAddress("lepro2883@gmail.com");
+        mail.From = new MailAddress("florist.bloomshop@gmail.com");
         mail.To.Add(toEmail);
         mail.Subject = subject;
         mail.Body = body;
@@ -18,7 +18,7 @@ public class EmailService
         SmtpClient smtp = new SmtpClient();
         smtp.Host = "smtp.gmail.com";
         smtp.Port = 587;
-        smtp.Credentials = new NetworkCredential("lepro2883@gmail.com", "xrpz hlnm zygh ceay");
+        smtp.Credentials = new NetworkCredential("florist.bloomshop@gmail.com", "vkbi xsdn dboc osbe");
         smtp.EnableSsl = true;
 
         smtp.Send(mail);

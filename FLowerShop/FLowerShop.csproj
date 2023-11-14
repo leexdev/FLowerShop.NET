@@ -242,11 +242,10 @@
     <Content Include="Content\assets\img\freegifts.png" />
     <Content Include="Content\assets\img\hoa-chuc-mung-may-man-570x570.jpg" />
     <Content Include="Content\assets\img\logo-bloom.png" />
-    <Content Include="Content\assets\img\mat-troi-cua-anh-271x271.jpg.png" />
+    <Content Include="Content\assets\img\logo-icon.png" />
     <Content Include="Content\assets\img\momo.png" />
     <Content Include="Content\assets\img\ms.png" />
     <Content Include="Content\assets\img\phone.png" />
-    <Content Include="Content\assets\img\simple-800x800.jpg.png" />
     <Content Include="Content\assets\img\zalo.png" />
     <Content Include="Content\assets\js\bootstrap.bundle.js" />
     <Content Include="Content\assets\js\bootstrap.bundle.min.js" />
@@ -310,6 +309,7 @@
     <Content Include="Views\Shared\_CheckoutFlower.cshtml" />
     <Content Include="Views\FlowerTypes\Index.cshtml" />
     <Content Include="Views\Shared\OrderSuccess.cshtml" />
+    <Content Include="Views\Shared\_MailText.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

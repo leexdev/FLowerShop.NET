@@ -12,7 +12,7 @@ namespace FLowerShop.Models
         public List<ORDERDETAIL> OrderDetails { get; set; }
         public USER User { get; set; }
         public ORDER Order { get; set; }
-
+        public DISCOUNTCODE DiscountCode { get; set; }
         public OrderModel()
         {
             Order = new ORDER();
