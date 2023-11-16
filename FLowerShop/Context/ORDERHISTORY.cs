@@ -15,9 +15,10 @@ namespace FLowerShop.Context
     public partial class ORDERHISTORY
     {
         public System.Guid HISTORY_ID { get; set; }
-        public System.Guid ORDER_ID { get; set; }
+        public Nullable<System.Guid> ORDER_ID { get; set; }
         public Nullable<System.DateTime> CHANGE_DATE { get; set; }
         public string CONTENT { get; set; }
+        public string STATUS { get; set; }
     
         public virtual ORDER ORDER { get; set; }
     }

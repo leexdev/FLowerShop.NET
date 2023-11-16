@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9138afd7850242ec88a62247d859dc2f" Name="Diagram1">
+      <Diagram DiagramId="754e3d8ee063487daeea1797ec53c1f3" Name="Diagram1">
         <EntityTypeShape EntityType="Model.DISCOUNTCODE" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.FLOWER" Width="1.5" PointX="6" PointY="12.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.FLOWERTYPE" Width="1.5" PointX="3.75" PointY="13.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.ORDERDETAIL" Width="1.5" PointX="8.25" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ORDERHISTORY" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ORDER" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ORDERHISTORY" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ORDER" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.SHOPPINGCART" Width="1.5" PointX="6" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.USERDISCOUNT" Width="1.5" PointX="6" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.USER" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />

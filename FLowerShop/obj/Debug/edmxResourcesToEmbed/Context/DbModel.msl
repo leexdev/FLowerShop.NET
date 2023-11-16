@@ -59,6 +59,7 @@
           <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
           <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
           <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

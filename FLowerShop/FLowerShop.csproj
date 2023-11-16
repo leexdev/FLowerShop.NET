@@ -153,6 +153,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -218,9 +224,12 @@
     <Compile Include="Models\DetailModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\Result.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\EmailService.cs" />
+    <Compile Include="Service\Momo\MomoSecurity.cs" />
+    <Compile Include="Service\Momo\PaymentRequest.cs" />
     <Compile Include="Service\NoCacheAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -308,8 +317,11 @@
     <Content Include="Views\Shared\_ShoppingCartFLower.cshtml" />
     <Content Include="Views\Shared\_CheckoutFlower.cshtml" />
     <Content Include="Views\FlowerTypes\Index.cshtml" />
-    <Content Include="Views\Shared\OrderSuccess.cshtml" />
-    <Content Include="Views\Shared\_MailText.cshtml" />
+    <Content Include="Views\Shared\_MailTextToAdmin.cshtml" />
+    <Content Include="Views\Shared\_MailTextToCustomer.cshtml" />
+    <Content Include="Views\Checkout\OrderSuccess.cshtml" />
+    <Content Include="Views\Checkout\OrderPaymentSuccess.cshtml" />
+    <Content Include="Views\Checkout\OrderPaymentError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -52,9 +52,10 @@
       <PropertyRef Name="HISTORY_ID" />
     </Key>
     <Property Name="HISTORY_ID" Type="guid raw" Nullable="false" />
-    <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
+    <Property Name="ORDER_ID" Type="guid raw" />
     <Property Name="CHANGE_DATE" Type="date" />
     <Property Name="CONTENT" Type="clob" />
+    <Property Name="STATUS" Type="nvarchar2" MaxLength="255" />
   </EntityType>
   <EntityType Name="ORDERS">
     <Key>
@@ -193,7 +194,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008755">
-    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
+    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="0..1" />
     <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ORDERS">

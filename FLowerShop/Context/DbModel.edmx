@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DISCOUNTCODES">
           <Key>
             <PropertyRef Name="DISCOUNT_ID" />
@@ -57,9 +57,10 @@
             <PropertyRef Name="HISTORY_ID" />
           </Key>
           <Property Name="HISTORY_ID" Type="guid raw" Nullable="false" />
-          <Property Name="ORDER_ID" Type="guid raw" Nullable="false" />
+          <Property Name="ORDER_ID" Type="guid raw" />
           <Property Name="CHANGE_DATE" Type="date" />
           <Property Name="CONTENT" Type="clob" />
+          <Property Name="STATUS" Type="nvarchar2" MaxLength="255" />
         </EntityType>
         <EntityType Name="ORDERS">
           <Key>
@@ -198,7 +199,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="SYS_C008755">
-          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
+          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="0..1" />
           <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ORDERS">
@@ -284,8 +285,7 @@
             <End Role="USERDISCOUNT" EntitySet="USERDISCOUNT" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -349,9 +349,10 @@
             <PropertyRef Name="HISTORY_ID" />
           </Key>
           <Property Name="HISTORY_ID" Type="Guid" Nullable="false" />
-          <Property Name="ORDER_ID" Type="Guid" Nullable="false" />
+          <Property Name="ORDER_ID" Type="Guid" />
           <Property Name="CHANGE_DATE" Type="DateTime" />
           <Property Name="CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008755" FromRole="ORDERHISTORY" ToRole="ORDERS" />
         </EntityType>
         <EntityType Name="ORDER">
@@ -490,7 +491,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="SYS_C008755">
-          <End Role="ORDERS" Type="Self.ORDER" Multiplicity="1" />
+          <End Role="ORDERS" Type="Self.ORDER" Multiplicity="0..1" />
           <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ORDERS">
@@ -652,6 +653,7 @@
                 <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
                 <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
                 <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

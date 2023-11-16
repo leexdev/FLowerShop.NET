@@ -101,3 +101,7 @@ E:\.NET\FLowerShop\FLowerShop\obj\Debug\FLowerShop.csproj.CoreCompileInputs.cach
 E:\.NET\FLowerShop\FLowerShop\obj\Debug\FLowerShop.csproj.CopyComplete
 E:\.NET\FLowerShop\FLowerShop\obj\Debug\FLowerShop.dll
 E:\.NET\FLowerShop\FLowerShop\obj\Debug\FLowerShop.pdb
+E:\.NET\FLowerShop\FLowerShop\bin\zxing.dll
+E:\.NET\FLowerShop\FLowerShop\bin\zxing.presentation.dll
+E:\.NET\FLowerShop\FLowerShop\bin\zxing.xml
+E:\.NET\FLowerShop\FLowerShop\bin\zxing.presentation.xml

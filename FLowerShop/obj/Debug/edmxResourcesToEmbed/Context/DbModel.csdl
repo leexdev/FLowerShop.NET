@@ -60,9 +60,10 @@
       <PropertyRef Name="HISTORY_ID" />
     </Key>
     <Property Name="HISTORY_ID" Type="Guid" Nullable="false" />
-    <Property Name="ORDER_ID" Type="Guid" Nullable="false" />
+    <Property Name="ORDER_ID" Type="Guid" />
     <Property Name="CHANGE_DATE" Type="DateTime" />
     <Property Name="CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="STATUS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ORDER" Relationship="Self.SYS_C008755" FromRole="ORDERHISTORY" ToRole="ORDERS" />
   </EntityType>
   <EntityType Name="ORDER">
@@ -201,7 +202,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="SYS_C008755">
-    <End Role="ORDERS" Type="Self.ORDER" Multiplicity="1" />
+    <End Role="ORDERS" Type="Self.ORDER" Multiplicity="0..1" />
     <End Role="ORDERHISTORY" Type="Self.ORDERHISTORY" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ORDERS">

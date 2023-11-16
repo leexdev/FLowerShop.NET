@@ -7,7 +7,7 @@ public class EmailService
     public void SendEmail(string toEmail, string subject, string body, string htmlBody)
     {
         MailMessage mail = new MailMessage();
-        mail.From = new MailAddress("florist.bloomshop@gmail.com");
+        mail.From = new MailAddress("florist.bloomshop@gmail.com", "Bloom Shop");
         mail.To.Add(toEmail);
         mail.Subject = subject;
         mail.Body = body;
