@@ -167,9 +167,9 @@ namespace FLowerShop.Controllers
             string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
             string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
 
-            emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
             if (order.PAYMENT_METHOD == false)
             {
+                emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
                 emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
             }
 
@@ -237,34 +237,55 @@ namespace FLowerShop.Controllers
             int rErrorCode = int.Parse(result.errorCode);
             var orderId = Guid.Parse(rOrderId);
             var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId);
-            ViewBag.EmailCustomer = order.SENDER_EMAIL;
 
-            if (rErrorCode == 0)
+            if (order != null)
             {
+                ViewBag.EmailCustomer = order.SENDER_EMAIL;
+
+                string toEmailAdmin = "leex.dev@gmail.com";
+                string subjectAdmin = "Bạn có đơn hàng mới!";
+                string bodyAdmin = "Thông tin đơn hàng";
+
                 string toEmailCustomer = order.SENDER_EMAIL;
                 string subjectCustomer = "Đơn hàng đã được tạo";
                 string bodyCustomer = "Thông tin đơn hàng";
+
                 var orderToCustomer = new OrderModel
                 {
                     Order = order,
                     OrderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList()
                 };
 
-                string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
-                emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
-
-                return View("OrderPaymentSuccess");
-            }
-            else
-            {
-                if (order != null)
+                var orderToAdmin = new OrderModel
                 {
-                    order.PAYMENT_METHOD = false;
-                    db.SaveChanges();
+                    Order = order
+                };
+
+                string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
+                string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
+
+                emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
+                emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
+
+                if (rErrorCode == 0)
+                {
+                    return View("OrderPaymentSuccess");
                 }
-                return View("OrderPaymentError");
+                else
+                {
+                    if (rErrorCode != 0)
+                    {
+                        order.PAYMENT_METHOD = false;
+                        db.SaveChanges();
+                    }
+
+                    return View("OrderPaymentError");
+                }
             }
+
+            return View("OrderPaymentError");
         }
+
 
         [HttpPost]
         public void SavePayment()
