@@ -210,6 +210,7 @@
     <Compile Include="Controllers\FlowersController.cs" />
     <Compile Include="Controllers\FlowerTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,6 +222,7 @@
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ApiProvince.cs" />
     <Compile Include="Service\EmailService.cs" />
     <Compile Include="Service\Momo\MomoSecurity.cs" />
     <Compile Include="Service\Momo\PaymentRequest.cs" />
@@ -314,8 +316,8 @@
     <Content Include="Views\Shared\_MailTextToAdmin.cshtml" />
     <Content Include="Views\Shared\_MailTextToCustomer.cshtml" />
     <Content Include="Views\Checkout\OrderSuccess.cshtml" />
-    <Content Include="Views\Checkout\OrderPaymentSuccess.cshtml" />
-    <Content Include="Views\Checkout\OrderPaymentError.cshtml" />
+    <Content Include="Views\Payment\OrderPaymentSuccess.cshtml" />
+    <Content Include="Views\Payment\OrderPaymentError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

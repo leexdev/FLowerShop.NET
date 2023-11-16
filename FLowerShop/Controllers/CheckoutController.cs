@@ -1,5 +1,6 @@
 ﻿using FLowerShop.Context;
 using FLowerShop.Models;
+using FLowerShop.Service;
 using FLowerShop.Service.Momo;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,6 +9,7 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Mvc;
@@ -18,11 +20,13 @@ namespace FLowerShop.Controllers
     {
         private readonly FlowerShopEntities db;
         private readonly EmailService emailService;
+        private readonly ApiProvince apiProvince;
 
         public CheckoutController()
         {
             db = new FlowerShopEntities();
             emailService = new EmailService();
+            apiProvince = new ApiProvince();
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -58,17 +62,7 @@ namespace FLowerShop.Controllers
             return View();
         }
 
-        public ActionResult OrderPaymentSuccess()
-        {
-            return View();
-        }
-
-        public ActionResult OrderPaymentError()
-        {
-            return View();
-        }
-
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             if (Session["BuyFlower"] == null && Session["ShoppingCart"] == null)
             {
@@ -82,11 +76,13 @@ namespace FLowerShop.Controllers
                 ShoppingCarts = flower,
             };
 
+            ViewBag.ListProvinces = await apiProvince.GetProvincesAsync();
+
             return View(orderModel);
         }
 
         [HttpPost]
-        public ActionResult Index(ORDER order, string couponName)
+        public ActionResult Index(ORDER order, string couponName, string provinceName, string districtName)
         {
             if (!ModelState.IsValid)
             {
@@ -98,6 +94,7 @@ namespace FLowerShop.Controllers
             order.ORDER_ID = Guid.NewGuid();
             order.ORDER_DATE = DateTime.Now;
             order.USER_ID = userId;
+            order.RECIPIENT_ADDRESS += ", " + districtName + ", " + provinceName;
 
             var totalPriceGrand = CalculateTotalPrice(flower);
             var coupon = db.DISCOUNTCODES.FirstOrDefault(c => c.CODE == couponName.ToUpper());
@@ -142,6 +139,7 @@ namespace FLowerShop.Controllers
                 STATUS = "Chờ xác nhận",
                 CONTENT = "Đơn hàng đã được tạo thành công"
             };
+
             db.ORDERHISTORies.Add(orderHistory);
             db.SaveChanges();
 
@@ -182,115 +180,10 @@ namespace FLowerShop.Controllers
 
             if (order.PAYMENT_METHOD == true)
             {
-                return RedirectToAction("Payment", order);
+                return RedirectToAction("Payment", "Payment", order);
             }
 
             return View("OrderSuccess");
-        }
-
-        public ActionResult Payment(ORDER order)
-        {
-            string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
-            string partnerCode = "MOMOOJOI20210710";
-            string accessKey = "iPXneGmrJH0G8FOP";
-            string serectkey = "sFcbSGRSJjwGxwhhcEktCHWYUuTuPNDB";
-            string orderInfo = "Thanh toán đơn hàng cho Bloom Shop";
-            string returnUrl = "https://localhost:44388/Checkout/ConfirmPaymentClient";
-            string notifyurl = "https://localhost:44388/Checkout/SavePayment";
-
-            string amount = order.TOTAL_AMOUNT.ToString();
-            string orderId = order.ORDER_ID.ToString();
-            string requestId = DateTime.Now.Ticks.ToString();
-            string extraData = "";
-
-            string rawHash = $"partnerCode={partnerCode}&accessKey={accessKey}&requestId={requestId}&amount={amount}&orderId={orderId}&orderInfo={orderInfo}&returnUrl={returnUrl}&notifyUrl={notifyurl}&extraData={extraData}";
-
-            MoMoSecurity crypto = new MoMoSecurity();
-            string signature = crypto.signSHA256(rawHash, serectkey);
-
-            JObject message = new JObject
-        {
-            { "partnerCode", partnerCode },
-            { "accessKey", accessKey },
-            { "requestId", requestId },
-            { "amount", amount },
-            { "orderId", orderId },
-            { "orderInfo", orderInfo },
-            { "returnUrl", returnUrl },
-            { "notifyUrl", notifyurl },
-            { "extraData", extraData },
-            { "requestType", "captureMoMoWallet" },
-            { "signature", signature }
-        };
-
-            string responseFromMomo = PaymentRequest.sendPaymentRequest(endpoint, message.ToString());
-
-            JObject jmessage = JObject.Parse(responseFromMomo);
-
-            return Redirect(jmessage.GetValue("payUrl").ToString());
-        }
-
-        public ActionResult ConfirmPaymentClient(Result result)
-        {
-            string rMessage = result.message;
-            string rOrderId = result.orderId;
-            int rErrorCode = int.Parse(result.errorCode);
-            var orderId = Guid.Parse(rOrderId);
-            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId);
-
-            if (order != null)
-            {
-                ViewBag.EmailCustomer = order.SENDER_EMAIL;
-
-                string toEmailAdmin = "leex.dev@gmail.com";
-                string subjectAdmin = "Bạn có đơn hàng mới!";
-                string bodyAdmin = "Thông tin đơn hàng";
-
-                string toEmailCustomer = order.SENDER_EMAIL;
-                string subjectCustomer = "Đơn hàng đã được tạo";
-                string bodyCustomer = "Thông tin đơn hàng";
-
-                var orderToCustomer = new OrderModel
-                {
-                    Order = order,
-                    OrderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList()
-                };
-
-                var orderToAdmin = new OrderModel
-                {
-                    Order = order
-                };
-
-                string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
-                string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
-
-                emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
-                emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
-
-                if (rErrorCode == 0)
-                {
-                    return View("OrderPaymentSuccess");
-                }
-                else
-                {
-                    if (rErrorCode != 0)
-                    {
-                        order.PAYMENT_METHOD = false;
-                        db.SaveChanges();
-                    }
-
-                    return View("OrderPaymentError");
-                }
-            }
-
-            return View("OrderPaymentError");
-        }
-
-
-        [HttpPost]
-        public void SavePayment()
-        {
-            // Handle saving payment data to the database
         }
 
         [HttpPost]
@@ -324,6 +217,18 @@ namespace FLowerShop.Controllers
             }
 
             return Json(new { TotalPriceGrand = totalPriceGrand + 30000, CouponError = "Mã giảm giá không tồn tại!" });
+        }
+
+        public async Task<JsonResult> GetDistricts(int provinceCode)
+        {
+            var districts = await apiProvince.GetDistrictsByProvinceAsync(provinceCode);
+
+            var districtsData = districts.Select(d => new
+            {
+                name = (string)d.name
+            });
+
+            return Json(districtsData, JsonRequestBehavior.AllowGet);
         }
     }
 

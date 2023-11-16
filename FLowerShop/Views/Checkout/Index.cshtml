@@ -54,22 +54,20 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.Label("Tỉnh, thành phố", new { @class = "fw-bold fs-6 form-label" })
-                            <select class="form-select">
-                                <option disabled>--- Vui lòng chọn ---</option>
-                                <option selected value="1">Tp. Hồ Chí Minh</option>
-                                <option value="2">Hà Nội</option>
-                                <option value="3">Nha Trang</option>
+                            <select class="form-select" required id="provinceSelect" name="provinceName">
+                                <option disabled selected value="">--- Chọn tỉnh ---</option>
+                                @foreach (var item in ViewBag.ListProvinces)
+                                {
+                                    <option value="@item.name" data-provincecode="@item.code">@item.name</option>
+                                }
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 mt-md-0">
                         <div class="form-group">
                             @Html.Label("Quận/ Huyện:", new { @class = "fw-bold fs-6 form-label" })
-                            <select class="form-select">
-                                <option disabled>--- Vui lòng chọn ---</option>
-                                <option selected value="1">Quận 9</option>
-                                <option value="2">Quận 1</option>
-                                <option value="3">Quận 2</option>
+                            <select class="form-select" required id="districtSelect" name="districtName" disabled>
+                                <option value="">--- Chọn tỉnh trước ---</option>
                             </select>
                         </div>
                     </div>
@@ -212,6 +210,45 @@
                         couponAlert.classList.add("mt-2", "text-danger");
                     }
                 })
+        });
+
+        let provinceSelect = document.getElementById('provinceSelect');
+        let districtSelect = document.getElementById('districtSelect');
+        provinceSelect.addEventListener('change', (event) => {
+            let selectedOption = event.target.options[event.target.selectedIndex];
+            let provinceCode = selectedOption.getAttribute('data-provincecode');
+
+            districtSelect.innerHTML = "";
+
+            fetch('/Checkout/GetDistricts?provinceCode=' + provinceCode)
+                .then(response => response.json())
+                .then(result => {
+                    console.log('API Response:', result);
+                    result.forEach(district => {
+                        let option = document.createElement('option');
+                        option.value = district.name;
+
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        document.getElementById("provinceSelect").addEventListener("change", function () {
+            var provinceSelect = document.getElementById("provinceSelect");
+            var districtSelect = document.getElementById("districtSelect");
+
+            if (provinceSelect.value !== "") {
+                districtSelect.disabled = false;
+                districtSelect.setAttribute("required", "required");
+            } else {
+                districtSelect.disabled = true;
+                districtSelect.removeAttribute("required");
+                districtSelect.selectedIndex = 0;
+            }
         });
     });
 
