@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h5 class="fw-bold">Khách hàng mới</h5>
+                        <span class="fw-bold my-1">Đăng ký tài khoản</span>
+                        <p>Bằng cách tạo tài khoản, bạn sẽ có thể mua sắm nhanh hơn, cập nhật trạng thái đơn hàng và theo dõi các đơn hàng bạn đã thực hiện trước đó.</p>
+                        <a href="./register.html" class="btn btn-danger">Tiếp tục</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h5 class="fw-bold text-center">Đăng nhập</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-secondary">Địa chỉ Email</label>
+                                <input type="email" class="form-control" id="EmailCustomer">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-bold text-secondary">Mật khẩu</label>
+                                <input type="password" class="form-control" id="PasswordCustomer">
+                            </div>
+                            <div class="form-check p-0 my-1">
+                                <a href="#" class="text-pink fs-7 fw-bold">Quên mật khẩu?</a>
+                            </div>
+                            <button type="submit" class="btn btn-danger text-white w-100">Đăng nhập</button>
+                            <div class="row my-3">
+                                <div class="col-6">
+                                    <a href="@ViewBag.UrlFacebook"
+                                       class="btn btn-outline-success text-body fs-7 fw-bold d-flex justify-content-center align-items-center w-100">
+                                        <i class="fa-brands fa-facebook text-primary me-2 fs-5"></i>Facebook
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button"
+                                            class="btn btn-outline-success text-body fs-7 fw-bold d-flex justify-content-center align-items-center w-100">
+                                        <i class="fa-brands fa-google text-danger me-2 fs-5"></i>Google
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 d-none d-md-block">
+            <div class="list-group mb-3">
+                <a href="./account.html"
+                   class="list-group-item">Tài khoản của tôi</a>
+                <a href="./edit-customer.html"
+                   class="list-group-item">Chỉnh sửa tài khoản</a>
+                <a href="./changepassword.html"
+                   class="list-group-item">Mật khẩu</a>
+                <a href="./"
+                   class="list-group-item">Lịch sử đơn hàng</a>
+                <a href="" class="list-group-item">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -113,6 +113,8 @@
           <Property Name="USER_PHONE" Type="nvarchar2" MaxLength="15" />
           <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
           <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ROLE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FACEBOOKID" Type="varchar2" MaxLength="20" />
         </EntityType>
         <Association Name="SYS_C008736">
           <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="0..1" />
@@ -417,6 +419,8 @@
           <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008747" FromRole="USERS" ToRole="ORDERS" />
           <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008741" FromRole="USERS" ToRole="SHOPPINGCART" />
           <NavigationProperty Name="USERDISCOUNTs" Relationship="Self.SYS_C008758" FromRole="USERS" ToRole="USERDISCOUNT" />
+          <Property Name="ROLE" Type="Boolean" Nullable="false" />
+          <Property Name="FACEBOOKID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="SYS_C008748">
           <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODE" Multiplicity="0..1" />
@@ -704,6 +708,8 @@
           <EntitySetMapping Name="USERS">
             <EntityTypeMapping TypeName="Model.USER">
               <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="FACEBOOKID" ColumnName="FACEBOOKID" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
                 <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />

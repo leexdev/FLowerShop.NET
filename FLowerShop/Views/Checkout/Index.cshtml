@@ -31,7 +31,7 @@
                     @Html.LabelFor(model => model.Order.SENDER_EMAIL, new { @class = "fw-bold fs-6 form-label" })
                     @Html.TextBoxFor(model => model.Order.SENDER_EMAIL, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Order.SENDER_EMAIL, "", new { @class = "text-danger" })
-                </div>
+                </div>  
                 <h5 class="m-0 mt-4">Thông tin người nhận</h5>
                 <hr class="mt-2 mb-3" />
                 <div class="row mb-3">
@@ -146,13 +146,16 @@
 <script>
     let formSubmitted = false;
 
-    document.getElementById('btn-checkout-form').addEventListener('click', function () {
+    let btnCheckout = document.getElementById('btn-checkout-form');
+
+    btnCheckout.addEventListener('click', function () {
         formSubmitted = true;
     });
 
     window.addEventListener('beforeunload', function (event) {
-        event.preventDefault();
-        if (!formSubmitted) {
+        if (!formSubmitted && !event.target.activeElement.isEqualNode(btnCheckout)) {
+            event.preventDefault();
+
             if ('@Session["BuyFlower"]' !== null) {
                 fetch('/Checkout/ExitCheckout', {
                     method: 'POST',
@@ -161,6 +164,7 @@
             }
         }
     });
+
 
     document.addEventListener('DOMContentLoaded', () => {
         let couponBtn = document.getElementById('btn-add-coupon');
@@ -223,7 +227,6 @@
             fetch('/Checkout/GetDistricts?provinceCode=' + provinceCode)
                 .then(response => response.json())
                 .then(result => {
-                    console.log('API Response:', result);
                     result.forEach(district => {
                         let option = document.createElement('option');
                         option.value = district.name;

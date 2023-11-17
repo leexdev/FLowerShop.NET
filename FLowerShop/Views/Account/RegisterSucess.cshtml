@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký thành công";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-9">
+            <h5 class="mt-3 text-success text-center">Xin chúc mừng! Tài khoản mới của bạn đã được tạo thành công!</h5>
+            <p class="text-center">Giờ đây, bạn có thể tận dụng các đặc quyền của thành viên để nâng cao trải nghiệm mua sắm trực tuyến của mình với chúng tôi.</p>
+            <div class="d-flex justify-content-center">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-danger text-white">Tiếp tục</a>
+            </div>
+        </div>
+
+        <div class="col-md-3 d-none d-md-block">
+            <div class="list-group mb-3">
+                <a href="./account.html"
+                   class="list-group-item">Tài khoản của tôi</a>
+                <a href="./edit-customer.html"
+                   class="list-group-item">Chỉnh sửa tài khoản</a>
+                <a href="./changepassword.html"
+                   class="list-group-item">Mật khẩu</a>
+                <a href="./"
+                   class="list-group-item">Lịch sử đơn hàng</a>
+                <a href="" class="list-group-item">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+</div>

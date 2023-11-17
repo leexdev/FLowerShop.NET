@@ -1,17 +1,10 @@
 ﻿using FLowerShop.Context;
 using FLowerShop.Models;
 using FLowerShop.Service;
-using FLowerShop.Service.Momo;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.DynamicData;
 using System.Web.Mvc;
 
 namespace FLowerShop.Controllers
@@ -143,32 +136,34 @@ namespace FLowerShop.Controllers
             db.ORDERHISTORies.Add(orderHistory);
             db.SaveChanges();
 
-            string toEmailAdmin = "leex.dev@gmail.com";
-            string subjectAdmin = "Bạn có đơn hàng mới!";
-            string bodyAdmin = "Thông tin đơn hàng";
-
-            string toEmailCustomer = order.SENDER_EMAIL;
-            string subjectCustomer = "Đơn hàng đã được tạo";
-            string bodyCustomer = "Thông tin đơn hàng";
-
-            var orderToAdmin = new OrderModel
-            {
-                Order = order
-            };
-
-            var orderToCustomer = new OrderModel
-            {
-                Order = order,
-                OrderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList()
-            };
-
-            string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
-            string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
-
+            
             if (order.PAYMENT_METHOD == false)
             {
+                string toEmailAdmin = "leex.dev@gmail.com";
+                string subjectAdmin = "Bạn có đơn hàng mới!";
+                string bodyAdmin = "Thông tin đơn hàng";
+
+                string toEmailCustomer = order.SENDER_EMAIL;
+                string subjectCustomer = "Đơn hàng đã được tạo";
+                string bodyCustomer = "Thông tin đơn hàng";
+
+                var orderToAdmin = new OrderModel
+                {
+                    Order = order
+                };
+
+                var orderToCustomer = new OrderModel
+                {
+                    Order = order,
+                    OrderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList()
+                };
+
+                string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
+                string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
+
                 emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
                 emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
+                ViewBag.EmailCustomer = order.SENDER_EMAIL;
             }
 
             if (Session["BuyFlower"] == null)
@@ -176,7 +171,6 @@ namespace FLowerShop.Controllers
                 Session.Remove("ShoppingCart");
             }
 
-            ViewBag.EmailCustomer = order.SENDER_EMAIL;
 
             if (order.PAYMENT_METHOD == true)
             {

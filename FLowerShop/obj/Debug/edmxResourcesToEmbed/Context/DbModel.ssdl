@@ -108,6 +108,8 @@
     <Property Name="USER_PHONE" Type="nvarchar2" MaxLength="15" />
     <Property Name="USER_PASSWORD" Type="nvarchar2" MaxLength="255" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+    <Property Name="ROLE" Type="number" Precision="1" Scale="0" Nullable="false" />
+    <Property Name="FACEBOOKID" Type="varchar2" MaxLength="20" />
   </EntityType>
   <Association Name="SYS_C008736">
     <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="0..1" />

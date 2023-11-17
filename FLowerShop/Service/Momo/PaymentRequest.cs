@@ -48,11 +48,7 @@ namespace FLowerShop.Service.Momo
                         jsonresponse += temp;
                     }
                 }
-
-
-                //todo parse it
                 return jsonresponse;
-                //return new MomoResponse(mtid, jsonresponse);
 
             }
             catch (WebException e)

@@ -128,6 +128,8 @@
     <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008747" FromRole="USERS" ToRole="ORDERS" />
     <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008741" FromRole="USERS" ToRole="SHOPPINGCART" />
     <NavigationProperty Name="USERDISCOUNTs" Relationship="Self.SYS_C008758" FromRole="USERS" ToRole="USERDISCOUNT" />
+    <Property Name="ROLE" Type="Boolean" Nullable="false" />
+    <Property Name="FACEBOOKID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="SYS_C008748">
     <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODE" Multiplicity="0..1" />
