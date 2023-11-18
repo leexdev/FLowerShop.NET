@@ -28,9 +28,11 @@ namespace FLowerShop.Context
         public string USER_PHONE { get; set; }
         public string USER_PASSWORD { get; set; }
         public string CONFIRM_PASSWORD { get; set; }
+
         public bool DELETED { get; set; }
         public bool ROLE { get; set; }
         public string FACEBOOKID { get; set; }
+        public Nullable<System.Guid> RESETTOKEN { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }

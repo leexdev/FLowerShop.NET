@@ -22,6 +22,7 @@ CREATE TABLE Users (
     user_phone NVARCHAR2(15),
     user_password NVARCHAR2(255),
     role NUMBER(1) DEFAULT 0 NOT NULL,
+    facebookid varchar2(20),
     Deleted NUMBER(1) DEFAULT 0 NOT NULL
 );
 

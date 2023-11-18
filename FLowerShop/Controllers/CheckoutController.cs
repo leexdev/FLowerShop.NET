@@ -35,14 +35,23 @@ namespace FLowerShop.Controllers
             return Json(new { success = true });
         }
 
-        private List<SHOPPINGCART> GetShoppingCartItems()
+        private List<SHOPPINGCART> GetShoppingCarts()
         {
             if (Session["BuyFlower"] is SHOPPINGCART singleCart)
             {
                 return new List<SHOPPINGCART> { singleCart };
             }
 
-            return Session["ShoppingCart"] as List<SHOPPINGCART> ?? new List<SHOPPINGCART>();
+            if (Session["UserId"] != null)
+            {
+                Guid userId = (Guid)Session["UserId"];
+                return db.SHOPPINGCARTs.Where(s => s.USER_ID == userId).ToList();
+            }
+            else if (Session["ShoppingCart"] != null)
+            {
+                return Session["ShoppingCart"] as List<SHOPPINGCART>;
+            }
+            return new List<SHOPPINGCART>();
         }
 
         private int CalculateTotalPrice(List<SHOPPINGCART> shoppingCarts)
@@ -57,12 +66,12 @@ namespace FLowerShop.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if (Session["BuyFlower"] == null && Session["ShoppingCart"] == null)
+            var flower = GetShoppingCarts();
+
+            if (flower.Count == 0)
             {
                 return RedirectToAction("Index", "ShoppingCart");
             }
-
-            var flower = GetShoppingCartItems();
 
             var orderModel = new OrderModel
             {
@@ -79,11 +88,11 @@ namespace FLowerShop.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(new OrderModel { ShoppingCarts = GetShoppingCartItems() });
+                return View(new OrderModel { ShoppingCarts = GetShoppingCarts() });
             }
 
             var userId = Session["UserId"] as Guid?;
-            var flower = GetShoppingCartItems();
+            var flower = GetShoppingCarts();
             order.ORDER_ID = Guid.NewGuid();
             order.ORDER_DATE = DateTime.Now;
             order.USER_ID = userId;
@@ -100,9 +109,16 @@ namespace FLowerShop.Controllers
                 {
                     var discountValue = coupon.DISCOUNT_TYPE == true ? (totalPriceGrand * (int)coupon.DISCOUNT_VALUE / 100) : (int)coupon.DISCOUNT_VALUE;
                     totalPriceGrand -= discountValue;
+                    coupon.CODE_COUNT -= 1;
+                    var userDiscount = new USERDISCOUNT()
+                    {
+                        USERDISCOUNT_ID = Guid.NewGuid(),
+                        DISCOUNT_ID = coupon.DISCOUNT_ID,
+                        USER_ID = userId
+                    };
+                    db.USERDISCOUNTs.Add(userDiscount);
                 }
 
-                coupon.CODE_COUNT -= 1;
                 order.DISCOUNT_ID = coupon.DISCOUNT_ID;
             }
 
@@ -134,8 +150,6 @@ namespace FLowerShop.Controllers
             };
 
             db.ORDERHISTORies.Add(orderHistory);
-            db.SaveChanges();
-
             
             if (order.PAYMENT_METHOD == false)
             {
@@ -168,16 +182,23 @@ namespace FLowerShop.Controllers
 
             if (Session["BuyFlower"] == null)
             {
-                Session.Remove("ShoppingCart");
+                if (userId != null)
+                {
+                    var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId);
+                    foreach(var shoppingCart in shoppingCarts)
+                    {
+                        db.SHOPPINGCARTs.Remove(shoppingCart);
+                    }
+                }
             }
-
 
             if (order.PAYMENT_METHOD == true)
             {
                 return RedirectToAction("Payment", "Payment", order);
             }
 
-            return View("OrderSuccess");
+            db.SaveChanges();
+            return RedirectToAction("OrderSuccess");
         }
 
         [HttpPost]
@@ -188,7 +209,7 @@ namespace FLowerShop.Controllers
                 return Json(new { CouponError = "Vui lòng đăng nhập để sử dụng mã giảm giá" });
 
             var coupon = db.DISCOUNTCODES.FirstOrDefault(c => c.CODE == couponName.ToUpper());
-            var flower = GetShoppingCartItems();
+            var flower = GetShoppingCarts();
 
             decimal? totalPriceGrand = CalculateTotalPrice(flower);
 

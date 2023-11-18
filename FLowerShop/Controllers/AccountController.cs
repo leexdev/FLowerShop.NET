@@ -1,5 +1,6 @@
 ﻿using Facebook;
 using FLowerShop.Context;
+using FLowerShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace FLowerShop.Controllers
     public class AccountController : BaseController
     {
         private readonly FlowerShopEntities db;
+        private readonly EmailService emailService;
 
         public AccountController()
         {
             db = new FlowerShopEntities();
+            emailService = new EmailService();
         }
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -68,26 +71,10 @@ namespace FLowerShop.Controllers
             db.USERS.Add(user);
             db.SaveChanges();
 
+            ModelState.Clear();
+
             return View("RegisterSucess");
         }
-
-        public static string GetMd5Hash(string input)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
-        }
-
 
         //Login Facebook
         public ActionResult Login()
@@ -101,6 +88,13 @@ namespace FLowerShop.Controllers
             });
             ViewBag.UrlFacebook = loginUrl;
 
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(USER user)
+        {
+            Session.Remove("ShoppingCart");
             return View();
         }
 
@@ -143,8 +137,100 @@ namespace FLowerShop.Controllers
             Session["UserEmail"] = user.USER_EMAIL;
             Session["UserPhone"] = user.USER_PHONE;
             Session["Role"] = user.ROLE;
+            Session.Remove("ShoppingCart");
 
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(USER user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+            var User = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
+            if (User == null)
+            {
+                ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email không tồn tại");
+                return View(user);
+            }
+            var resetToken = Guid.NewGuid();
+
+            User.RESETTOKEN = resetToken;
+            db.SaveChanges();
+
+            string resetLink = Url.Action("ResetPassword", "Account", new { token = resetToken }, Request.Url.Scheme);
+            string emailBody = $"Mật khẩu mới đã được yêu cầu cho tài khoản khách hàng.<br><br> Để đặt lại mật khẩu của bạn, hãy nhấp vào liên kết bên dưới: <br><br> {resetLink}";
+
+            emailService.SendEmail(user.USER_EMAIL, "Thay đổi mật khẩu", "Quên mật khẩu", emailBody);
+
+            ViewBag.ShowAlert = 0;
+            return View("Login");
+        }
+
+        public ActionResult ResetPassword(Guid? token)
+        {
+            if(token == null)
+            {
+                return PartialView("_NotFound");
+            }
+            var user = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
+
+            if (user == null)
+            {
+                return PartialView("_NotFound");
+            }
+
+            ViewBag.ResetToken = token;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(Guid? token, USER user)
+        {
+            var User = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
+            if (User == null)
+            {
+                return PartialView("_NotFound");
+            }
+
+            if(user.USER_PASSWORD != user.CONFIRM_PASSWORD)
+            {
+                ModelState.AddModelError("CONFIRM_PASSWORD", "Mật khẩu và mật khẩu xác nhận không khớp");
+                return View(user);
+            }
+
+            User.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
+            User.RESETTOKEN = null;
+            db.SaveChanges();
+
+            ViewBag.ShowAlert = 1;
+            return View("Login");
+        }
+
+        public static string GetMd5Hash(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
     }
 }

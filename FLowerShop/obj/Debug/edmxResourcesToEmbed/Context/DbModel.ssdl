@@ -110,6 +110,7 @@
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
     <Property Name="ROLE" Type="number" Precision="1" Scale="0" Nullable="false" />
     <Property Name="FACEBOOKID" Type="varchar2" MaxLength="20" />
+    <Property Name="RESETTOKEN" Type="guid raw" />
   </EntityType>
   <Association Name="SYS_C008736">
     <End Role="FLOWERTYPES" Type="Self.FLOWERTYPES" Multiplicity="0..1" />

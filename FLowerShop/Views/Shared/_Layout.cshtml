@@ -1,18 +1,18 @@
 ﻿@{
     var cartFlowerModel = new FLowerShop.Models.CartFlowerModel();
-    cartFlowerModel.ShoppingCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
-    int cartcount = 0;
 
-    if (Session["ShoppingCart"] != null)
+    if (Session["UserId"] != null && ViewBag.ShoppingCarts != null)
     {
-        List<FLowerShop.Context.SHOPPINGCART> shoppingCartItems = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
-
-        if (shoppingCartItems != null)
-        {
-            cartcount = shoppingCartItems.Count;
-        }
+        cartFlowerModel.ShoppingCarts = ViewBag.ShoppingCarts;
     }
+    else
+    {
+        cartFlowerModel.ShoppingCarts = Session["ShoppingCart"] as List<FLowerShop.Context.SHOPPINGCART>;
+    }
+
+    int cartCount = cartFlowerModel.ShoppingCarts?.Count ?? 0;
 }
+
 
 <!doctype html>
 <html lang="en">
@@ -125,7 +125,7 @@
                         <a class="p-2 position-relative shopping-cart link-select ms-3 d-block d-md-none" data-url="@Url.Action("Index", "ShoppingCart")">
                             <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
-                                @cartcount
+                                @cartCount
                             </span>
                         </a>
                         <button type="button" class="btn shadow-none shopping-cart position-relative bg-milk d-none d-md-block">
@@ -133,7 +133,7 @@
                                 <a class="dropdown-header" role="button" @(Request.Path == Url.Action("Index", "Checkout") ? $"href={Url.Action("Index", "ShoppingCart")}" : "data-bs-toggle=dropdown") aria-expanded="false">
                                     <i class="fa-solid fa-cart-shopping fs-4 text-pink"></i>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
-                                        @cartcount
+                                        @cartCount
                                     </span>
                                 </a>
                                 <div id="table-list-cart-flower">

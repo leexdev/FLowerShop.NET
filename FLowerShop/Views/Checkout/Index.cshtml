@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Order.SENDER_NAME, new { @class = "fw-bold fs-6 form-label" })
-                            @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control", value= Session["UserName"] })
                             @Html.ValidationMessageFor(model => model.Order.SENDER_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>

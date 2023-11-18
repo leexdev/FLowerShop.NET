@@ -110,6 +110,7 @@
     <EntitySetMapping Name="USERS">
       <EntityTypeMapping TypeName="Model.USER">
         <MappingFragment StoreEntitySet="USERS">
+          <ScalarProperty Name="RESETTOKEN" ColumnName="RESETTOKEN" />
           <ScalarProperty Name="FACEBOOKID" ColumnName="FACEBOOKID" />
           <ScalarProperty Name="ROLE" ColumnName="ROLE" />
           <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />

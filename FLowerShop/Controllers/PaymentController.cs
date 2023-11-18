@@ -114,7 +114,7 @@ namespace FLowerShop.Controllers
                 emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
 
                 ViewBag.EmailCustomer = order.SENDER_EMAIL;
-                return View("OrderPaymentSuccess");
+                return RedirectToAction("OrderPaymentSuccess");
             }
             else
             {
@@ -133,7 +133,7 @@ namespace FLowerShop.Controllers
 
                 db.ORDERS.Remove(order);
                 db.SaveChanges();
-                return View("OrderPaymentError");
+                return RedirectToAction("OrderPaymentError");
             }
         }
 

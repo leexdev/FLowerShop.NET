@@ -4,6 +4,9 @@
 }
 
 <div class="container">
+    <div id="showAlert">
+
+    </div>
     <div class="row mt-3">
         <div class="col-md-9">
             <div class="row">
@@ -12,7 +15,7 @@
                         <h5 class="fw-bold">Khách hàng mới</h5>
                         <span class="fw-bold my-1">Đăng ký tài khoản</span>
                         <p>Bằng cách tạo tài khoản, bạn sẽ có thể mua sắm nhanh hơn, cập nhật trạng thái đơn hàng và theo dõi các đơn hàng bạn đã thực hiện trước đó.</p>
-                        <a href="./register.html" class="btn btn-danger">Tiếp tục</a>
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-danger">Tiếp tục</a>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -28,7 +31,7 @@
                                 <input type="password" class="form-control" id="PasswordCustomer">
                             </div>
                             <div class="form-check p-0 my-1">
-                                <a href="#" class="text-pink fs-7 fw-bold">Quên mật khẩu?</a>
+                                <a href="@Url.Action("ForgotPassword", "Account")" class="text-pink fs-7 fw-bold">Quên mật khẩu?</a>
                             </div>
                             <button type="submit" class="btn btn-danger text-white w-100">Đăng nhập</button>
                             <div class="row my-3">
@@ -66,3 +69,24 @@
         </div>
     </div>
 </div>
+
+@if (@ViewBag.ShowAlert == 0)
+{
+    <script>
+        document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
+                    <i class="fa-solid fa-circle-check"></i> Một email thay đổi mật khẩu đã được gửi đến bạn, vui lòng kiểm tra email và làm theo hướng dẫn.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>`;
+    </script>
+}
+
+@if (@ViewBag.ShowAlert == 1)
+{
+    <script>
+        document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
+                    <i class="fa-solid fa-circle-check"></i>Thay đổi mật khẩu thành công.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>`;
+    </script>
+}
+

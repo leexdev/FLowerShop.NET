@@ -104,7 +104,20 @@ namespace FLowerShop.Controllers
             if (shoppingCart != null)
             {
                 shoppingCarts.Remove(shoppingCart);
-                UpdateShoppingCartData(shoppingCarts);
+                if (Session["UserId"] != null)
+                {
+                    Guid userId = (Guid)Session["UserId"];
+                    var cart = db.SHOPPINGCARTs.FirstOrDefault(n => n.FLOWER_ID == shoppingCart.FLOWER_ID && n.USER_ID == userId);
+                    if (cart != null)
+                    {
+                        db.SHOPPINGCARTs.Remove(cart);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    Session["ShoppingCart"] = shoppingCarts;
+                }
 
                 if (shoppingCarts.Count == 0)
                 {
@@ -127,6 +140,31 @@ namespace FLowerShop.Controllers
             return Json(new { error = "Mục không tồn tại trong giỏ hàng" });
         }
 
+        private void UpdateShoppingCartData(List<SHOPPINGCART> shoppingCarts)
+        {
+            if (Session["UserId"] != null)
+            {
+                Guid userId = (Guid)Session["UserId"];
+                foreach (var item in shoppingCarts)
+                {
+                    var cart = db.SHOPPINGCARTs.FirstOrDefault(n => n.FLOWER_ID == item.FLOWER_ID && n.USER_ID == userId);
+                    if (cart != null)
+                    {
+                        cart.QUANTITY = item.QUANTITY;
+                    }
+                    else
+                    {
+                        db.SHOPPINGCARTs.Add(item);
+                    }
+                }
+                db.SaveChanges();
+            }
+            else
+            {
+                Session["ShoppingCart"] = shoppingCarts;
+            }
+        }
+
         private List<SHOPPINGCART> GetShoppingCarts()
         {
             if (Session["UserId"] != null)
@@ -139,11 +177,6 @@ namespace FLowerShop.Controllers
                 return Session["ShoppingCart"] as List<SHOPPINGCART>;
             }
             return new List<SHOPPINGCART>();
-        }
-
-        private void UpdateShoppingCartData(List<SHOPPINGCART> shoppingCarts)
-        {
-            Session["ShoppingCart"] = shoppingCarts;
         }
 
         private int CalculateTotalPrice(List<SHOPPINGCART> shoppingCarts)

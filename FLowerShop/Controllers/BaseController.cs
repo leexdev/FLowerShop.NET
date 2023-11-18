@@ -15,7 +15,19 @@ namespace FLowerShop.Controllers
         {
             using (var db = new FlowerShopEntities())
             {
-                ViewBag.lstFlowerTypes = db.FLOWERTYPES.ToList();
+                ViewBag.lstFlowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
+
+                Guid? userId = Session["UserId"] as Guid?;
+                if (userId != null)
+                {
+                    var shoppingCarts = db.SHOPPINGCARTs
+                    .Include("FLOWER")
+                    .AsNoTracking()
+                    .Where(s => s.USER_ID == userId)
+                    .ToList();
+
+                    ViewBag.ShoppingCarts = shoppingCarts.ToList();
+                }
             }
         }
 

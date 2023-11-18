@@ -130,6 +130,7 @@
     <NavigationProperty Name="USERDISCOUNTs" Relationship="Self.SYS_C008758" FromRole="USERS" ToRole="USERDISCOUNT" />
     <Property Name="ROLE" Type="Boolean" Nullable="false" />
     <Property Name="FACEBOOKID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RESETTOKEN" Type="Guid" />
   </EntityType>
   <Association Name="SYS_C008748">
     <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODE" Multiplicity="0..1" />
