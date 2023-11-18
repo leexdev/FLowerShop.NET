@@ -135,6 +135,7 @@ namespace FLowerShop.Controllers
                     SUBTOTAL = item.SUBTOTAL,
                     FLOWER = db.FLOWERS.FirstOrDefault()
                 };
+                order.ORDERDETAILS.Add(orderDetail);
                 db.ORDERDETAILS.Add(orderDetail);
             }
 
@@ -163,7 +164,7 @@ namespace FLowerShop.Controllers
 
                 var orderToAdmin = new OrderModel
                 {
-                    Order = order
+                    Order = order,
                 };
 
                 var orderToCustomer = new OrderModel
@@ -180,24 +181,18 @@ namespace FLowerShop.Controllers
                 ViewBag.EmailCustomer = order.SENDER_EMAIL;
             }
 
-            if (Session["BuyFlower"] == null)
+            if (Session["BuyFlower"] == null && order.PAYMENT_METHOD == false)
             {
-                if (userId != null)
-                {
-                    var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId);
-                    foreach(var shoppingCart in shoppingCarts)
-                    {
-                        db.SHOPPINGCARTs.Remove(shoppingCart);
-                    }
-                }
+                Session["ShoppingCart"] = null;
             }
+
+            db.SaveChanges();
 
             if (order.PAYMENT_METHOD == true)
             {
                 return RedirectToAction("Payment", "Payment", order);
             }
 
-            db.SaveChanges();
             return RedirectToAction("OrderSuccess");
         }
 

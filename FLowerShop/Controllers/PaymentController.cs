@@ -29,6 +29,7 @@ namespace FLowerShop.Controllers
 
         public ActionResult OrderPaymentSuccess()
         {
+            ViewBag.EmailCustomer = TempData["EmailCustomer"];
             return View();
         }
 
@@ -113,7 +114,25 @@ namespace FLowerShop.Controllers
                 emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
                 emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
 
-                ViewBag.EmailCustomer = order.SENDER_EMAIL;
+                if (Session["BuyFlower"] == null)
+                {
+                    if (Session["UserId"] != null)
+                    {
+                        var userId = (Guid)Session["UserId"];
+
+                        var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId);
+                        foreach (var shoppingCart in shoppingCarts)
+                        {
+                            db.SHOPPINGCARTs.Remove(shoppingCart);
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Session["ShoppingCart"] = null;
+                    }
+                }
+                TempData["EmailCustomer"] = order.SENDER_EMAIL;
                 return RedirectToAction("OrderPaymentSuccess");
             }
             else
@@ -124,6 +143,7 @@ namespace FLowerShop.Controllers
                 {
                     db.ORDERDETAILS.Remove(item);
                 }
+
                 var orderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList();
 
                 foreach (var item in orderHistories)
