@@ -23,6 +23,7 @@ CREATE TABLE Users (
     user_password NVARCHAR2(255),
     role NUMBER(1) DEFAULT 0 NOT NULL,
     facebookid varchar2(20),
+    resettoken RAW(16),
     Deleted NUMBER(1) DEFAULT 0 NOT NULL
 );
 

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DISCOUNTCODES">
           <Key>
             <PropertyRef Name="DISCOUNT_ID" />
@@ -288,7 +288,8 @@
             <End Role="USERDISCOUNT" EntitySet="USERDISCOUNT" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -417,12 +418,12 @@
           <Property Name="USER_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="USER_PASSWORD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DELETED" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008747" FromRole="USERS" ToRole="ORDERS" />
-          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008741" FromRole="USERS" ToRole="SHOPPINGCART" />
-          <NavigationProperty Name="USERDISCOUNTs" Relationship="Self.SYS_C008758" FromRole="USERS" ToRole="USERDISCOUNT" />
           <Property Name="ROLE" Type="Boolean" Nullable="false" />
           <Property Name="FACEBOOKID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="RESETTOKEN" Type="Guid" />
+          <NavigationProperty Name="ORDERS" Relationship="Self.SYS_C008747" FromRole="USERS" ToRole="ORDERS" />
+          <NavigationProperty Name="SHOPPINGCARTs" Relationship="Self.SYS_C008741" FromRole="USERS" ToRole="SHOPPINGCART" />
+          <NavigationProperty Name="USERDISCOUNTs" Relationship="Self.SYS_C008758" FromRole="USERS" ToRole="USERDISCOUNT" />
         </EntityType>
         <Association Name="SYS_C008748">
           <End Role="DISCOUNTCODES" Type="Self.DISCOUNTCODE" Multiplicity="0..1" />
@@ -710,15 +711,15 @@
           <EntitySetMapping Name="USERS">
             <EntityTypeMapping TypeName="Model.USER">
               <MappingFragment StoreEntitySet="USERS">
-                <ScalarProperty Name="RESETTOKEN" ColumnName="RESETTOKEN" />
-                <ScalarProperty Name="FACEBOOKID" ColumnName="FACEBOOKID" />
-                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
                 <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />
                 <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
                 <ScalarProperty Name="USER_PASSWORD" ColumnName="USER_PASSWORD" />
                 <ScalarProperty Name="DELETED" ColumnName="DELETED" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
+                <ScalarProperty Name="FACEBOOKID" ColumnName="FACEBOOKID" />
+                <ScalarProperty Name="RESETTOKEN" ColumnName="RESETTOKEN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

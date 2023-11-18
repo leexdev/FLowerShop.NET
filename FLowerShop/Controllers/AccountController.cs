@@ -1,5 +1,5 @@
 ﻿using Facebook;
-using FLowerShop.Context;
+using FlowerShop.Context;
 using FLowerShop.Models;
 using System;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace FLowerShop.Controllers
             var loginUrl = fb.GetLoginUrl(new
             {
                 client_id = "236953919208447",
-                redirect_uri = "https://localhost:44388/Account/FacebookRedirect",
+                redirect_uri = "https://localhost:44343/Account/FacebookRedirect",
                 scope = "public_profile,email"
             });
             ViewBag.UrlFacebook = loginUrl;
@@ -105,7 +105,7 @@ namespace FLowerShop.Controllers
             {
                 client_id = "236953919208447",
                 client_secret = "679b8583142923a12be66f7fcd24a9e9",
-                redirect_uri = "https://localhost:44388/Account/FacebookRedirect",
+                redirect_uri = "https://localhost:44343/Account/FacebookRedirect",
                 code = code
             });
 

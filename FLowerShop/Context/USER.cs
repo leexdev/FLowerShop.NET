@@ -7,12 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FLowerShop.Context
+namespace FlowerShop.Context
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,7 +23,6 @@ namespace FLowerShop.Context
         }
     
         public System.Guid USER_ID { get; set; }
-        [Required]
         public string USER_NAME { get; set; }
         public string USER_EMAIL { get; set; }
         public string USER_PHONE { get; set; }

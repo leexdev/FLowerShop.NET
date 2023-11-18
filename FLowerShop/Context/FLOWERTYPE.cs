@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FLowerShop.Context
+namespace FlowerShop.Context
 {
     using System;
     using System.Collections.Generic;

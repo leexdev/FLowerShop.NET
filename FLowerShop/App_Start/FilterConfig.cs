@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 
-namespace FLowerShop
+namespace FlowerShop
 {
     public class FilterConfig
     {

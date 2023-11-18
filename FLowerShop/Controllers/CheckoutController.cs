@@ -1,4 +1,4 @@
-﻿using FLowerShop.Context;
+﻿using FlowerShop.Context;
 using FLowerShop.Models;
 using FLowerShop.Service;
 using System;
@@ -61,6 +61,7 @@ namespace FLowerShop.Controllers
 
         public ActionResult OrderSuccess()
         {
+            ViewBag.EmailCustomer = TempData["EmailCustomer"];
             return View();
         }
 
@@ -193,6 +194,7 @@ namespace FLowerShop.Controllers
                 return RedirectToAction("Payment", "Payment", order);
             }
 
+            TempData["EmailCustomer"] = order.SENDER_EMAIL;
             return RedirectToAction("OrderSuccess");
         }
 

@@ -1,4 +1,4 @@
-﻿using FLowerShop.Context;
+﻿using FlowerShop.Context;
 using FLowerShop.Models;
 using FLowerShop.Service.Momo;
 using Newtonsoft.Json.Linq;
@@ -45,8 +45,8 @@ namespace FLowerShop.Controllers
             string accessKey = "iPXneGmrJH0G8FOP";
             string serectkey = "sFcbSGRSJjwGxwhhcEktCHWYUuTuPNDB";
             string orderInfo = "Thanh toán đơn hàng cho Bloom Shop";
-            string returnUrl = "https://localhost:44388/Payment/ConfirmPaymentClient";
-            string notifyurl = "https://localhost:44388/Payment/SavePayment";
+            string returnUrl = "https://localhost:44343/Payment/ConfirmPaymentClient";
+            string notifyurl = "https://localhost:44343/Payment/SavePayment";
 
             string amount = order.TOTAL_AMOUNT.ToString();
             string orderId = order.ORDER_ID.ToString();

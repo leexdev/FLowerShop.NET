@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using FLowerShop.Context;
+using FlowerShop.Context;
 using FLowerShop.Models;
 
 namespace FLowerShop.Controllers
