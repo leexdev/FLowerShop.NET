@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using FlowerShop.Context;
 using FLowerShop.Models;
 
-namespace FLowerShop.Controllers
+namespace FlowerShop.Controllers
 {
     public class FlowersController : BaseController
     {

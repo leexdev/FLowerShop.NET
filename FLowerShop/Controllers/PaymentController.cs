@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FLowerShop.Controllers
+namespace FlowerShop.Controllers
 {
     public class PaymentController : BaseController
     {

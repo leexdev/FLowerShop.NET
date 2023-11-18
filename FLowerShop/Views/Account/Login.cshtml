@@ -74,9 +74,9 @@
 {
     <script>
         document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
-                    <i class="fa-solid fa-circle-check"></i> Một email thay đổi mật khẩu đã được gửi đến bạn, vui lòng kiểm tra email và làm theo hướng dẫn.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>`;
+                        <i class="fa-solid fa-circle-check"></i> Một email thay đổi mật khẩu đã được gửi đến bạn, vui lòng kiểm tra email và làm theo hướng dẫn.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
     </script>
 }
 
@@ -84,9 +84,19 @@
 {
     <script>
         document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
-                    <i class="fa-solid fa-circle-check"></i>Thay đổi mật khẩu thành công.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>`;
+                        <i class="fa-solid fa-circle-check"></i>Thay đổi mật khẩu thành công.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
+    </script>
+}
+
+@if (@ViewBag.ShowAlert == 2)
+{
+    <script>
+        document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
+                        <i class="fa-solid fa-circle-check"></i>Bạn đã đăng xuất khỏi tài khoản thành công.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
     </script>
 }
 

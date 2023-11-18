@@ -9,7 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FLowerShop.Controllers
+namespace FlowerShop.Controllers
 {
     public class AccountController : BaseController
     {
@@ -35,7 +35,8 @@ namespace FLowerShop.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
-            return RedirectToAction("Index", "Home");
+            ViewBag.ShowAlert = 2;
+            return View("Login");
         }
 
         public ActionResult Register()

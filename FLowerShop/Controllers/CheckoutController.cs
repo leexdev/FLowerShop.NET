@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace FLowerShop.Controllers
+namespace FlowerShop.Controllers
 {
     public class CheckoutController : BaseController
     {
