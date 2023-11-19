@@ -50,13 +50,28 @@
             const searchQueryValue = searchQuery.value;
             const flowerTypeIdValue = flowerTypeId.value;
 
-            fetch(`/FLowers/FilterFLowers?filterValue=${selectedValue}&searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}`, {
+            fetch(`/FLowers/FilterFLowers?searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}&filterValue=${selectedValue}`, {
                 method: 'GET',
             })
-            .then(response => response.text())
-            .then(result => {
-                filteredProducts.innerHTML = result;
-            });
+                .then(response => response.text())
+                .then(result => {
+                    filteredProducts.innerHTML = result;
+
+                    updateUrl(searchQueryValue, flowerTypeIdValue, selectedValue);
+                });
         });
+
+        const updateUrl = (searchQueryValue, flowerTypeIdValue, filterValue) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('searchQuery', searchQueryValue);
+            urlParams.set('flowerTypeId', flowerTypeIdValue);
+            urlParams.set('filterValue', filterValue);
+
+            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+
+            // Thêm lịch sử trình duyệt mà không làm tải lại trang
+            history.pushState(null, '', newUrl);
+        };
     });
+
 </script>

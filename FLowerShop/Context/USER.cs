@@ -11,7 +11,8 @@ namespace FlowerShop.Context
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,8 +28,8 @@ namespace FlowerShop.Context
         public string USER_EMAIL { get; set; }
         public string USER_PHONE { get; set; }
         public string USER_PASSWORD { get; set; }
+        [NotMapped]
         public string CONFIRM_PASSWORD { get; set; }
-
         public bool DELETED { get; set; }
         public bool ROLE { get; set; }
         public string FACEBOOKID { get; set; }

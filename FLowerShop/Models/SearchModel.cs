@@ -10,5 +10,6 @@ namespace FLowerShop.Models
     {
         public List<FLOWER> Flowers { get; set; }
         public List<FLOWERTYPE> FlowersType { get; set; }
+        public int FilterValue { get; set; }
     }
 }

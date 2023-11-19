@@ -1,0 +1,48 @@
+﻿@model FlowerShop.Context.USER
+
+@{
+    ViewBag.Title = "Chỉnh sửa tài khoản";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-9">
+            <h5 class="m-0 fw-bold">Thông tin tài khoản của tôi</h5>
+            <hr class="my-2">
+            @using (Html.BeginForm("EditAccount", "Account", FormMethod.Post, new { @class = "form-customer ms-0 ms-md-5 mt-3" }))
+            {
+                @Html.HiddenFor(m => m.USER_ID)
+                <div class="form-group row align-items-center">
+                    @Html.LabelFor(m => m.USER_NAME, new { @class = "fw-bold fs-6 form-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control", placeholder = "Họ tên" })
+                        @Html.ValidationMessageFor(m => m.USER_NAME, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center my-2">
+                    @Html.LabelFor(m => m.USER_EMAIL, new { @class = "fw-bold fs-6 form-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control", placeholder = "Họ tên", @readonly = true })
+                        @Html.ValidationMessageFor(m => m.USER_EMAIL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center">
+                    @Html.LabelFor(m => m.USER_PHONE, new { @class = "fw-bold fs-6 form-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.USER_PHONE, new { @class = "form-control", placeholder = "Điện thoại" })
+                        @Html.ValidationMessageFor(m => m.USER_PHONE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a class="btn btn-secondary text-white px-3 py-2 rounded-3 float-start" href="@Url.Action("Account", "Account")">Quay lại</a>
+                    <button type="submit" class="btn btn-danger text-white px-3 py-2 rounded-3 float-end">Tiếp tục</button>
+                </div>
+            }
+        </div>
+
+        @Html.Partial("_MenuAccount")
+    </div>
+</div>

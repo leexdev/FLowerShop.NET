@@ -56,7 +56,7 @@ namespace FlowerShop.Controllers
             return View(detailModel);
         }
 
-        public ActionResult Search(string searchQuery, Guid? flowerTypeId)
+        public ActionResult Search(string searchQuery, Guid? flowerTypeId, int filterValue = 0)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
@@ -65,6 +65,8 @@ namespace FlowerShop.Controllers
                 .ToList();
 
             var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
+
+            filteredFlowers = SortFlowers(filteredFlowers, filterValue);
 
             var searchModel = new SearchModel
             {
@@ -78,7 +80,7 @@ namespace FlowerShop.Controllers
             return View(searchModel);
         }
 
-        public ActionResult FilterFLowers(int filterValue, string searchQuery, Guid? flowerTypeId)
+        public ActionResult FilterFLowers(string searchQuery, Guid? flowerTypeId, int filterValue)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
@@ -86,6 +88,7 @@ namespace FlowerShop.Controllers
                     && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId))
                 .ToList();
 
+            // Sử dụng giá trị filterValue từ tham số URL để áp dụng sắp xếp
             filteredFlowers = SortFlowers(filteredFlowers, filterValue);
 
             var searchModel = new SearchModel
@@ -96,7 +99,8 @@ namespace FlowerShop.Controllers
             return PartialView("_FlowerSearch", searchModel);
         }
 
-        private List<FLOWER> SortFlowers(List<FLOWER> flowers, int filterValue)
+
+        private List<FLOWER> SortFlowers(List<FLOWER> flowers, int? filterValue)
         {
             switch (filterValue)
             {

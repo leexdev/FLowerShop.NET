@@ -36,7 +36,6 @@ namespace FlowerShop.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
-            TempData.Clear();
             TempData["ShowAlert"] = 2;
             return RedirectToAction("Login");
         }
@@ -185,7 +184,7 @@ namespace FlowerShop.Controllers
             var User = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
             if (User == null)
             {
-                ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email không tồn tại");
+                ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
                 return View(user);
             }
             var resetToken = Guid.NewGuid();
@@ -263,5 +262,89 @@ namespace FlowerShop.Controllers
             }
         }
 
+        public ActionResult Account()
+        {
+            ViewBag.ShowAlert = TempData["ShowAlert"];
+            return View();
+        }
+
+        public ActionResult EditAccount()
+        {
+            var userId = (Guid)Session["UserId"];
+
+            var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditAccount(USER user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            var exitingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
+
+            if (exitingUser != null)
+            {
+                exitingUser.USER_NAME = user.USER_NAME;
+                exitingUser.USER_PHONE = user.USER_PHONE;
+                db.SaveChanges();
+                TempData["ShowAlert"] = 0;
+                return RedirectToAction("Account", "Account");
+            }
+
+            return PartialView("_NotFound");
+        }
+
+        public ActionResult EditPassword()
+        {
+            var userId = (Guid)Session["UserId"];
+
+            var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditPassword(USER user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            if (user.USER_PASSWORD != user.CONFIRM_PASSWORD)
+            {
+                ModelState.AddModelError("CONFIRM_PASSWORD", "Mật khẩu và mật khẩu xác nhận không khớp");
+                return View(user);
+            }
+
+            var exitingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
+
+            if (exitingUser != null)
+            {
+                exitingUser.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
+                db.SaveChanges();
+            }
+            return PartialView("_NotFound");
+        }
+
+        public ActionResult OrderHistory()
+        {
+            var userId = (Guid)Session["UserId"];
+
+            var order = db.ORDERS.Where(o => o.USER_ID == userId).ToList();
+
+            return View(order);
+        }
+
+        public ActionResult OrderDetail(Guid? orderId)
+        {
+            var orderDetails = db.ORDERDETAILS.Where(o => o.ORDER_ID == orderId).ToList();
+            return View(orderDetails);
+        }
     }
 }

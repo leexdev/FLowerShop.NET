@@ -284,7 +284,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +331,10 @@
     <Content Include="Views\Shared\_ShoppingCartFLower.cshtml" />
     <Content Include="Views\Checkout\OrderPaymentSuccess.cshtml" />
     <Content Include="Views\Checkout\OrderPaymentError.cshtml" />
+    <Content Include="Views\Account\Account.cshtml" />
+    <Content Include="Views\Shared\_MenuAccount.cshtml" />
+    <Content Include="Views\Account\EditAccount.cshtml" />
+    <Content Include="Views\Account\OrderHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
