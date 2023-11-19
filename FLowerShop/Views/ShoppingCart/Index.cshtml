@@ -8,13 +8,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        var quantityInputs = document.querySelectorAll(".quantity-flower");
-
-        quantityInputs.forEach(input => {
-            input.addEventListener("change", () => {
-                var quantity = input.value;
-                var shoppingCartId = input.getAttribute("data-shoppingCartId");
-                var flowerId = input.getAttribute("data-flower-id");
+        document.getElementById('shopping-cart-flower').addEventListener('change', (event) => {
+            const target = event.target;
+            if (target.classList.contains('quantity-flower')) {
+                var quantity = target.value;
+                var shoppingCartId = target.getAttribute("data-shoppingCartId");
+                var flowerId = target.getAttribute("data-flower-id");
 
                 fetch('/ShoppingCart/UpdateShoppingCart', {
                     method: 'POST',
@@ -34,7 +33,7 @@
                         });
 
                         var quantityElements = document.querySelectorAll('.quantity');
-                        quantityElements.forEach(e =>{
+                        quantityElements.forEach(e => {
                             var dataFlowerId = e.getAttribute('data-flower-id');
                             if (dataFlowerId === flowerId) {
                                 e.textContent = quantity;
@@ -54,9 +53,10 @@
                     .catch(error => {
                         console.error('Lỗi:', error);
                     });
-            });
+            }
         });
     });
+
 
     function formatPrice(price) {
         return price.toLocaleString() + "VNĐ";

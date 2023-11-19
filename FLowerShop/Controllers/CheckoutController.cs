@@ -1,6 +1,8 @@
 ﻿using FlowerShop.Context;
 using FLowerShop.Models;
 using FLowerShop.Service;
+using FLowerShop.Service.Momo;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +87,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(ORDER order, string couponName, string provinceName, string districtName)
+        public async Task<ActionResult> Index(ORDER order, string couponName, string provinceName, string districtName)
         {
             if (!ModelState.IsValid)
             {
@@ -125,6 +127,136 @@ namespace FlowerShop.Controllers
 
             order.TOTAL_AMOUNT = totalPriceGrand + 30000;
 
+            await SaveOrderToDatabaseAsync(order, flower);
+
+            db.SaveChanges();
+
+            if (order.PAYMENT_METHOD == true)
+            {
+                return RedirectToAction("Payment", "Checkout", new { orderId = order.ORDER_ID });
+            }
+
+            TempData["EmailCustomer"] = order.SENDER_EMAIL;
+            return RedirectToAction("OrderSuccess");
+        }
+
+        public ActionResult OrderPaymentSuccess()
+        {
+            ViewBag.EmailCustomer = TempData["EmailCustomer"];
+            return View();
+        }
+
+        public ActionResult OrderPaymentError()
+        {
+            return View();
+        }
+
+        public ActionResult Payment(Guid orderid)
+        {
+            string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
+            string partnerCode = "MOMOOJOI20210710";
+            string accessKey = "iPXneGmrJH0G8FOP";
+            string serectkey = "sFcbSGRSJjwGxwhhcEktCHWYUuTuPNDB";
+            string orderInfo = "Thanh toán đơn hàng cho Bloom Shop";
+            string returnUrl = "https://localhost:44343/Checkout/ConfirmPaymentClient";
+            string notifyurl = "https://localhost:44343/Checkout/SavePayment";
+
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderid);
+            string amount = order.TOTAL_AMOUNT.ToString();
+            string orderId = order.ORDER_ID.ToString();
+            string requestId = DateTime.Now.Ticks.ToString();
+            string extraData = "";
+
+            string rawHash = $"partnerCode={partnerCode}&accessKey={accessKey}&requestId={requestId}&amount={amount}&orderId={orderId}&orderInfo={orderInfo}&returnUrl={returnUrl}&notifyUrl={notifyurl}&extraData={extraData}";
+
+            MoMoSecurity crypto = new MoMoSecurity();
+            string signature = crypto.signSHA256(rawHash, serectkey);
+
+            JObject message = new JObject
+        {
+            { "partnerCode", partnerCode },
+            { "accessKey", accessKey },
+            { "requestId", requestId },
+            { "amount", amount },
+            { "orderId", orderId },
+            { "orderInfo", orderInfo },
+            { "returnUrl", returnUrl },
+            { "notifyUrl", notifyurl },
+            { "extraData", extraData },
+            { "requestType", "captureMoMoWallet" },
+            { "signature", signature }
+        };
+
+            string responseFromMomo = PaymentRequest.sendPaymentRequest(endpoint, message.ToString());
+
+            JObject jmessage = JObject.Parse(responseFromMomo);
+
+            return Redirect(jmessage.GetValue("payUrl").ToString());
+        }
+
+        public async Task<ActionResult> ConfirmPaymentClient(Result result)
+        {
+            string rMessage = result.message;
+            string rOrderId = result.orderId;
+            int rErrorCode = int.Parse(result.errorCode);
+            var orderId = Guid.Parse(rOrderId);
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId);
+            if (rErrorCode == 0)
+            {
+                await SendEmailsAsync(order);
+
+                if (Session["BuyFlower"] == null)
+                {
+                    if (Session["UserId"] != null)
+                    {
+                        var userId = (Guid)Session["UserId"];
+
+                        var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId);
+                        foreach (var shoppingCart in shoppingCarts)
+                        {
+                            db.SHOPPINGCARTs.Remove(shoppingCart);
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Session["ShoppingCart"] = null;
+                    }
+                }
+                TempData["EmailCustomer"] = order.SENDER_EMAIL;
+                return RedirectToAction("OrderPaymentSuccess");
+            }
+            else
+            {
+                var orderDetail = db.ORDERDETAILS.Where(o => o.ORDER_ID == orderId).ToList();
+
+                foreach (var item in orderDetail)
+                {
+                    db.ORDERDETAILS.Remove(item);
+                }
+
+                var orderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == orderId).ToList();
+
+                foreach (var item in orderHistories)
+                {
+                    db.ORDERHISTORies.Remove(item);
+                }
+
+                db.ORDERS.Remove(order);
+                db.SaveChanges();
+                return RedirectToAction("OrderPaymentError");
+            }
+        }
+
+
+        [HttpPost]
+        public void SavePayment()
+        {
+            // Handle saving payment data to the database
+        }
+
+        private async Task SaveOrderToDatabaseAsync(ORDER order, List<SHOPPINGCART> flower)
+        {
             foreach (var item in flower)
             {
                 var orderDetail = new ORDERDETAIL
@@ -140,8 +272,6 @@ namespace FlowerShop.Controllers
                 db.ORDERDETAILS.Add(orderDetail);
             }
 
-            db.ORDERS.Add(order);
-
             var orderHistory = new ORDERHISTORY()
             {
                 HISTORY_ID = Guid.NewGuid(),
@@ -151,51 +281,62 @@ namespace FlowerShop.Controllers
                 CONTENT = "Đơn hàng đã được tạo thành công"
             };
 
+            order.ORDERHISTORies.Add(orderHistory);
             db.ORDERHISTORies.Add(orderHistory);
-            
+
+            db.ORDERS.Add(order);
+
             if (order.PAYMENT_METHOD == false)
             {
-                string toEmailAdmin = "leex.dev@gmail.com";
-                string subjectAdmin = "Bạn có đơn hàng mới!";
-                string bodyAdmin = "Thông tin đơn hàng";
-
-                string toEmailCustomer = order.SENDER_EMAIL;
-                string subjectCustomer = "Đơn hàng đã được tạo";
-                string bodyCustomer = "Thông tin đơn hàng";
-
-                var orderToAdmin = new OrderModel
-                {
-                    Order = order,
-                };
-
-                var orderToCustomer = new OrderModel
-                {
-                    Order = order,
-                    OrderHistories = db.ORDERHISTORies.Where(o => o.ORDER_ID == order.ORDER_ID).ToList()
-                };
-
-                string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
-                string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
-
-                emailService.SendEmail(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin);
-                emailService.SendEmail(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer);
-                ViewBag.EmailCustomer = order.SENDER_EMAIL;
+                await SendEmailsAsync(order);
             }
 
             if (Session["BuyFlower"] == null && order.PAYMENT_METHOD == false)
             {
-                Session["ShoppingCart"] = null;
+                if (Session["UserId"] != null)
+                {
+                    foreach (var item in flower)
+                    {
+                        db.SHOPPINGCARTs.Remove(item);
+                    }
+                }
+                else
+                {
+                    Session["ShoppingCart"] = null;
+                }
             }
 
             db.SaveChanges();
+        }
 
-            if (order.PAYMENT_METHOD == true)
+        private async Task SendEmailsAsync(ORDER order)
+        {
+            string toEmailAdmin = "leex.dev@gmail.com";
+            string subjectAdmin = "Bạn có đơn hàng mới!";
+            string bodyAdmin = "Thông tin đơn hàng";
+
+            string toEmailCustomer = order.SENDER_EMAIL;
+            string subjectCustomer = "Đơn hàng đã được tạo";
+            string bodyCustomer = "Thông tin đơn hàng";
+
+            var orderToAdmin = new OrderModel
             {
-                return RedirectToAction("Payment", "Payment", order);
-            }
+                Order = order,
+            };
 
-            TempData["EmailCustomer"] = order.SENDER_EMAIL;
-            return RedirectToAction("OrderSuccess");
+            var orderToCustomer = new OrderModel
+            {
+                Order = order,
+                OrderHistories = order.ORDERHISTORies.ToList()
+            };
+
+            string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
+            string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
+
+            await Task.WhenAll(
+                emailService.SendEmailAsync(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin),
+                emailService.SendEmailAsync(toEmailCustomer, subjectCustomer, bodyCustomer, htmlBodyCustomer)
+            );
         }
 
         [HttpPost]

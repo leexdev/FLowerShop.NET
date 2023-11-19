@@ -1,4 +1,5 @@
-﻿
+﻿@model FlowerShop.Context.USER
+
 @{
     ViewBag.Title = "Đăng nhập";
 }
@@ -21,14 +22,17 @@
                 <div class="col-md-6">
                     <div class="card p-3">
                         <h5 class="fw-bold text-center">Đăng nhập</h5>
-                        <form>
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                        {
                             <div class="mb-3">
-                                <label class="form-label fw-bold text-secondary">Địa chỉ Email</label>
-                                <input type="email" class="form-control" id="EmailCustomer">
+                                @Html.LabelFor(model => model.USER_EMAIL, new { @class = "fw-bold text-secondary form-label" })
+                                @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.USER_EMAIL, "", new { @class = "text-danger" })
                             </div>
                             <div class="mb-2">
-                                <label class="form-label fw-bold text-secondary">Mật khẩu</label>
-                                <input type="password" class="form-control" id="PasswordCustomer">
+                                @Html.LabelFor(model => model.USER_PASSWORD, new { @class = "fw-bold text-secondary form-label" })
+                                @Html.PasswordFor(m => m.USER_PASSWORD, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.USER_PASSWORD, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-check p-0 my-1">
                                 <a href="@Url.Action("ForgotPassword", "Account")" class="text-pink fs-7 fw-bold">Quên mật khẩu?</a>
@@ -42,13 +46,13 @@
                                     </a>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button"
+                                    <a href="#"
                                             class="btn btn-outline-success text-body fs-7 fw-bold d-flex justify-content-center align-items-center w-100">
                                         <i class="fa-brands fa-google text-danger me-2 fs-5"></i>Google
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>

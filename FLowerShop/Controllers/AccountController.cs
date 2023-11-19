@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -35,8 +36,9 @@ namespace FlowerShop.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
-            ViewBag.ShowAlert = 2;
-            return View("Login");
+            TempData.Clear();
+            TempData["ShowAlert"] = 2;
+            return RedirectToAction("Login");
         }
 
         public ActionResult Register()
@@ -88,6 +90,7 @@ namespace FlowerShop.Controllers
                 scope = "public_profile,email"
             });
             ViewBag.UrlFacebook = loginUrl;
+            ViewBag.ShowAlert = TempData["ShowAlert"];
 
             return View();
         }
@@ -95,8 +98,32 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult Login(USER user)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+            var exitingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
+            if (exitingUser == null)
+            {
+                ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
+                return View(user);
+            }
+
+            if (exitingUser.USER_PASSWORD != GetMd5Hash(user.USER_PASSWORD))
+            {
+                ModelState.AddModelError("USER_PASSWORD", "Mật khẩu không chính xác");
+                return View(user);
+            }
+
+            Session["UserId"] = exitingUser.USER_ID;
+            Session["UserEmail"] = exitingUser.USER_EMAIL;
+            Session["UserPhone"] = exitingUser.USER_PHONE;
+            Session["Role"] = exitingUser.ROLE;
             Session.Remove("ShoppingCart");
-            return View();
+
+            ModelState.Clear();
+
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult FacebookRedirect(string code)
@@ -119,7 +146,7 @@ namespace FlowerShop.Controllers
 
             var user = db.USERS.FirstOrDefault(u => u.FACEBOOKID == facebookid);
 
-            if(user == null)
+            if (user == null)
             {
                 user = new USER
                 {
@@ -149,7 +176,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult ForgotPassword(USER user)
+        public async Task<ActionResult> ForgotPassword(USER user)
         {
             if (!ModelState.IsValid)
             {
@@ -169,10 +196,13 @@ namespace FlowerShop.Controllers
             string resetLink = Url.Action("ResetPassword", "Account", new { token = resetToken }, Request.Url.Scheme);
             string emailBody = $"Mật khẩu mới đã được yêu cầu cho tài khoản khách hàng.<br><br> Để đặt lại mật khẩu của bạn, hãy nhấp vào liên kết bên dưới: <br><br> {resetLink}";
 
-            emailService.SendEmail(user.USER_EMAIL, "Thay đổi mật khẩu", "Quên mật khẩu", emailBody);
+            await emailService.SendEmailAsync(user.USER_EMAIL, "Thay đổi mật khẩu", "Quên mật khẩu", emailBody);
 
-            ViewBag.ShowAlert = 0;
-            return View("Login");
+            ModelState.Clear();
+
+            TempData["ShowAlert"] = 0;
+
+            return RedirectToAction("Login");
         }
 
         public ActionResult ResetPassword(Guid? token)
@@ -212,8 +242,8 @@ namespace FlowerShop.Controllers
             User.RESETTOKEN = null;
             db.SaveChanges();
 
-            ViewBag.ShowAlert = 1;
-            return View("Login");
+            TempData["ShowAlert"] = 1;
+            return RedirectToAction("Login");
         }
 
         public static string GetMd5Hash(string input)
