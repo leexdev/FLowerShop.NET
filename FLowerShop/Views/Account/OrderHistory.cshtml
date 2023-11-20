@@ -1,5 +1,5 @@
 ﻿@model List<FlowerShop.Context.ORDER>
-
+@using FlowerShop.Service
 @{
     ViewBag.Title = "Lịch sử đơn hàng";
 }
@@ -38,10 +38,10 @@
                                             }
                                         }
                                     </td>
-                                    <td>@item.TOTAL_AMOUNT</td>
-                                    <td>@item.ORDER_DATE</td>
+                                    <td>@item.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
+                                    <td>@DateTimeConversionService.ConvertToVietnamTimeZone(item.ORDER_DATE)</td>
                                     <td>
-                                        <a class="p-2 bg-pink rounded-2" href="@Url.Action("OrderDetail", "Account", new {@orderId = item.ORDER_ID})" title="Chi tiết đơn hàng">
+                                        <a class="p-2 bg-pink rounded-2" href="@Url.Action("OrderDetail", "Account", new {orderId = item.ORDER_ID})" title="Chi tiết đơn hàng">
                                             <i class="fa-solid fa-circle-info text-white"></i>
                                         </a>
                                     </td>
@@ -57,24 +57,18 @@
                         Hiển thị từ 1 đến 1 / 1 (1 Trang)
                     </div>
                 </div>
-                <div class="button-select mt-2">
-                    <a class="text-white bg-pink px-3 py-2 rounded-3 float-end" href="@Url.Action("Account", "Account")">Tiếp tục</a>
+                <div class="button-select my-3">
+                    <a class="text-white bg-pink px-3 py-2 rounded-3 float-end my-3" href="@Url.Action("Account", "Account")">Tiếp tục</a>
                 </div>
             </div>
         }
         else
         {
-            <p>Bạn chưa thực hiện bất kỳ đơn đặt hàng nào trước đó!</p>
+            <div class="col-md-9">
+                <p>Bạn chưa thực hiện bất kỳ đơn đặt hàng nào trước đó!</p>
+            </div>
         }
 
-        <div class="col-md-3 d-none d-md-block">
-            <div class="list-group mb-3">
-                <a href="!#" class="list-group-item">Tài khoản của tôi</a>
-                <a href="" class="list-group-item">Chỉnh sửa tài khoản</a>
-                <a href="" class="list-group-item">Mật khẩu</a>
-                <a href="" class="list-group-item">Lịch sử đơn hàng</a>
-                <a href="" class="list-group-item">Đăng xuất</a>
-            </div>
-        </div>
+        @Html.Partial("_MenuAccount")
     </div>
 </div>

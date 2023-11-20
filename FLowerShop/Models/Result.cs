@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace FLowerShop.Models
+namespace FlowerShop.Models
 {
     public class Result
     {

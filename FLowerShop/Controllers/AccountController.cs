@@ -1,6 +1,6 @@
 ﻿using Facebook;
 using FlowerShop.Context;
-using FLowerShop.Models;
+using FlowerShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,14 +48,14 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult Register(USER user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValidField("USER_NAME") || !ModelState.IsValidField("USER_EMAIL") || !ModelState.IsValidField("USER_PHONE") || !ModelState.IsValidField("USER_PASSWORD"))
             {
                 return View(user);
             }
 
-            var exitingEmail = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
+            var existingUser = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
 
-            if (exitingEmail != null)
+            if (existingUser != null)
             {
                 ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email đã tồn tại");
                 return View(user);
@@ -71,11 +71,10 @@ namespace FlowerShop.Controllers
             user.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
 
             db.USERS.Add(user);
+            db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
 
-            ModelState.Clear();
-
-            return View("RegisterSucess");
+            return RedirectToAction("RegisterSucess");
         }
 
         //Login Facebook
@@ -97,27 +96,28 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult Login(USER user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValidField("USER_EMAIL") || !ModelState.IsValidField("USER_PASSWORD"))
             {
                 return View(user);
             }
-            var exitingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
-            if (exitingUser == null)
+
+            var existingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
+            if (existingUser == null)
             {
                 ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
                 return View(user);
             }
 
-            if (exitingUser.USER_PASSWORD != GetMd5Hash(user.USER_PASSWORD))
+            if (existingUser.USER_PASSWORD != GetMd5Hash(user.USER_PASSWORD))
             {
                 ModelState.AddModelError("USER_PASSWORD", "Mật khẩu không chính xác");
                 return View(user);
             }
 
-            Session["UserId"] = exitingUser.USER_ID;
-            Session["UserEmail"] = exitingUser.USER_EMAIL;
-            Session["UserPhone"] = exitingUser.USER_PHONE;
-            Session["Role"] = exitingUser.ROLE;
+            Session["UserId"] = existingUser.USER_ID;
+            Session["UserEmail"] = existingUser.USER_EMAIL;
+            Session["UserPhone"] = existingUser.USER_PHONE;
+            Session["Role"] = existingUser.ROLE;
             Session.Remove("ShoppingCart");
 
             ModelState.Clear();
@@ -177,27 +177,27 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public async Task<ActionResult> ForgotPassword(USER user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValidField("USER_EMAIL"))
             {
                 return View(user);
             }
-            var User = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
-            if (User == null)
+
+            var existingUser = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
+            if (existingUser == null)
             {
                 ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
                 return View(user);
             }
+
             var resetToken = Guid.NewGuid();
 
-            User.RESETTOKEN = resetToken;
+            existingUser.RESETTOKEN = resetToken;
             db.SaveChanges();
 
             string resetLink = Url.Action("ResetPassword", "Account", new { token = resetToken }, Request.Url.Scheme);
             string emailBody = $"Mật khẩu mới đã được yêu cầu cho tài khoản khách hàng.<br><br> Để đặt lại mật khẩu của bạn, hãy nhấp vào liên kết bên dưới: <br><br> {resetLink}";
 
             await emailService.SendEmailAsync(user.USER_EMAIL, "Thay đổi mật khẩu", "Quên mật khẩu", emailBody);
-
-            ModelState.Clear();
 
             TempData["ShowAlert"] = 0;
 
@@ -225,8 +225,8 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult ResetPassword(Guid? token, USER user)
         {
-            var User = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
-            if (User == null)
+            var existingUser = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
+            if (existingUser == null)
             {
                 return PartialView("_NotFound");
             }
@@ -237,8 +237,8 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            User.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
-            User.RESETTOKEN = null;
+            existingUser.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
+            existingUser.RESETTOKEN = null;
             db.SaveChanges();
 
             TempData["ShowAlert"] = 1;
@@ -280,17 +280,18 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult EditAccount(USER user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValidField("USER_NAME") || !ModelState.IsValidField("USER_EMAIL") || !ModelState.IsValidField("USER_PHONE"))
             {
                 return View(user);
             }
 
-            var exitingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
+            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
 
-            if (exitingUser != null)
+            if (existingUser != null)
             {
-                exitingUser.USER_NAME = user.USER_NAME;
-                exitingUser.USER_PHONE = user.USER_PHONE;
+                existingUser.USER_NAME = user.USER_NAME;
+                existingUser.USER_PHONE = user.USER_PHONE;
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
                 TempData["ShowAlert"] = 0;
                 return RedirectToAction("Account", "Account");
@@ -299,7 +300,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
-        public ActionResult EditPassword()
+        public ActionResult ChangePassword()
         {
             var userId = (Guid)Session["UserId"];
 
@@ -309,9 +310,9 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditPassword(USER user)
+        public ActionResult ChangePassword(USER user)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValidField("USER_PASSWORD"))
             {
                 return View(user);
             }
@@ -322,12 +323,15 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var exitingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
+            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
 
-            if (exitingUser != null)
+            if (existingUser != null)
             {
-                exitingUser.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
+                existingUser.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
+                TempData["ShowAlert"] = 1;
+                return RedirectToAction("Account");
             }
             return PartialView("_NotFound");
         }
@@ -343,8 +347,8 @@ namespace FlowerShop.Controllers
 
         public ActionResult OrderDetail(Guid? orderId)
         {
-            var orderDetails = db.ORDERDETAILS.Where(o => o.ORDER_ID == orderId).ToList();
-            return View(orderDetails);
+            var order = db.ORDERS.Where(o => o.ORDER_ID == orderId).FirstOrDefault();
+            return View(order);
         }
     }
 }

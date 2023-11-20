@@ -1,7 +1,7 @@
 ﻿using FlowerShop.Context;
-using FLowerShop.Models;
-using FLowerShop.Service;
-using FLowerShop.Service.Momo;
+using FlowerShop.Models;
+using FlowerShop.Service;
+using FlowerShop.Service.Momo;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -91,6 +91,7 @@ namespace FlowerShop.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.ListProvinces = await apiProvince.GetProvincesAsync();
                 return View(new OrderModel { ShoppingCarts = GetShoppingCarts() });
             }
 
@@ -102,7 +103,15 @@ namespace FlowerShop.Controllers
             order.RECIPIENT_ADDRESS += ", " + districtName + ", " + provinceName;
 
             var totalPriceGrand = CalculateTotalPrice(flower);
-            var coupon = db.DISCOUNTCODES.FirstOrDefault(c => c.CODE == couponName.ToUpper());
+
+            DateTime currentDate = DateTime.Now;
+
+            var coupon = db.DISCOUNTCODES
+                .Where(c => c.CODE == couponName.ToUpper() &&
+                            c.START_DATE <= currentDate &&
+                            c.END_DATE >= currentDate &&
+                            c.CODE_COUNT > 0)
+                .FirstOrDefault();
 
             if (coupon != null)
             {
@@ -346,7 +355,15 @@ namespace FlowerShop.Controllers
             if (userId == null)
                 return Json(new { CouponError = "Vui lòng đăng nhập để sử dụng mã giảm giá" });
 
-            var coupon = db.DISCOUNTCODES.FirstOrDefault(c => c.CODE == couponName.ToUpper());
+            DateTime currentDate = DateTime.Now;
+
+            var coupon = db.DISCOUNTCODES
+                .Where(c => c.CODE == couponName.ToUpper() &&
+                            c.START_DATE <= currentDate &&
+                            c.END_DATE >= currentDate &&
+                            c.CODE_COUNT > 0)
+                .FirstOrDefault();
+
             var flower = GetShoppingCarts();
 
             decimal? totalPriceGrand = CalculateTotalPrice(flower);

@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace FLowerShop.Service.Momo
+namespace FlowerShop.Service.Momo
 {
     class MoMoSecurity
     {

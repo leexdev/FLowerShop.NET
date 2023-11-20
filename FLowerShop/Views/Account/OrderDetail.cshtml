@@ -1,0 +1,145 @@
+﻿@model FlowerShop.Context.ORDER
+@using FlowerShop.Service
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+}
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="2">Chi tiết đơn hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="w-50">
+                            <b>ID đặt hàng: </b>
+                            @Model.ORDER_ID
+                            <br>
+                            <b>Ngày thêm: </b>
+                            @DateTimeConversionService.ConvertToVietnamTimeZone(Model.ORDER_DATE)
+                        </td>
+
+                        <td class="w-50">
+                            <b>Phương thức thanh toán: </b>
+                            @if (Model.PAYMENT_METHOD == false)
+                            {
+                                <text>Thanh toán khi nhận hàng</text>
+                            }
+                            else
+                            {
+                                <text>Thanh toán bằng ví Momo</text>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Thông tin người gửi</th>
+                        <th>Thông tin người nhận</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="w-50">
+                            <p>@Model.SENDER_NAME</p>
+                            <p>@Model.SENDER_EMAIL</p>
+                            <p>@Model.SENDER_PHONE</p>
+                            @if (Model.HIDE_SENDER_INFO == true)
+                            {
+                                <p>
+                                    Ẩn thông tin người gửi
+                                </p>
+                            }
+                            </td>
+
+                        <td class="w-50">
+                            <p>@Model.RECIPIENT_NAME</p>
+                            <p>@Model.RECIPIENT_PHONE</p>
+                            <p>@Model.RECIPIENT_ADDRESS</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="overflow-hidden">
+                <div class="overflow-auto">
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">Tên sản phẩm</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Giá bán</th>
+                                <th class="text-end">Tổng cộng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ORDERDETAILS)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <img class="img-thumbnail img-cart-flower"
+                                            src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                    </td>
+                                    <td class="text-center">@item.FLOWER.FLOWER_NAME</td>
+                                    <td class="text-center">@item.QUANTITY</td>
+                                    <td class="text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                                    <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="fw-bold text-end">Phí vận chuyển</td>
+                                <td class="text-end">30,000VNĐ</td>
+                            </tr>
+                            <tr>
+                                
+                                <td colspan="4" class="fw-bold text-end">Tổng cộng</td>
+                                <td class="text-end">@Model.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <h5 class="fw-bold mt-3">Lịch sử đơn hàng</h5>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <td>Ngày đặt</td>
+                        <td>Trạng thái</td>
+                        <td>Nội dung</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.ORDERHISTORies)
+                    {
+                        <tr>
+                            <td>@DateTimeConversionService.ConvertToVietnamTimeZone(item.CHANGE_DATE.Value)</td>
+                            <td>@item.STATUS</td>
+                            <td>@item.CONTENT</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <div class="button-select">
+                <a class="text-white bg-pink px-3 py-2 rounded-3 float-end" href="@Url.Action("OrderHistory", "Account")">Tiếp tục</a>
+            </div>
+        </div>
+
+        @Html.Partial("_MenuAccount")
+    </div>
+</div>

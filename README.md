@@ -7,7 +7,7 @@
 
 ## Step 1
 - Open SQL Developer and create a new user with Username: C##ADMIN and Password: 123, granting connect, dba, and resource privileges to this user.
-- Create a New Connection with the name: FLowerShopDB and log in using the Username and Password you just created.
+- Create a New Connection with the name: FlowerShopDB and log in using the Username and Password you just created.
 - Execute the FlowerShopDB.sql file using SQL Developer.
 
 ## Step 2

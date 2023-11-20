@@ -1,5 +1,5 @@
 ﻿@{
-    var cartFlowerModel = new FLowerShop.Models.CartFlowerModel();
+    var cartFlowerModel = new FlowerShop.Models.CartFlowerModel();
 
     if (Session["UserId"] != null && ViewBag.ShoppingCarts != null)
     {
@@ -52,7 +52,7 @@
                                     @if (Session["UserId"] != null)
                                     {
                                         <li><a class="dropdown-item link-select" href="@Url.Action("Account", "Account")" data-url="@Url.Action("Account", "Account")">Tài khoản</a></li>
-                                        <li><a class="dropdown-item link-select" href="@Url.Action("Order", "Account")" data-url="@Url.Action("Order", "Account")">Lịch sử đơn hàng</a></li>
+                                        <li><a class="dropdown-item link-select" href="@Url.Action("OrderHistory", "Account")" data-url="@Url.Action("OrderHistory", "Account")">Lịch sử đơn hàng</a></li>
                                         <li><a class="dropdown-item link-select" href="@Url.Action("Logout", "Account")" data-url="@Url.Action("Logout", "Account")">Đăng xuất</a></li>
                                     }
                                     else

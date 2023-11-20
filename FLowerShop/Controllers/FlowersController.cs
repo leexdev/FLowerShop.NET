@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 using FlowerShop.Context;
-using FLowerShop.Models;
+using FlowerShop.Models;
 
 namespace FlowerShop.Controllers
 {
@@ -44,7 +44,12 @@ namespace FlowerShop.Controllers
                 .Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId)
                 .ToList();
 
-            var discountCodes = db.DISCOUNTCODES.AsNoTracking().ToList();
+            DateTime currentDate = DateTime.Now;
+
+            var discountCodes = db.DISCOUNTCODES.AsNoTracking().Where(c =>
+                            c.START_DATE <= currentDate &&
+                            c.END_DATE >= currentDate &&
+                            c.CODE_COUNT > 0).ToList();
 
             var detailModel = new DetailModel
             {

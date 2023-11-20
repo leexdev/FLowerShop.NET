@@ -1,5 +1,5 @@
 ﻿using FlowerShop.Context;
-using FLowerShop.Models;
+using FlowerShop.Models;
 using System;
 using System.Net;
 using System.Net.Mail;

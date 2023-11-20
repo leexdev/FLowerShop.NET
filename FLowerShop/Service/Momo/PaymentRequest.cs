@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 
-namespace FLowerShop.Service.Momo
+namespace FlowerShop.Service.Momo
 {
     public class PaymentRequest
     {

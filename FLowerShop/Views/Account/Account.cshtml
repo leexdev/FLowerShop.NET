@@ -11,9 +11,9 @@
         <div class="col-9">
             <h5 class="fw-bold">Tài khoản của tôi</h5>
             <a class="d-block" href="@Url.Action("EditAccount", "Account")">Chỉnh sửa thông tin tài khoản của bạn</a>
-            <a class="d-block" href="">Thay đổi mật khẩu của bạn</a>
+            <a class="d-block" href="@Url.Action("ChangePassword", "Account")">Thay đổi mật khẩu của bạn</a>
             <h5 class="fw-bold mt-3">Xem đơn đặt hàng của tôi</h5>
-            <a href="">Xem lịch sử đặt hàng của bạn</a>
+            <a href="@Url.Action("OrderHistory", "Account")">Xem lịch sử đặt hàng của bạn</a>
         </div>
 
         @Html.Partial("_MenuAccount")
@@ -24,8 +24,19 @@
 {
     <script>
         document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
-                        <i class="fa-solid fa-circle-check"></i> Thành công: Tài khoản của bạn đã được cập nhật thành công.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>`;
+                            <i class="fa-solid fa-circle-check"></i> Thành công: Tài khoản của bạn đã được cập nhật thành công.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>`;
     </script>
 }
+
+@if (@ViewBag.ShowAlert == 1)
+{
+    <script>
+        document.getElementById('showAlert').innerHTML = `<div class="alert alert-success alert-dismissible">
+                            <i class="fa-solid fa-circle-check"></i> Thành công: Thay đổi mật khẩu thành công.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>`;
+    </script>
+}
+
