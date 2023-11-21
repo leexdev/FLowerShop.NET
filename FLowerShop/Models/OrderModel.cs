@@ -14,6 +14,10 @@ namespace FlowerShop.Models
         public USER User { get; set; }
         public ORDER Order { get; set; }
         public DISCOUNTCODE DiscountCode { get; set; }
+        public string ProvinceName { get; set; }
+        public string DistrictName { get; set; }
+        public int? ProvinceCode { get; set; }
+
         public OrderModel()
         {
             Order = new ORDER();

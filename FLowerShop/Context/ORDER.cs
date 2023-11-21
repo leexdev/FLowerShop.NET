@@ -35,11 +35,11 @@ namespace FlowerShop.Context
         public Nullable<System.Guid> DISCOUNT_ID { get; set; }
 
         [DisplayName("Lời nhắn cho người gửi")]
-        [MaxLength(300, ErrorMessage = "Quá giới hạn ký tự")]
+        [MaxLength(300, ErrorMessage = "Giới hạn {1} ký tự")]
         public string MESSAGE_TO_RECIPIENT { get; set; }
 
         [DisplayName("Lời nhắn cho shop")]
-        [MaxLength(300, ErrorMessage = "Quá giới hạn ký tự")]
+        [MaxLength(300, ErrorMessage = "Giới hạn {1} ký tự")]
         public string MESSAGE_TO_SHOP { get; set; }
 
         [DisplayName("Ẩn thông tin người gửi")]
@@ -50,7 +50,8 @@ namespace FlowerShop.Context
 
         [DisplayName("Họ tên")]
         [Required(ErrorMessage = "Tên người gửi không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên người gửi phải có ít nhât {2} ký tự và không quá 100 ký tự", MinimumLength = 3)]
+        [MinLength(3, ErrorMessage = "Tên người gửi phải có ít nhất {1} ký tự")]
+        [MaxLength(100, ErrorMessage = "Giới hạn {1} ký tự")]
         public string SENDER_NAME { get; set; }
 
         [DisplayName("Số điện thoại")]
@@ -65,7 +66,8 @@ namespace FlowerShop.Context
 
         [DisplayName("Họ tên")]
         [Required(ErrorMessage = "Tên người nhận không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên người nhận phải có ít nhât {2} ký tự và không quá 100 ký tự.", MinimumLength = 3)]
+        [MinLength(3, ErrorMessage = "Tên người nhận phải có ít nhất {1} ký tự")]
+        [MaxLength(100, ErrorMessage = "Giới hạn {1} ký tự")]
         public string RECIPIENT_NAME { get; set; }
 
         [DisplayName("Số điện thoại")]
@@ -75,7 +77,8 @@ namespace FlowerShop.Context
 
         [DisplayName("Địa chỉ")]
         [Required(ErrorMessage = "Địa chỉ không được để trống")]
-        [StringLength(200, ErrorMessage = "Địa chỉ phải có ít nhât {2} ký tự và không quá 200 ký tự.", MinimumLength = 5)]
+        [MinLength(5, ErrorMessage = "Địa chỉ phải có ít nhất {1} ký tự")]
+        [MaxLength(200, ErrorMessage = "Giới hạn {1} ký tự")]
         public string RECIPIENT_ADDRESS { get; set; }
         public bool DELETED { get; set; }
     

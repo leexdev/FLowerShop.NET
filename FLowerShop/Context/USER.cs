@@ -29,7 +29,8 @@ namespace FlowerShop.Context
 
         [DisplayName("Họ tên")]
         [Required(ErrorMessage = "Tên người dùng không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên người dùng phải có ít nhât {2} ký tự.", MinimumLength = 3)]
+        [MinLength(3, ErrorMessage = "Tên người dùng phải có ít nhất {1} ký tự")]
+        [MaxLength(100, ErrorMessage = "Vượt quá giới hạn ký tự")]
         public string USER_NAME { get; set; }
 
         [DisplayName("Địa chỉ Email")]

@@ -27,7 +27,8 @@ namespace FlowerShop.Context
 
         [DisplayName("Mã giảm giá")]
         [Required(ErrorMessage = "Mã giảm giá không được để trống")]
-        [StringLength(20, ErrorMessage = "Mã phải có ít nhât {2} ký tự và không quá 100 ký tự.", MinimumLength = 5)]
+        [MinLength(3, ErrorMessage = "Mã giảm giá phải có ít nhất {1} ký tự")]
+        [MaxLength(20, ErrorMessage = "Vượt quá giới hạn ký tự")]
         public string CODE { get; set; }
 
         [DisplayName("Loại giảm giá")]

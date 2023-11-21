@@ -192,6 +192,7 @@ namespace FlowerShop.Controllers
             var resetToken = Guid.NewGuid();
 
             existingUser.RESETTOKEN = resetToken;
+            db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
 
             string resetLink = Url.Action("ResetPassword", "Account", new { token = resetToken }, Request.Url.Scheme);
@@ -231,14 +232,22 @@ namespace FlowerShop.Controllers
                 return PartialView("_NotFound");
             }
 
+            if (!ModelState.IsValidField("USER_PASSWORD"))
+            {
+                ViewBag.ResetToken = token;
+                return View(user);
+            }
+
             if(user.USER_PASSWORD != user.CONFIRM_PASSWORD)
             {
                 ModelState.AddModelError("CONFIRM_PASSWORD", "Mật khẩu và mật khẩu xác nhận không khớp");
+                ViewBag.ResetToken = token;
                 return View(user);
             }
 
             existingUser.USER_PASSWORD = GetMd5Hash(user.USER_PASSWORD);
             existingUser.RESETTOKEN = null;
+            db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
 
             TempData["ShowAlert"] = 1;
@@ -272,9 +281,14 @@ namespace FlowerShop.Controllers
         {
             var userId = (Guid)Session["UserId"];
 
-            var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+            if (userId != null)
+            {
+                var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
 
-            return View(user);
+                return View(user);
+            }
+
+            return PartialView("_NotFound");
         }
 
         [HttpPost]
@@ -304,9 +318,14 @@ namespace FlowerShop.Controllers
         {
             var userId = (Guid)Session["UserId"];
 
-            var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+            if (userId != null)
+            {
+                var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
 
-            return View(user);
+                return View(user);
+            }
+
+            return PartialView("_NotFound");
         }
 
         [HttpPost]
@@ -340,15 +359,25 @@ namespace FlowerShop.Controllers
         {
             var userId = (Guid)Session["UserId"];
 
-            var order = db.ORDERS.Where(o => o.USER_ID == userId).ToList();
+            if (userId != null)
+            {
+                var order = db.ORDERS.Where(o => o.USER_ID == userId).ToList();
 
-            return View(order);
+                return View(order);
+            }
+
+            return PartialView("_NotFound");
         }
 
         public ActionResult OrderDetail(Guid? orderId)
         {
             var order = db.ORDERS.Where(o => o.ORDER_ID == orderId).FirstOrDefault();
-            return View(order);
+            if (order != null)
+            {
+                return View(order);
+            }
+
+            return PartialView("_NotFound");
         }
     }
 }

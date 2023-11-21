@@ -1,5 +1,5 @@
 ﻿@model List<FlowerShop.Context.ORDER>
-@using FlowerShop.Service
+
 @{
     ViewBag.Title = "Lịch sử đơn hàng";
 }
@@ -39,7 +39,7 @@
                                         }
                                     </td>
                                     <td>@item.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
-                                    <td>@DateTimeConversionService.ConvertToVietnamTimeZone(item.ORDER_DATE)</td>
+                                    <td>@item.ORDER_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td>
                                         <a class="p-2 bg-pink rounded-2" href="@Url.Action("OrderDetail", "Account", new {orderId = item.ORDER_ID})" title="Chi tiết đơn hàng">
                                             <i class="fa-solid fa-circle-info text-white"></i>

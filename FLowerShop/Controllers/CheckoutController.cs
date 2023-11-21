@@ -78,7 +78,7 @@ namespace FlowerShop.Controllers
 
             var orderModel = new OrderModel
             {
-                ShoppingCarts = flower,
+                ShoppingCarts = flower
             };
 
             ViewBag.ListProvinces = await apiProvince.GetProvincesAsync();
@@ -87,12 +87,21 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(ORDER order, string couponName, string provinceName, string districtName)
+        public async Task<ActionResult> Index(ORDER order, string couponName, string districtName, int ProvinceCode)
         {
+            var provinceName = await apiProvince.GetProvinceNameByCodeAsync(ProvinceCode);
             if (!ModelState.IsValid)
             {
                 ViewBag.ListProvinces = await apiProvince.GetProvincesAsync();
-                return View(new OrderModel { ShoppingCarts = GetShoppingCarts() });
+                ViewBag.ListDistricts = await apiProvince.GetDistrictsByProvinceAsync(ProvinceCode);
+                OrderModel model = new OrderModel
+                {
+                    ShoppingCarts = GetShoppingCarts(),
+                    ProvinceName = provinceName,
+                    DistrictName = districtName
+                };
+
+                return View(model);
             }
 
             var userId = Session["UserId"] as Guid?;

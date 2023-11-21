@@ -1,7 +1,7 @@
 ﻿@model FlowerShop.Context.ORDER
-@using FlowerShop.Service
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
+    decimal coupon = 30000;
 }
 
 <div class="container">
@@ -20,7 +20,7 @@
                             @Model.ORDER_ID
                             <br>
                             <b>Ngày thêm: </b>
-                            @DateTimeConversionService.ConvertToVietnamTimeZone(Model.ORDER_DATE)
+                            @Model.ORDER_DATE.Value.ToString("dd/MM/yyyy HH:mm")
                         </td>
 
                         <td class="w-50">
@@ -49,8 +49,8 @@
                     <tr>
                         <td class="w-50">
                             <p>@Model.SENDER_NAME</p>
-                            <p>@Model.SENDER_EMAIL</p>
                             <p>@Model.SENDER_PHONE</p>
+                            <p>@Model.SENDER_EMAIL</p>
                             @if (Model.HIDE_SENDER_INFO == true)
                             {
                                 <p>
@@ -87,13 +87,19 @@
                             {
                                 <tr>
                                     <td class="text-center">
-                                        <img class="img-thumbnail img-cart-flower"
-                                            src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                            <img class="img-thumbnail img-cart-flower"
+                                                 src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                        </a>
                                     </td>
-                                    <td class="text-center">@item.FLOWER.FLOWER_NAME</td>
-                                    <td class="text-center">@item.QUANTITY</td>
-                                    <td class="text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
-                                    <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                                    <td class="align-middle text-center">
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                            @item.FLOWER.FLOWER_NAME
+                                        </a>
+                                    </td>
+                                    <td class="align-middle text-center">@item.QUANTITY</td>
+                                    <td class="align-middle text-end">@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                                    <td class="align-middle text-end">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
                                 </tr>
 
                             }
@@ -103,8 +109,20 @@
                                 <td colspan="4" class="fw-bold text-end">Phí vận chuyển</td>
                                 <td class="text-end">30,000VNĐ</td>
                             </tr>
+                            @if (Model.DISCOUNT_ID != null)
+                            {
+                                <tr>
+                                    <td colspan="4" class="fw-bold text-end">Mã giảm giá</td>
+                                    @{ 
+                                        var subtotal = Model.ORDERDETAILS.Sum(o => o.SUBTOTAL) + 30000;
+                                        coupon = (decimal)subtotal - Model.TOTAL_AMOUNT.Value;
+
+                                    }
+                                    <td class="text-end">- @coupon.ToString("N0")VNĐ</td>
+                                </tr>
+                            }
                             <tr>
-                                
+
                                 <td colspan="4" class="fw-bold text-end">Tổng cộng</td>
                                 <td class="text-end">@Model.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
                             </tr>
@@ -126,7 +144,7 @@
                     @foreach(var item in Model.ORDERHISTORies)
                     {
                         <tr>
-                            <td>@DateTimeConversionService.ConvertToVietnamTimeZone(item.CHANGE_DATE.Value)</td>
+                            <td>@item.CHANGE_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>
                             <td>@item.STATUS</td>
                             <td>@item.CONTENT</td>
                         </tr>

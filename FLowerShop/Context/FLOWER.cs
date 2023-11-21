@@ -27,8 +27,9 @@ namespace FlowerShop.Context
         public System.Guid FLOWER_ID { get; set; }
 
         [DisplayName("Tên sản phẩm")]
-        [Required(ErrorMessage = "Tên không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên phải có ít nhât {2} ký tự và không quá 100 ký tự.", MinimumLength = 5)]
+        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
+        [MinLength(3, ErrorMessage = "Tên sản phẩm phải có ít nhất {1} ký tự")]
+        [MaxLength(100, ErrorMessage = "Giới hạn {1} ký tự")]
         public string FLOWER_NAME { get; set; }
 
         [DisplayName("Hình ảnh")]
@@ -36,7 +37,7 @@ namespace FlowerShop.Context
         public string FLOWER_IMAGE { get; set; }
 
         [DisplayName("Mô tả")]
-        [MaxLength(2000, ErrorMessage = "Vượt quá giới hạn ký tự")]
+        [MaxLength(2000, ErrorMessage = "Giới hạn {1} ký tự")]
         public string DESCRIPTION { get; set; }
 
         [DisplayName("Giá cũ")]

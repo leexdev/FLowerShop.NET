@@ -54,11 +54,11 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.Label("Tỉnh, thành phố", new { @class = "fw-bold fs-6 form-label" })
-                            <select class="form-select" required id="provinceSelect" name="provinceName">
-                                <option disabled selected value="">--- Chọn tỉnh ---</option>
+                            <select class="form-select" required id="provinceSelect" name="ProvinceCode">
+                                <option selected disabled value="">--- Chọn tỉnh ---</option>
                                 @foreach (var item in ViewBag.ListProvinces)
                                 {
-                                    <option value="@item.name" data-provincecode="@item.code">@item.name</option>
+                                    <option value="@item.code" data-provincecode="@item.code" @(item.name == Model.ProvinceName ? "selected" : "")>@item.name</option>
                                 }
                             </select>
                         </div>
@@ -66,8 +66,18 @@
                     <div class="col-md-6 mt-3 mt-md-0">
                         <div class="form-group">
                             @Html.Label("Quận/ Huyện:", new { @class = "fw-bold fs-6 form-label" })
-                            <select class="form-select" required id="districtSelect" name="districtName" disabled>
-                                <option value="">--- Chọn tỉnh trước ---</option>
+                            <select class="form-select" required id="districtSelect" name="districtName">
+                                @if (ViewBag.ListDistricts != null)
+                                {
+                                    foreach (var item in ViewBag.ListDistricts)
+                                    {
+                                        <option value="@item.name" @(item.name == Model.DistrictName ? "selected" : "")>@item.name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">--- Chọn tỉnh trước ---</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -102,7 +112,7 @@
                             <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" id="couponName" name="couponName" placeholder="Mã giảm giá" class="form-control" />
+                            @Html.TextBoxFor(m => m.DiscountCode.CODE, new {@id = "couponName", name = "couponName", @class = "form-control"} )
                         </div>
                         <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
                             <button type="button" id="btn-add-coupon" class="btn bg-pink text-white btn-select-coupon">
@@ -224,7 +234,7 @@
 
             districtSelect.innerHTML = "";
 
-            fetch('/Checkout/GetDistricts?provinceCode=' + provinceCode)
+            fetch('/Checkout/GetDistricts?provinceCode=' + encodeURIComponent(provinceCode))
                 .then(response => response.json())
                 .then(result => {
                     result.forEach(district => {
@@ -238,20 +248,6 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        });
-
-        document.getElementById("provinceSelect").addEventListener("change", function () {
-            var provinceSelect = document.getElementById("provinceSelect");
-            var districtSelect = document.getElementById("districtSelect");
-
-            if (provinceSelect.value !== "") {
-                districtSelect.disabled = false;
-                districtSelect.setAttribute("required", "required");
-            } else {
-                districtSelect.disabled = true;
-                districtSelect.removeAttribute("required");
-                districtSelect.selectedIndex = 0;
-            }
         });
     });
 
