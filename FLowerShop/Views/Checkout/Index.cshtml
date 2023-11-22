@@ -112,7 +112,7 @@
                             <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            @Html.TextBoxFor(m => m.DiscountCode.CODE, new {@id = "couponName", name = "couponName", @class = "form-control"} )
+                            @Html.TextBoxFor(m => m.DiscountCode.CODE, new {@id = "couponName", @class = "form-control"} )
                         </div>
                         <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
                             <button type="button" id="btn-add-coupon" class="btn bg-pink text-white btn-select-coupon">
@@ -202,6 +202,10 @@
                     }
 
                     if (result.CouponSuccess) {
+                        let hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'couponName';
+
                         couponAlert.innerText = result.CouponSuccess;
                         couponAlert.className = '';
                         couponAlert.classList.add("mt-2", "text-success")

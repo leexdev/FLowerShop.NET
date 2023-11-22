@@ -25,18 +25,10 @@ namespace FlowerShop.Controllers
 
         public ActionResult Index()
         {
-            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
-            var flowers = db.FLOWERS.AsNoTracking().ToList();
+            var flowers = db.FLOWERS.AsNoTracking().Where(f => f.DELETED == false).ToList();
 
-            var objHomeModel = new HomeModel
-            {
-                FlowerTypes = flowerTypes,
-                Flowers = flowers
-            };
-
-            return View(objHomeModel);
+            return View(flowers);
         }
-
     }
 
 }

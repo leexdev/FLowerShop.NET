@@ -47,7 +47,7 @@ namespace FlowerShop.Controllers
             if (Session["UserId"] != null)
             {
                 Guid userId = (Guid)Session["UserId"];
-                return db.SHOPPINGCARTs.Where(s => s.USER_ID == userId).ToList();
+                return db.SHOPPINGCARTs.Where(s => s.USER_ID == userId && s.DELETED == false).ToList();
             }
             else if (Session["ShoppingCart"] != null)
             {
@@ -124,7 +124,7 @@ namespace FlowerShop.Controllers
 
             if (coupon != null)
             {
-                var discountUser = db.USERDISCOUNTs.FirstOrDefault(u => u.USER_ID == userId && u.DISCOUNT_ID == coupon.DISCOUNT_ID);
+                var discountUser = db.USERDISCOUNTs.FirstOrDefault(u => u.USER_ID == userId && u.DISCOUNT_ID == coupon.DISCOUNT_ID && u.DELETED == false);
 
                 if (userId != null && coupon.MINIMUM_ORDER_AMOUNT < totalPriceGrand && discountUser == null)
                 {
@@ -179,7 +179,7 @@ namespace FlowerShop.Controllers
             string returnUrl = "https://localhost:44343/Checkout/ConfirmPaymentClient";
             string notifyurl = "https://localhost:44343/Checkout/SavePayment";
 
-            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderid);
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderid && o.DELETED == false);
             string amount = order.TOTAL_AMOUNT.ToString();
             string orderId = order.ORDER_ID.ToString();
             string requestId = DateTime.Now.Ticks.ToString();
@@ -218,7 +218,7 @@ namespace FlowerShop.Controllers
             string rOrderId = result.orderId;
             int rErrorCode = int.Parse(result.errorCode);
             var orderId = Guid.Parse(rOrderId);
-            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId);
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId && o.DELETED == false);
             if (rErrorCode == 0)
             {
                 await SendEmailsAsync(order);
@@ -229,7 +229,7 @@ namespace FlowerShop.Controllers
                     {
                         var userId = (Guid)Session["UserId"];
 
-                        var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId);
+                        var shoppingCarts = db.SHOPPINGCARTs.Where(s => s.USER_ID == userId && s.DELETED == false);
                         foreach (var shoppingCart in shoppingCarts)
                         {
                             db.SHOPPINGCARTs.Remove(shoppingCart);
@@ -246,7 +246,7 @@ namespace FlowerShop.Controllers
             }
             else
             {
-                var orderDetail = db.ORDERDETAILS.Where(o => o.ORDER_ID == orderId).ToList();
+                var orderDetail = db.ORDERDETAILS.Where(o => o.ORDER_ID == orderId && o.DELETED == false).ToList();
 
                 foreach (var item in orderDetail)
                 {
@@ -379,7 +379,7 @@ namespace FlowerShop.Controllers
 
             if (coupon != null)
             {
-                var discountUser = db.USERDISCOUNTs.FirstOrDefault(u => u.USER_ID == userId && u.DISCOUNT_ID == coupon.DISCOUNT_ID);
+                var discountUser = db.USERDISCOUNTs.FirstOrDefault(u => u.USER_ID == userId && u.DISCOUNT_ID == coupon.DISCOUNT_ID && u.DELETED == false);
                 if (discountUser != null)
                     return Json(new { CouponError = "Mỗi mã giảm giá chỉ sử dụng được 1 lần" });
 

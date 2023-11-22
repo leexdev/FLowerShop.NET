@@ -41,7 +41,7 @@ namespace FlowerShop.Controllers
 
             var flowersOfType = db.FLOWERS
                 .AsNoTracking()
-                .Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId)
+                .Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId && f.DELETED == false)
                 .ToList();
 
             DateTime currentDate = DateTime.Now;
@@ -66,7 +66,7 @@ namespace FlowerShop.Controllers
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
                 .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
-                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId))
+                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId) && f.DELETED == false)
                 .ToList();
 
             var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
@@ -90,7 +90,7 @@ namespace FlowerShop.Controllers
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
                 .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
-                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId))
+                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId) && f.DELETED == false) 
                 .ToList();
 
             // Sử dụng giá trị filterValue từ tham số URL để áp dụng sắp xếp

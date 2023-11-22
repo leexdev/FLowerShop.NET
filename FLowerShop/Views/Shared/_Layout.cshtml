@@ -104,15 +104,15 @@
                             <ul class="dropdown-menu bg-milk">
                                 @foreach (var item in ViewBag.lstFLowerTypes)
                                 {
-                                    <li><a class="dropdown-item link-select" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" data-url="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID, flowertypeName = @item.FLOWERTYPE_NAME })">@item.FLOWERTYPE_NAME</a></li>
+                                    <li><a class="dropdown-item link-select" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })" data-url="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = item.FLOWERTYPE_ID })">@item.FLOWERTYPE_NAME</a></li>
                                 }
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link-select" href="#">Tin tức</a>
+                            <a class="nav-link link-select" href="@Url.Action("News", "Home")">Tin tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link-select" href="#">Liên hệ</a>
+                            <a class="nav-link link-select" href="@Url.Action("Contact", "Home")">Liên hệ</a>
                         </li>
                     </ul>
                     <div class="d-flex mb-3 mb-md-0">

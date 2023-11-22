@@ -53,7 +53,7 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var existingUser = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
+            var existingUser = db.USERS.Where(u => u.DELETED == false).FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
 
             if (existingUser != null)
             {
@@ -101,7 +101,7 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var existingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL).FirstOrDefault();
+            var existingUser = db.USERS.Where(u => u.USER_EMAIL == user.USER_EMAIL && u.DELETED == false).FirstOrDefault();
             if (existingUser == null)
             {
                 ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
@@ -143,7 +143,7 @@ namespace FlowerShop.Controllers
             string email = me.email;
             string facebookid = me.id;
 
-            var user = db.USERS.FirstOrDefault(u => u.FACEBOOKID == facebookid);
+            var user = db.USERS.FirstOrDefault(u => u.FACEBOOKID == facebookid && u.DELETED == false);
 
             if (user == null)
             {
@@ -182,7 +182,7 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var existingUser = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL);
+            var existingUser = db.USERS.FirstOrDefault(u => u.USER_EMAIL == user.USER_EMAIL && u.DELETED == false);
             if (existingUser == null)
             {
                 ModelState.AddModelError("USER_EMAIL", "Địa chỉ Email chưa được đăng ký");
@@ -211,7 +211,7 @@ namespace FlowerShop.Controllers
             {
                 return PartialView("_NotFound");
             }
-            var user = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
+            var user = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token && u.DELETED == false);
 
             if (user == null)
             {
@@ -226,7 +226,7 @@ namespace FlowerShop.Controllers
         [HttpPost]
         public ActionResult ResetPassword(Guid? token, USER user)
         {
-            var existingUser = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token);
+            var existingUser = db.USERS.FirstOrDefault(u => u.RESETTOKEN == token && u.DELETED == false);
             if (existingUser == null)
             {
                 return PartialView("_NotFound");
@@ -283,7 +283,7 @@ namespace FlowerShop.Controllers
 
             if (userId != null)
             {
-                var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+                var user = db.USERS.Where(u => u.USER_ID == userId && u.DELETED == false).FirstOrDefault();
 
                 return View(user);
             }
@@ -299,7 +299,7 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
+            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID && u.DELETED == false).FirstOrDefault();
 
             if (existingUser != null)
             {
@@ -320,7 +320,7 @@ namespace FlowerShop.Controllers
 
             if (userId != null)
             {
-                var user = db.USERS.Where(u => u.USER_ID == userId).FirstOrDefault();
+                var user = db.USERS.Where(u => u.USER_ID == userId && u.DELETED == false).FirstOrDefault();
 
                 return View(user);
             }
@@ -342,7 +342,7 @@ namespace FlowerShop.Controllers
                 return View(user);
             }
 
-            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID).FirstOrDefault();
+            var existingUser = db.USERS.Where(u => u.USER_ID == user.USER_ID && u.DELETED == false).FirstOrDefault();
 
             if (existingUser != null)
             {
@@ -361,7 +361,7 @@ namespace FlowerShop.Controllers
 
             if (userId != null)
             {
-                var order = db.ORDERS.Where(o => o.USER_ID == userId).ToList();
+                var order = db.ORDERS.Where(o => o.USER_ID == userId && o.DELETED == false).ToList();
 
                 return View(order);
             }
@@ -371,7 +371,7 @@ namespace FlowerShop.Controllers
 
         public ActionResult OrderDetail(Guid? orderId)
         {
-            var order = db.ORDERS.Where(o => o.ORDER_ID == orderId).FirstOrDefault();
+            var order = db.ORDERS.Where(o => o.ORDER_ID == orderId && o.DELETED == false).FirstOrDefault();
             if (order != null)
             {
                 return View(order);

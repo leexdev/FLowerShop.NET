@@ -1,5 +1,4 @@
-﻿@model FlowerShop.Models.HomeModel
-
+﻿@model List<FlowerShop.Context.FLOWER>
 @{
     ViewBag.Title = "Trang chủ";
     <link rel="stylesheet" href="~/Content/assets/css/homepage.css">
@@ -31,105 +30,40 @@
     <div id="discount-flower">
         <h4 class="mt-5 mb-4 text-center">ĐANG GIẢM GIÁ</h4>
         <div class="list-product row">
-            <div class="item-product col-md-3 col-6 mb-4">
-                <div class="image position-relative mb-3">
-                    <a href="./detail.html">
-                        <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                        <span class="percent-off-rounded">9%<br>GIẢM</span>
-                    </a>
-                </div>
-                <div class="content">
-                    <div class="description">
-                        <div class="fw-bold text-center">
-                            <a href="./detail.html">Mặt trời của anh</a>
-                        </div>
-                        <div class="price text-center fw-bold p-2">
-                            <span class="price-new">300,000VND</span>
-                            <span class="price-old">330,000VND</span>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="btn bg-pink d-block p-1 w-60">
-                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+            @foreach (var item in Model.Where(f => f.OLD_PRICE != null).OrderBy(x => Guid.NewGuid()).Take(4).ToList())
+            {
+                <div class="item-product col-md-3 col-6 mb-4">
+                    <div class="image position-relative mb-3">
+                        <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                            <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                            @if (item.OLD_PRICE != null)
+                            {
+                                var oldPrice = item.OLD_PRICE;
+                                var newPrice = item.NEW_PRICE;
+                                var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                            }
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="description">
+                            <div class="fw-bold text-center">
+                                <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                            </div>
+                            <div class="price text-center fw-bold p-2">
+                                <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                @if (item.OLD_PRICE != null)
+                                {
+                                    <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                }
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="item-product col-md-3 col-6 mb-4">
-                <div class="image position-relative mb-3">
-                    <a href="./detail.html">
-                        <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                        <span class="percent-off-rounded">9%<br>GIẢM</span>
-                    </a>
-                </div>
-                <div class="content">
-                    <div class="description">
-                        <div class="fw-bold text-center">
-                            <a href="./detail.html">Mặt trời của anh</a>
-                        </div>
-                        <div class="price text-center fw-bold p-2">
-                            <span class="price-new">300,000VND</span>
-                            <span class="price-old">330,000VND</span>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="btn bg-pink d-block p-1 w-60">
-                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-product col-md-3 col-6 mb-4">
-                <div class="image position-relative mb-3">
-                    <a href="./detail.html">
-                        <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                        <span class="percent-off-rounded">9%<br>GIẢM</span>
-                    </a>
-                </div>
-                <div class="content">
-                    <div class="description">
-                        <div class="fw-bold text-center">
-                            <a href="./detail.html">Mặt trời của anh</a>
-                        </div>
-                        <div class="price text-center fw-bold p-2">
-                            <span class="price-new">300,000VND</span>
-                            <span class="price-old">330,000VND</span>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="btn bg-pink d-block p-1 w-60">
-                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-product col-md-3 col-6 mb-4">
-                <div class="image position-relative mb-3">
-                    <a href="./detail.html">
-                        <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                        <span class="percent-off-rounded">9%<br>GIẢM</span>
-                    </a>
-                </div>
-                <div class="content">
-                    <div class="description">
-                        <div class="fw-bold text-center">
-                            <a href="./detail.html">Mặt trời của anh</a>
-                        </div>
-                        <div class="price text-center fw-bold p-2">
-                            <span class="price-new">300,000VND</span>
-                            <span class="price-old">330,000VND</span>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="btn bg-pink d-block p-1 w-60">
-                                <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 
@@ -162,7 +96,7 @@
     <div id="hot-flower">
         <h4 class="mt-5 mb-4 text-center">ĐẶT NHIỀU NHẤT</h4>
         <div class="list-product row">
-            @foreach (var item in Model.Flowers)
+            @foreach (var item in Model.Where(flower => flower.ORDERDETAILS.Any()).OrderByDescending(flower => flower.ORDERDETAILS.Sum(orderDetail => orderDetail.QUANTITY)).Take(4))
             {
                 <div class="item-product col-md-3 col-6 mb-4">
                     <div class="image position-relative mb-3">
@@ -200,315 +134,120 @@
         <div id="opengrand-flower">
             <h4 class="mt-5 mb-4 text-center">HOA KHAI TRƯƠNG</h4>
             <div class="list-product row justify-content-center">
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa khai trương").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
+                {
+                    <div class="item-product col-md-3 col-6 mb-4">
+                        <div class="image position-relative mb-3">
+                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                @if (item.OLD_PRICE != null)
+                                {
+                                    var oldPrice = item.OLD_PRICE;
+                                    var newPrice = item.NEW_PRICE;
+                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                                }
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="description">
+                                <div class="fw-bold text-center">
+                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                </div>
+                                <div class="price text-center fw-bold p-2">
+                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                    @if (item.OLD_PRICE != null)
+                                    {
+                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
 
         <div id="birthday-flower">
             <h4 class="mt-5 mb-4 text-center">HOA SINH NHẬT</h4>
             <div class="list-product row">
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa sinh nhật").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
+                {
+                    <div class="item-product col-md-3 col-6 mb-4">
+                        <div class="image position-relative mb-3">
+                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                @if (item.OLD_PRICE != null)
+                                {
+                                    var oldPrice = item.OLD_PRICE;
+                                    var newPrice = item.NEW_PRICE;
+                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                                }
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="description">
+                                <div class="fw-bold text-center">
+                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                </div>
+                                <div class="price text-center fw-bold p-2">
+                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                    @if (item.OLD_PRICE != null)
+                                    {
+                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
 
         <div id="funeral-flower">
             <h4 class="mt-5 mb-4 text-center">HOA TANG LỄ</h4>
             <div class="list-product row">
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
+                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa tang lễ").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
+                {
+                    <div class="item-product col-md-3 col-6 mb-4">
+                        <div class="image position-relative mb-3">
+                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                @if (item.OLD_PRICE != null)
+                                {
+                                    var oldPrice = item.OLD_PRICE;
+                                    var newPrice = item.NEW_PRICE;
+                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
+                                }
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="description">
+                                <div class="fw-bold text-center">
+                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                </div>
+                                <div class="price text-center fw-bold p-2">
+                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                    @if (item.OLD_PRICE != null)
+                                    {
+                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-product col-md-3 col-6 mb-4">
-                    <div class="image position-relative mb-3">
-                        <a href="./detail.html">
-                            <img class="img-fluid" src="~/Content/assets/img/hoa-chuc-mung-may-man-570x570.jpg" alt="">
-                            <span class="percent-off-rounded">9%<br>GIẢM</span>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="description">
-                            <div class="fw-bold text-center">
-                                <a href="./detail.html">Mặt trời của anh</a>
-                            </div>
-                            <div class="price text-center fw-bold p-2">
-                                <span class="price-new">300,000VND</span>
-                                <span class="price-old">330,000VND</span>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="btn bg-pink d-block p-1 w-60">
-                                    <a class="text-white rounded" href="./detail.html">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>

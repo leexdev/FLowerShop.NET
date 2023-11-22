@@ -1,0 +1,106 @@
+﻿@model List<FlowerShop.Context.FLOWER>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Danh sách sản phẩm</h4>
+            </div>
+            <div class="page-btn">
+                <a href="@Url.Action("AddFlower", "Flowers")" class="btn btn-added">
+                    <img src="~/Content/admin/assets/img/icons/plus.svg" alt="img"
+                         class="me-1">Thêm sản phẩm mới
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-top">
+                    <div class="col-12 col-md-6">
+                        <select class="select">
+                            <option disabled selected>Danh mục sản phẩm</option>
+                            <option>Macbook pro</option>
+                            <option>Orange</option>
+                        </select>
+                    </div>
+                    <div class="wordset">
+                        <ul>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf">
+                                    <img src="~/Content/admin/assets/img/icons/pdf.svg" alt="img">
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel">
+                                    <img src="~/Content/admin/assets/img/icons/excel.svg" alt="img">
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="print">
+                                    <img src="~/Content/admin/assets/img/icons/printer.svg" alt="img">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table  datanew">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="checkboxs">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </th>
+                                <th>Tên</th>
+                                <th>Giá cũ </th>
+                                <th>Giá mới</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <label class="checkboxs">
+                                            <input name="@item.FLOWER_ID" type="checkbox">
+                                            <span class="checkmarks"></span>
+                                        </label>
+                                    </td>
+                                    <td class="productimgname">
+                                        <a href="javascript:void(0);" class="product-img">
+                                            <img src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                        </a>
+                                        <a href="javascript:void(0);">@item.FLOWER_NAME</a>
+                                    </td>
+                                    <td>@((item.OLD_PRICE.HasValue) ? item.OLD_PRICE?.ToString("N0") + "VNĐ" : "")</td>
+                                    <td>@item.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                                    <td>
+                                        <a class="me-3" href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                            <img src="~/Content/admin/assets/img/icons/eye.svg" alt="img">
+                                        </a>
+                                        <a class="me-3" href="@Url.Action("Edit", "FLowers", new {flowerId = item.FLOWER_ID})">
+                                            <img src="~/Content/admin/assets/img/icons/edit.svg" alt="img">
+                                        </a>
+                                        <a class="confirm-text" href="javascript:void(0);">
+                                            <img src="~/Content/admin/assets/img/icons/delete.svg" alt="img">
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
