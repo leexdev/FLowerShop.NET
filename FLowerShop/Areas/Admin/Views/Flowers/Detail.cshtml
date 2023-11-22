@@ -1,0 +1,103 @@
+﻿@model FlowerShop.Context.FLOWER
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    @section styles
+    {
+        <link rel="shortcut icon" type="image/x-icon" href="~/Content/admin/assets/img/favicon.jpg">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/animate.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/select2/css/select2.min.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/owlcarousel/owl.carousel.min.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/dataTables.bootstrap4.min.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css">
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/style.css">
+    }
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Chi tiết sản phẩm</h4>
+                <h6>Xem chi tiết sản phẩm</h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="productdetails">
+                            <ul class="product-bar">
+                                <li>
+                                    <h4>Tên sản phẩm</h4>
+                                    <h6>@Model.FLOWER_NAME</h6>
+                                </li>
+                                <li>
+                                    <h4>Danh mục</h4>
+                                    <h6>@Model.FLOWERTYPE.FLOWERTYPE_NAME</h6>
+                                </li>
+                                <li>
+                                    <h4>Giá cũ</h4>
+                                    <h6>@((Model.OLD_PRICE.HasValue) ? Model.OLD_PRICE.Value.ToString("N0") + "VNĐ" : "")</h6>
+                                </li>
+                                <li>
+                                    <h4>Giá mới</h4>
+                                    <h6>@Model.NEW_PRICE.Value.ToString("N0")VNĐ</h6>
+                                </li>
+                                <li>
+                                    <h4>Mô tả</h4>
+                                    <h6>
+                                        @Model.DESCRIPTION
+                                    </h6>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="slider-product-details">
+                            <div class="owl-carousel owl-theme product-slide">
+                                <div class="slider-product">
+                                    <img src="~/Content/assets/img/@Model.FLOWER_IMAGE" alt="img">
+                                    <h4>@Model.FLOWER_IMAGE</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Content/admin/assets/js/jquery-3.6.0.min.js"></script>
+
+    <script src="~/Content/admin/assets/js/feather.min.js"></script>
+
+    <script src="~/Content/admin/assets/js/jquery.slimscroll.min.js"></script>
+
+    <script src="~/Content/admin/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/admin/assets/plugins/owlcarousel/owl.carousel.min.js"></script>
+
+    <script src="~/Content/admin/assets/plugins/select2/js/select2.min.js"></script>
+
+    <script src="~/Content/admin/assets/js/script.js"></script>
+}
+

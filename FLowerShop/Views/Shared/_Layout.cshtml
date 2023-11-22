@@ -94,7 +94,7 @@
                             <a class="nav-link link-select" href="@Url.Action("Index", "Home")" data-url="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link-select" href="#">Giới thiệu</a>
+                            <a class="nav-link link-select" href="@Url.Action("Info", "Home")" data-url="@Url.Action("Info", "Home")">Giới thiệu</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -109,10 +109,10 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link-select" href="@Url.Action("News", "Home")">Tin tức</a>
+                            <a class="nav-link link-select" href="@Url.Action("News", "Home")" data-url="@Url.Action("News", "Home")">Tin tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link-select" href="@Url.Action("Contact", "Home")">Liên hệ</a>
+                            <a class="nav-link link-select" href="@Url.Action("Contact", "Home")" data-url="@Url.Action("Contact", "Home")">Liên hệ</a>
                         </li>
                     </ul>
                     <div class="d-flex mb-3 mb-md-0">
@@ -188,13 +188,13 @@
                             <hr class="mb-4 mt-0 d-inline-block mx-auto"
                                 style="width: 60px; background-color: #7c4dff; height: 2px" />
                             <p>
-                                <a href="#!" class="text-white link-select">Giới thiệu</a>
+                                <a href="@Url.Action("Info", "Home")" data-url="@Url.Action("Info", "Home")" class="text-white link-select">Giới thiệu</a>
                             </p>
                             <p>
-                                <a href="#!" class="text-white link-select">Tin tức</a>
+                                <a href="@Url.Action("News", "Home")" data-url="@Url.Action("News", "Home")" class="text-white link-select">Tin tức</a>
                             </p>
                             <p>
-                                <a href="#!" class="text-white link-select">Hỗ trợ</a>
+                                <a href="@Url.Action("Contact", "Home")" data-url="@Url.Action("Contact", "Home")" class="text-white link-select">Liên hệ</a>
                             </p>
                         </div>
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">

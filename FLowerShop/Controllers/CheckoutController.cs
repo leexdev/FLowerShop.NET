@@ -76,9 +76,21 @@ namespace FlowerShop.Controllers
                 return RedirectToAction("Index", "ShoppingCart");
             }
 
+            var order = new ORDER();
+
+            if (Session["UserId"] != null)
+            {
+                var userId = (Guid)Session["UserId"];
+                var user = db.USERS.Where(u => u.USER_ID == userId && u.DELETED == false).FirstOrDefault();
+                order.SENDER_NAME = user.USER_NAME;
+                order.SENDER_PHONE = user.USER_PHONE;
+                order.SENDER_EMAIL = user.USER_EMAIL;
+            }
+
             var orderModel = new OrderModel
             {
-                ShoppingCarts = flower
+                ShoppingCarts = flower,
+                Order = order
             };
 
             ViewBag.ListProvinces = await apiProvince.GetProvincesAsync();
@@ -392,7 +404,7 @@ namespace FlowerShop.Controllers
                 couponValue = coupon.DISCOUNT_TYPE == true ? (totalPriceGrand * (int)coupon.DISCOUNT_VALUE / 100) : (int)coupon.DISCOUNT_VALUE;
                 totalPriceGrandNew = totalPriceGrand - couponValue;
 
-                return Json(new { TotalPriceGrand = totalPriceGrandNew + 30000, CouponValue = couponValue, CouponSuccess = "Áp dụng mã giảm giá thành công!" });
+                return Json(new { TotalPriceGrand = totalPriceGrandNew + 30000, CouponValue = couponValue, CouponName = couponName ,CouponSuccess = "Áp dụng mã giảm giá thành công!" });
             }
 
             return Json(new { TotalPriceGrand = totalPriceGrand + 30000, CouponError = "Mã giảm giá không tồn tại!" });

@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Order.SENDER_NAME, new { @class = "fw-bold fs-6 form-label" })
-                            @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control", value= Session["UserName"] })
+                            @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Order.SENDER_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                             <label for="input-coupon" class="col-form-label fw-bold">Mã giảm giá</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            @Html.TextBoxFor(m => m.DiscountCode.CODE, new {@id = "couponName", @class = "form-control"} )
+                            @Html.TextBoxFor(m => m.DiscountCode.CODE, new {@id = "couponName", @class = "form-control", placeholder = "Mã giảm giá"} )
                         </div>
                         <div class="col-12 col-md-3 mt-3 mt-md-0 text-end">
                             <button type="button" id="btn-add-coupon" class="btn bg-pink text-white btn-select-coupon">
@@ -205,6 +205,8 @@
                         let hiddenInput = document.createElement('input');
                         hiddenInput.type = 'hidden';
                         hiddenInput.name = 'couponName';
+                        hiddenInput.value = result.CouponName;
+                        table.appendChild(hiddenInput);
 
                         couponAlert.innerText = result.CouponSuccess;
                         couponAlert.className = '';

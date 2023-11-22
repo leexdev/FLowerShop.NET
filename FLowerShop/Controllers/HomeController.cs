@@ -29,6 +29,21 @@ namespace FlowerShop.Controllers
 
             return View(flowers);
         }
+
+        public ActionResult Info()
+        {
+            return PartialView("_NotFound");
+        }
+
+        public ActionResult News()
+        {
+            return PartialView("_NotFound");
+        }
+
+        public ActionResult Contact()
+        {
+            return PartialView("_NotFound");
+        }
     }
 
 }
