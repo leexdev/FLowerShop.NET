@@ -19,10 +19,10 @@ namespace FlowerShop.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.TotalAmount = db.ORDERS.Where(o => o.DELETED == false).Sum(o => o.TOTAL_AMOUNT).Value.ToString("N0");
-            ViewBag.CountCustomer = db.USERS.Where(u => u.ROLE == false && u.DELETED == false).Count();
-            ViewBag.CountFlower = db.FLOWERS.Where(f => f.DELETED == false).Count();
-            ViewBag.CountOrder = db.ORDERS.Where(o => o.DELETED == false).Count();
+            ViewBag.TotalAmount = db.ORDERS.AsNoTracking().Where(o => o.DELETED == false).Sum(o => o.TOTAL_AMOUNT).Value.ToString("N0");
+            ViewBag.CountCustomer = db.USERS.AsNoTracking().Where(u => u.ROLE == false && u.DELETED == false).Count();
+            ViewBag.CountFlower = db.FLOWERS.AsNoTracking().Where(f => f.DELETED == false).Count();
+            ViewBag.CountOrder = db.ORDERS.AsNoTracking().Where(o => o.DELETED == false).Count();
 
             var flowerSales = db.FLOWERS.AsNoTracking()
                  .Where(flower => flower.ORDERDETAILS.Any() && flower.DELETED == false)
@@ -30,8 +30,7 @@ namespace FlowerShop.Areas.Admin.Controllers
                  .Take(4)
                  .ToList();
 
-            ViewBag.FlowerSales = flowerSales;
-            return View();
+            return View(flowerSales);
         }
     }
 }

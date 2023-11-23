@@ -1,0 +1,113 @@
+﻿@model FlowerShop.Context.FLOWER
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Thêm sản phẩm</h4>
+                <h6>Thêm sản phẩm mới</h6>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @using (Html.BeginForm("Add", "Flowers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FLOWER_NAME)
+                                    @Html.TextBoxFor(model => model.FLOWER_NAME, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.FLOWER_NAME, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FLOWERTYPE_ID)
+                                    @Html.DropDownListFor(model => model.FLOWERTYPE_ID, ViewBag.FlowerTypes as SelectList, "", new { @class = "form-control select", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.FLOWERTYPE_ID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OLD_PRICE)
+                                    @Html.TextBoxFor(model => model.OLD_PRICE, new { @class = "form-control"})
+                                    @Html.ValidationMessageFor(model => model.OLD_PRICE, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NEW_PRICE)
+                                    @Html.TextBoxFor(model => model.NEW_PRICE, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.NEW_PRICE, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DESCRIPTION)
+                                    @Html.TextAreaFor(model => model.DESCRIPTION, new { @class = "form-control"})
+                                    @Html.ValidationMessageFor(model => model.DESCRIPTION, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header pb-0">
+                                        <h5 class="card-title">Hình ảnh</h5>
+                                    </div>
+                                    <div class="card-body py-0 d-flex justify-content-center">
+                                        <div class="image-product">
+                                            <label for="fileInput">Chọn hình ảnh:</label>
+                                            <input type="file" required name="ImageUpLoad" id="fileInput" accept="image/*" />
+                                            <p id="fileName" style="display: none;"></p>
+                                            @Html.HiddenFor(model => model.FLOWER_IMAGE)
+                                            <img id="previewImage" style="max-width: 300px; max-height: 300px; display: none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Thêm</button>
+                                <a href="@Url.Action("Index", "Flowers")" class="btn btn-cancel">Quay lại</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var fileInput = document.getElementById('fileInput');
+        var fileNameDisplay = document.getElementById('fileName');
+        var previewImage = document.getElementById('previewImage');
+
+        fileInput.addEventListener('change', () => {
+            var file = fileInput.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                }
+
+                reader.readAsDataURL(file);
+
+                fileNameDisplay.textContent = 'File Name: ' + file.name;
+                fileNameDisplay.style.display = 'block';
+            } else {
+                previewImage.style.display = 'none';
+                fileNameDisplay.style.display = 'none';
+            }
+        });
+    });
+</script>

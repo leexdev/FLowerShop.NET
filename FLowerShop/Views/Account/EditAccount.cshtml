@@ -15,7 +15,7 @@
                 <div class="form-group row align-items-center">
                     @Html.LabelFor(m => m.USER_NAME, new { @class = "fw-bold fs-6 form-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control", placeholder = "Họ tên" })
+                        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control", placeholder = "Họ tên", required = "required" })
                         @Html.ValidationMessageFor(m => m.USER_NAME, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="form-group row align-items-center">
                     @Html.LabelFor(m => m.USER_PHONE, new { @class = "fw-bold fs-6 form-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.USER_PHONE, new { @class = "form-control", placeholder = "Điện thoại" })
+                        @Html.TextBoxFor(m => m.USER_PHONE, new { @class = "form-control", placeholder = "Điện thoại", required = "required" })
                         @Html.ValidationMessageFor(m => m.USER_PHONE, "", new { @class = "text-danger" })
                     </div>
                 </div>

@@ -7,7 +7,7 @@
         <div class="item-product col-md-3 col-6 mb-4">
             <div class="image position-relative mb-3">
                 <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
-                    <img class="img-fluid" src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                    <img class="img-fluid" src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                     @if (item.OLD_PRICE != null)
                     {
                         var oldPrice = item.OLD_PRICE;

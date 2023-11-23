@@ -4,23 +4,22 @@
     ViewBag.Title = "Danh sách sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    @section styles
+    @*@section styles
     {
         <link rel="shortcut icon" type="image/x-icon" href="~/Content/admin/assets/img/favicon.jpg">
 
         <link rel="stylesheet" href="~/Content/admin/assets/css/bootstrap.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/css/animate.css">
 
         <link rel="stylesheet" href="~/Content/admin/assets/plugins/select2/css/select2.min.css">
 
         <link rel="stylesheet" href="~/Content/admin/assets/css/dataTables.bootstrap4.min.css">
 
         <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/fontawesome.min.css">
+
         <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css">
 
         <link rel="stylesheet" href="~/Content/admin/assets/css/style.css">
-    }
+    }*@
 }
 
 <div class="page-wrapper">
@@ -30,7 +29,7 @@
                 <h4>Danh sách sản phẩm</h4>
             </div>
             <div class="page-btn">
-                <a href="@Url.Action("AddFlower", "Flowers")" class="btn btn-added">
+                <a href="@Url.Action("Add", "Flowers")" class="btn btn-added">
                     <img src="~/Content/admin/assets/img/icons/plus.svg" alt="img"
                          class="me-1">Thêm sản phẩm mới
                 </a>
@@ -96,7 +95,7 @@
                                     </td>
                                     <td class="productimgname">
                                         <a href="javascript:void(0);" class="product-img">
-                                            <img src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
+                                            <img src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                                         </a>
                                         <a href="javascript:void(0);">@item.FLOWER_NAME</a>
                                     </td>
@@ -123,7 +122,7 @@
     </div>
 </div>
 
-@section scripts
+@*@section scripts
 {
     <script src="~/Content/admin/assets/js/jquery-3.6.0.min.js"></script>
 
@@ -132,14 +131,12 @@
     <script src="~/Content/admin/assets/js/jquery.slimscroll.min.js"></script>
 
     <script src="~/Content/admin/assets/js/jquery.dataTables.min.js"></script>
+
     <script src="~/Content/admin/assets/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="~/Content/admin/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/Content/admin/assets/plugins/select2/js/select2.min.js"></script>
 
-    <script src="~/Content/admin/assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
-    <script src="~/Content/admin/assets/plugins/sweetalert/sweetalerts.min.js"></script>
-
     <script src="~/Content/admin/assets/js/script.js"></script>
-}
+}*@

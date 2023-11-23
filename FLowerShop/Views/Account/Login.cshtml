@@ -26,12 +26,12 @@
                         {
                             <div class="mb-3">
                                 @Html.LabelFor(model => model.USER_EMAIL, new { @class = "fw-bold text-secondary form-label" })
-                                @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control", required = "required", type = "email" })
                                 @Html.ValidationMessageFor(model => model.USER_EMAIL, "", new { @class = "text-danger" })
                             </div>
                             <div class="mb-2">
                                 @Html.LabelFor(model => model.USER_PASSWORD, new { @class = "fw-bold text-secondary form-label" })
-                                @Html.PasswordFor(m => m.USER_PASSWORD, new { @class = "form-control" })
+                                @Html.PasswordFor(m => m.USER_PASSWORD, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.USER_PASSWORD, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-check p-0 my-1">

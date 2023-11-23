@@ -1,20 +1,22 @@
-﻿@section styles
-{
-    <link rel="shortcut icon" type="image/x-icon" href="~/Content/admin/assets/img/favicon.jpg" />
-
-    <link rel="stylesheet" href="~/Content/admin/assets/css/bootstrap.min.css" />
-
-    <link rel="stylesheet" href="~/Content/admin/assets/css/dataTables.bootstrap4.min.css" />
-
-    <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css" />
-    <link rel="stylesheet" href="~/Content/admin/assets/css/style.css" />
-}
+﻿@model List<FlowerShop.Context.FLOWER>
 
 @{
     ViewBag.Title = "Trang Admin";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var FlowerSales = ViewBag.FlowerSales as List<FlowerShop.Context.FLOWER>;
+    @*@section styles
+    {
+        <link rel="shortcut icon" type="image/x-icon" href="~/Content/admin/assets/img/favicon.jpg" />
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/bootstrap.min.css" />
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/dataTables.bootstrap4.min.css" />
+
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/fontawesome.min.css" />
+
+        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css" />
+
+        <link rel="stylesheet" href="~/Content/admin/assets/css/style.css" />
+    }*@
 }
 
 <div class="page-wrapper">
@@ -126,26 +128,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (FlowerSales != null && FlowerSales.Count > 0)
+                                    @if (Model != null && Model.Count > 0)
                                     {
                                         int index = 1;
 
-                                        foreach (var item in FlowerSales)
+                                        foreach (var item in Model)
                                         {
                                             <tr>
                                                 <td>@index</td>
                                                 <td class="productimgname">
-                                                    <a href="#" class="product-img">
-                                                        <img src="~/Content/assets/img/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE" />
+                                                    <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})" class="product-img">
+                                                        <img src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE" />
                                                     </a>
                                                     <a href="#">@item.FLOWER_NAME</a>
                                                 </td>
-                                                <td>@item.NEW_PRICE</td>
+                                                <td>@item.NEW_PRICE.Value.ToString("N0")VNĐ</td>
                                             </tr>
                                             index++;
                                         }
                                     }
-
                                 </tbody>
                             </table>
                         </div>
@@ -156,7 +157,7 @@
     </div>
 </div>
 
-@section scripts
+@*@section scripts
 {
     <script src="~/Content/admin/assets/js/jquery-3.6.0.min.js"></script>
 
@@ -165,12 +166,10 @@
     <script src="~/Content/admin/assets/js/jquery.slimscroll.min.js"></script>
 
     <script src="~/Content/admin/assets/js/jquery.dataTables.min.js"></script>
+
     <script src="~/Content/admin/assets/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="~/Content/admin/assets/js/bootstrap.bundle.min.js"></script>
 
-    <script src="~/Content/admin/assets/plugins/apexchart/apexcharts.min.js"></script>
-    <script src="~/Content/admin/assets/plugins/apexchart/chart-data.js"></script>
-
     <script src="~/Content/admin/assets/js/script.js"></script>
-}
+}*@
