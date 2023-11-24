@@ -3,23 +3,6 @@
 @{
     ViewBag.Title = "Danh sách sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
-    @*@section styles
-    {
-        <link rel="shortcut icon" type="image/x-icon" href="~/Content/admin/assets/img/favicon.jpg">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/css/bootstrap.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/plugins/select2/css/select2.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/css/dataTables.bootstrap4.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/fontawesome.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css">
-
-        <link rel="stylesheet" href="~/Content/admin/assets/css/style.css">
-    }*@
 }
 
 <div class="page-wrapper">
@@ -39,13 +22,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-top">
-                    <div class="col-12 col-md-6">
-                        <select class="select">
-                            <option disabled selected>Danh mục sản phẩm</option>
-                            <option>Macbook pro</option>
-                            <option>Orange</option>
-                        </select>
-                    </div>
+                    <button class="btn btn-danger" id="deleteSelected" data-bs-toggle="modal" data-bs-target="#deleteModal" >Xóa sản phẩm</button>
                     <div class="wordset">
                         <ul>
                             <li>
@@ -68,7 +45,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table  datanew">
+                    <table class="table datanew">
                         <thead>
                             <tr>
                                 <th>
@@ -89,7 +66,7 @@
                                 <tr>
                                     <td>
                                         <label class="checkboxs">
-                                            <input name="@item.FLOWER_ID" type="checkbox">
+                                            <input name="@item.FLOWER_ID" type="checkbox" data-flowerid="@item.FLOWER_ID">
                                             <span class="checkmarks"></span>
                                         </label>
                                     </td>
@@ -108,9 +85,6 @@
                                         <a class="me-3" href="@Url.Action("Edit", "FLowers", new {flowerId = item.FLOWER_ID})">
                                             <img src="~/Content/admin/assets/img/icons/edit.svg" alt="img">
                                         </a>
-                                        <a class="confirm-text" href="javascript:void(0);">
-                                            <img src="~/Content/admin/assets/img/icons/delete.svg" alt="img">
-                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -122,21 +96,77 @@
     </div>
 </div>
 
-@*@section scripts
-{
-    <script src="~/Content/admin/assets/js/jquery-3.6.0.min.js"></script>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa sản phẩm này?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hành động này không được hoàn tác
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-primary" id="deleteBtn">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script src="~/Content/admin/assets/js/feather.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteBtn = document.getElementById('deleteBtn');
 
-    <script src="~/Content/admin/assets/js/jquery.slimscroll.min.js"></script>
+        deleteModal.addEventListener('shown.bs.modal', function () {
+            const selectedCheckboxes = document.querySelectorAll('.datanew tbody input[type="checkbox"]:checked');
+            const flowerIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.flowerid);
 
-    <script src="~/Content/admin/assets/js/jquery.dataTables.min.js"></script>
+            deleteBtn.dataset.flowerIds = JSON.stringify(flowerIds);
+        });
 
-    <script src="~/Content/admin/assets/js/dataTables.bootstrap4.min.js"></script>
+        deleteBtn.addEventListener('click', handleDeleteClick);
 
-    <script src="~/Content/admin/assets/js/bootstrap.bundle.min.js"></script>
+        function handleDeleteClick() {
+            const flowerIdsToDelete = JSON.parse(deleteBtn.dataset.flowerIds);
 
-    <script src="~/Content/admin/assets/plugins/select2/js/select2.min.js"></script>
+            if (flowerIdsToDelete && flowerIdsToDelete.length > 0) {
+                // Đảm bảo thư viện modal sử dụng lớp đúng để hiển thị modal
+                deleteModal.classList.add('show');
 
-    <script src="~/Content/admin/assets/js/script.js"></script>
-}*@
+                // Loại bỏ sự kiện lắng nghe thừa cho sự kiện click của deleteBtn
+                fetch(`/Admin/Flowers/DeleteMultiple`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ flowerIds: flowerIdsToDelete }),
+                })
+                    .then(handleResponse)
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            console.error('Lỗi khi xóa sản phẩm:', data.error || 'Lỗi không xác định');
+                        }
+                    })
+                    .catch(handleError);
+            } else {
+                alert('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+            }
+        }
+
+        function handleResponse(response) {
+            if (!response.ok) {
+                throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        function handleError(error) {
+            console.error('Lỗi:', error);
+        }
+    });
+
+</script>

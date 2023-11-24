@@ -33,7 +33,6 @@ namespace FlowerShop.Context
         public string FLOWER_NAME { get; set; }
 
         [DisplayName("Hình ảnh")]
-        [Required(ErrorMessage = "Hình ảnh không được để trống")]
         public string FLOWER_IMAGE { get; set; }
 
         [DisplayName("Mô tả")]

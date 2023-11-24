@@ -1,6 +1,7 @@
 ﻿using FlowerShop.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -47,7 +48,6 @@ namespace FlowerShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Add(FLOWER flower, HttpPostedFileBase ImageUpLoad)
         {
-            ModelState.Remove("FLOWER_IMAGE");
             if (!ModelState.IsValid)
             {
                 var flowerTypes = db.FLOWERTYPES.AsNoTracking().Where(f => f.DELETED == false).ToList();
@@ -142,9 +142,26 @@ namespace FlowerShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete()
+        public JsonResult DeleteMultiple(List<Guid> flowerIds)
         {
-            return RedirectToAction("Index");
+            try
+            {
+                var flowersToDelete = db.FLOWERS.Where(f => flowerIds.Contains(f.FLOWER_ID)).ToList();
+
+                foreach(var item in flowersToDelete)
+                {
+                    item.DELETED = true;
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return Json(new { success = false, error = ex.Message });
+            }
         }
     }
 }

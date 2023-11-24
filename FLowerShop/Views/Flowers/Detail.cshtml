@@ -22,11 +22,11 @@
                     @if (Model.Flower.OLD_PRICE != null)
                     {
                         <h5 class="price-old me-3 fw-bold m-0">
-                            @Model.Flower.OLD_PRICE.Value.ToString("N0")VND
+                            @Model.Flower.OLD_PRICE.Value.ToString("N0")VNĐ
                         </h5>
                     }
                     <h5 class="price-new fw-bold m-0">
-                        @Model.Flower.NEW_PRICE.Value.ToString("N0")VND
+                        @Model.Flower.NEW_PRICE.Value.ToString("N0")VNĐ
                     </h5>
 
                     @if (Model.Flower.OLD_PRICE != null)
@@ -152,10 +152,10 @@
                                         <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID})">@item.FLOWER_NAME</a>
                                     </div>
                                     <div class="price text-center fw-bold p-2">
-                                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
                                         @if(item.OLD_PRICE != null) 
                                         {
-                                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
                                         }
                                     </div>
                                     <div class="d-flex justify-content-center">

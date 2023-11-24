@@ -23,10 +23,10 @@
                         <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
                     </div>
                     <div class="price text-center fw-bold p-2">
-                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VND</span>
+                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
                         @if (item.OLD_PRICE != null)
                         {
-                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VND</span>
+                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
                         }
                     </div>
                     <div class="d-flex justify-content-center">
