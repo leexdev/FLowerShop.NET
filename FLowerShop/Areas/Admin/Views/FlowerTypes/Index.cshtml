@@ -1,7 +1,7 @@
-﻿@model List<FlowerShop.Context.FLOWER>
+﻿@model List<FlowerShop.Context.FLOWERTYPE>
 
 @{
-    ViewBag.Title = "Danh sách sản phẩm";
+    ViewBag.Title = "Danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,12 +9,12 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Danh sách sản phẩm</h4>
+                <h4>Danh mục</h4>
             </div>
             <div class="page-btn">
-                <a href="@Url.Action("Add", "Flowers")" class="btn btn-added">
+                <a href="@Url.Action("Add", "FlowerTypes")" class="btn btn-added">
                     <img src="~/Content/admin/assets/img/icons/plus.svg" alt="img"
-                         class="me-1">Thêm sản phẩm mới
+                         class="me-1">Thêm danh mục mới
                 </a>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-top">
-                    <button class="btn btn-danger" id="deleteSelected" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa sản phẩm</button>
+                    <button class="btn btn-danger" id="deleteSelected" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa danh mục</button>
                     <div class="wordset">
                         <ul>
                             <li>
@@ -54,10 +54,7 @@
                                         <span class="checkmarks"></span>
                                     </label>
                                 </th>
-                                <th>Tên</th>
-                                <th>Giá cũ </th>
-                                <th>Giá mới</th>
-                                <th>Danh mục</th>
+                                <th>Tên danh mục</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -67,24 +64,15 @@
                                 <tr>
                                     <td>
                                         <label class="checkboxs">
-                                            <input name="@item.FLOWER_ID" type="checkbox" data-flowerid="@item.FLOWER_ID">
+                                            <input name="@item.FLOWERTYPE_ID" type="checkbox" data-flowerid="@item.FLOWERTYPE_ID">
                                             <span class="checkmarks"></span>
                                         </label>
                                     </td>
                                     <td class="productimgname">
-                                        <a href="javascript:void(0);" class="product-img">
-                                            <img src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
-                                        </a>
-                                        <a href="javascript:void(0);">@item.FLOWER_NAME</a>
+                                        <a href="javascript:void(0);">@item.FLOWERTYPE_NAME</a>
                                     </td>
-                                    <td>@((item.OLD_PRICE.HasValue) ? item.OLD_PRICE?.ToString("N0") + "VNĐ" : "")</td>
-                                    <td>@item.NEW_PRICE.Value.ToString("N0")VNĐ</td>
-                                    <td>@item.FLOWERTYPE.FLOWERTYPE_NAME</td>
                                     <td>
-                                        <a class="me-3" href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
-                                            <img src="~/Content/admin/assets/img/icons/eye.svg" alt="img">
-                                        </a>
-                                        <a class="me-3" href="@Url.Action("Edit", "FLowers", new {flowerId = item.FLOWER_ID})">
+                                        <a class="me-3" href="@Url.Action("Edit", "FlowerTypes", new {flowerTypeId = item.FLOWERTYPE_ID})">
                                             <img src="~/Content/admin/assets/img/icons/edit.svg" alt="img">
                                         </a>
                                     </td>
@@ -95,14 +83,16 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa sản phẩm này?</h1>
+                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa danh mục này?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -116,13 +106,13 @@
     </div>
 </div>
 
-
 @if (@ViewBag.SuccessFully != null)
 {
     <script>
         alert('@Html.Raw(ViewBag.SuccessFully)');
     </script>
 }
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -131,25 +121,25 @@
 
         deleteModal.addEventListener('shown.bs.modal', function () {
             const selectedCheckboxes = document.querySelectorAll('.datanew tbody input[type="checkbox"]:checked');
-            const flowerIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.flowerid);
+            const flowerTypeIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.flowerid);
 
-            deleteBtn.dataset.flowerIds = JSON.stringify(flowerIds);
+            deleteBtn.dataset.flowerTypeIds = JSON.stringify(flowerTypeIds);
         });
 
         deleteBtn.addEventListener('click', handleDeleteClick);
 
         function handleDeleteClick() {
-            const flowerIdsToDelete = JSON.parse(deleteBtn.dataset.flowerIds);
+            const flowerTypeIdsToDelete = JSON.parse(deleteBtn.dataset.flowerTypeIds);
 
-            if (flowerIdsToDelete && flowerIdsToDelete.length > 0) {
+            if (flowerTypeIdsToDelete && flowerTypeIdsToDelete.length > 0) {
                 deleteModal.classList.add('show');
 
-                fetch(`/Admin/Flowers/DeleteMultiple`, {
+                fetch(`/Admin/FLowerTypes/DeleteMultiple`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ flowerIds: flowerIdsToDelete }),
+                    body: JSON.stringify({ flowerTypeIds: flowerTypeIdsToDelete }),
                 })
                     .then(handleResponse)
                     .then(data => {
@@ -176,5 +166,4 @@
             console.error('Lỗi:', error);
         }
     });
-
 </script>

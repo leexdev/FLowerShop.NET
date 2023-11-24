@@ -24,6 +24,7 @@ namespace FlowerShop.Context
             this.SHOPPINGCARTs = new HashSet<SHOPPINGCART>();
             this.USERDISCOUNTs = new HashSet<USERDISCOUNT>();
         }
+
         [DisplayName("Mã người dùng")]
         public System.Guid USER_ID { get; set; }
 
@@ -59,7 +60,7 @@ namespace FlowerShop.Context
         public bool ROLE { get; set; }
         public string FACEBOOKID { get; set; }
         public Nullable<System.Guid> RESETTOKEN { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

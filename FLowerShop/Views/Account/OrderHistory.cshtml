@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var item in Model)
+                            @foreach(var item in Model.OrderByDescending(o => o.ORDER_DATE))
                             {
                                 <tr>
                                     <td>@item.SENDER_NAME</td>

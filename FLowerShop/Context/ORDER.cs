@@ -23,7 +23,7 @@ namespace FlowerShop.Context
             this.ORDERHISTORies = new HashSet<ORDERHISTORY>();
         }
 
-        [DisplayName("Mã đơn hàng")]    
+        [DisplayName("Mã đơn hàng")]
         public System.Guid ORDER_ID { get; set; }
         public Nullable<System.Guid> USER_ID { get; set; }
 
@@ -80,8 +80,14 @@ namespace FlowerShop.Context
         [MinLength(5, ErrorMessage = "Địa chỉ phải có ít nhất {1} ký tự")]
         [MaxLength(200, ErrorMessage = "Giới hạn {1} ký tự")]
         public string RECIPIENT_ADDRESS { get; set; }
+
+        [DisplayName("Tỉnh/Thành phố")]
+        public string RECIPIENT_PROVINCE { get; set; }
+
+        [DisplayName("Huyện")]
+        public string RECIPIENT_DISTRICT { get; set; }
         public bool DELETED { get; set; }
-    
+
         public virtual DISCOUNTCODE DISCOUNTCODE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDERDETAIL> ORDERDETAILS { get; set; }

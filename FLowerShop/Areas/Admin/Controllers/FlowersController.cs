@@ -22,12 +22,13 @@ namespace FlowerShop.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var flower = db.FLOWERS.AsNoTracking().Where(f => f.DELETED == false).ToList();
+            ViewBag.SuccessFully = TempData["SuccessFully"];
             return View(flower);
         }
 
         public ActionResult Detail(Guid? flowerId)
         {
-            var flower = db.FLOWERS.AsNoTracking().Where(f => f.FLOWER_ID == flowerId).FirstOrDefault();
+            var flower = db.FLOWERS.AsNoTracking().Where(f => f.FLOWER_ID == flowerId && f.DELETED == false).FirstOrDefault();
 
             if (flower != null)
             {
@@ -73,16 +74,18 @@ namespace FlowerShop.Areas.Admin.Controllers
 
                 flower.FLOWER_IMAGE = fileName;
             }
+
             flower.FLOWER_ID = Guid.NewGuid();
 
             db.FLOWERS.Add(flower);
             db.SaveChanges();
+            TempData["SuccessFully"] = "Thêm thành công!";
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(Guid? flowerId)
         {
-            var flower = db.FLOWERS.Where(f => f.FLOWER_ID == flowerId).FirstOrDefault();
+            var flower = db.FLOWERS.AsNoTracking().Where(f => f.FLOWER_ID == flowerId).FirstOrDefault();
 
             if (flower != null)
             {
@@ -124,7 +127,7 @@ namespace FlowerShop.Areas.Admin.Controllers
                 flower.FLOWER_IMAGE = fileName;
             }
 
-            var existingFlower = db.FLOWERS.Where(f => f.FLOWER_ID == flower.FLOWER_ID).FirstOrDefault();
+            var existingFlower = db.FLOWERS.AsNoTracking().Where(f => f.FLOWER_ID == flower.FLOWER_ID && f.DELETED == false).FirstOrDefault();
 
             if (existingFlower != null)
             {
@@ -135,6 +138,8 @@ namespace FlowerShop.Areas.Admin.Controllers
                 existingFlower.NEW_PRICE = flower.NEW_PRICE;
                 existingFlower.FLOWERTYPE_ID = flower.FLOWERTYPE_ID;
                 db.SaveChanges();
+                TempData["SuccessFully"] = "Sửa thành công!";
+
                 return RedirectToAction("Index");
             }
 
@@ -146,7 +151,7 @@ namespace FlowerShop.Areas.Admin.Controllers
         {
             try
             {
-                var flowersToDelete = db.FLOWERS.Where(f => flowerIds.Contains(f.FLOWER_ID)).ToList();
+                var flowersToDelete = db.FLOWERS.Where(f => flowerIds.Contains(f.FLOWER_ID) && f.DELETED == false).ToList();
 
                 foreach(var item in flowersToDelete)
                 {
@@ -154,12 +159,12 @@ namespace FlowerShop.Areas.Admin.Controllers
                 }
 
                 db.SaveChanges();
+                TempData["SuccessFully"] = "Xóa thành công!";
 
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
                 return Json(new { success = false, error = ex.Message });
             }
         }

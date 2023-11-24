@@ -22,7 +22,6 @@ namespace FlowerShop.Context
             this.ORDERS = new HashSet<ORDER>();
             this.USERDISCOUNTs = new HashSet<USERDISCOUNT>();
         }
-    
         public System.Guid DISCOUNT_ID { get; set; }
 
         [DisplayName("Mã giảm giá")]
@@ -58,7 +57,7 @@ namespace FlowerShop.Context
         [DisplayName("Mổ tả")]
         public string DESCRIPTION { get; set; }
         public bool DELETED { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

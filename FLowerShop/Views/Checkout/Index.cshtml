@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Thanh toán";
+    int totalPrice = 30000;
 }
 
 <div class="container mt-3 mt-md-5">
@@ -104,7 +105,48 @@
             </div>
             <div class="col-12 col-md-5">
                 <div id="list-flower-checkout">
-                    @Html.Partial("_CheckoutFlower")
+                    <div class="overflow-auto">
+                        <h5 class="m-0">Chi tiết đơn hàng</h5>
+                        <hr class="mt-2 mb-3" />
+                        <table class="table table-bordered" id="table-flower-checkout">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">Hình ảnh</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Tổng cộng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.ShoppingCarts != null && Model.ShoppingCarts.Count > 0)
+                                {
+                                    foreach (var item in Model.ShoppingCarts)
+                                    {
+                                        <tr class="text-center align-middle">
+                                            <td>
+                                                <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
+                                                    <img class="img-thumbnail img-cart-flower" src="~/Content/assets/img/product/@item.FLOWER.FLOWER_IMAGE"
+                                                         alt="@item.FLOWER.FLOWER_IMAGE" />
+                                                </a>
+                                            </td>
+                                            <td>@item.QUANTITY x <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a></td>
+                                            <td class="text-end">@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                                        </tr>
+                                        {
+                                            totalPrice += (int)item.SUBTOTAL;
+                                        }
+                                    }
+                                }
+                                <tr class="text-end">
+                                    <td colspan="2" class="fw-bold">Phí vận chuyển</td>
+                                    <td colspan="2">30,000VND</td>
+                                </tr>
+                                <tr class="text-end">
+                                    <td colspan="2" class="fw-bold">Tổng cộng</td>
+                                    <td colspan="2" id="total-price-checkout">@totalPrice.ToString("N0")VNĐ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <form id="form-coupon">
                     <div class="row">

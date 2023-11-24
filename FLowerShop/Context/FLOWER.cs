@@ -9,7 +9,6 @@
 
 namespace FlowerShop.Context
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -25,7 +24,6 @@ namespace FlowerShop.Context
         }
     
         public System.Guid FLOWER_ID { get; set; }
-
         [DisplayName("Tên sản phẩm")]
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         [MinLength(3, ErrorMessage = "Tên sản phẩm phải có ít nhất {1} ký tự")]
@@ -52,7 +50,7 @@ namespace FlowerShop.Context
         [Required(ErrorMessage = "Vui lòng chọn loại hoa")]
         public Nullable<System.Guid> FLOWERTYPE_ID { get; set; }
         public bool DELETED { get; set; }
-    
+
         public virtual FLOWERTYPE FLOWERTYPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SHOPPINGCART> SHOPPINGCARTs { get; set; }

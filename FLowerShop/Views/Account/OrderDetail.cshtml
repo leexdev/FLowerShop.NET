@@ -1,7 +1,7 @@
 ﻿@model FlowerShop.Context.ORDER
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
-    decimal coupon = 30000;
+    decimal? coupon = Model.ORDERDETAILS.Sum(o => o.SUBTOTAL) - Model.TOTAL_AMOUNT.Value + 30000;
 }
 
 <div class="container">
@@ -25,14 +25,7 @@
 
                         <td class="w-50">
                             <b>Phương thức thanh toán: </b>
-                            @if (Model.PAYMENT_METHOD == false)
-                            {
-                                <text>Thanh toán khi nhận hàng</text>
-                            }
-                            else
-                            {
-                                <text>Thanh toán bằng ví Momo</text>
-                            }
+                            @(Model.PAYMENT_METHOD == true ? "Thanh toán bằng ví Momo" : "Thanh toán khi nhận hàng")
                         </td>
                     </tr>
                 </tbody>
@@ -51,12 +44,7 @@
                             <p>@Model.SENDER_NAME</p>
                             <p>@Model.SENDER_PHONE</p>
                             <p>@Model.SENDER_EMAIL</p>
-                            @if (Model.HIDE_SENDER_INFO == true)
-                            {
-                                <p>
-                                    Ẩn thông tin người gửi
-                                </p>
-                            }
+                            <p>@(Model.HIDE_SENDER_INFO == true ? "Ẩn thông tin người gửi" : "")</p>
                             </td>
 
                         <td class="w-50">
@@ -113,12 +101,7 @@
                             {
                                 <tr>
                                     <td colspan="4" class="fw-bold text-end">Mã giảm giá</td>
-                                    @{ 
-                                        var subtotal = Model.ORDERDETAILS.Sum(o => o.SUBTOTAL) + 30000;
-                                        coupon = (decimal)subtotal - Model.TOTAL_AMOUNT.Value;
-
-                                    }
-                                    <td class="text-end">- @coupon.ToString("N0")VNĐ</td>
+                                    <td class="text-end">- @coupon.Value.ToString("N0")VNĐ</td>
                                 </tr>
                             }
                             <tr>
@@ -141,7 +124,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var item in Model.ORDERHISTORies)
+                    @foreach(var item in Model.ORDERHISTORies.OrderByDescending(o => o.CHANGE_DATE))
                     {
                         <tr>
                             <td>@item.CHANGE_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>

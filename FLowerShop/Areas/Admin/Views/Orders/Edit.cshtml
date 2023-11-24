@@ -1,0 +1,160 @@
+﻿@model FlowerShop.Models.OrderModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int totalPrice = 30000;
+    decimal? coupon = Model.Order.ORDERDETAILS.Sum(o => o.SUBTOTAL) - Model.Order.TOTAL_AMOUNT.Value + 30000;
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Chỉnh sửa đơn hàng</h4>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Edit", "Orders", FormMethod.Post))
+                {
+                    <div class="row">
+                        <h5 class="fw-bold mb-2">Thông tin người gửi</h5>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Order.SENDER_NAME)
+                                @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Order.SENDER_NAME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Order.SENDER_EMAIL)
+                                @Html.TextBoxFor(model => model.Order.SENDER_EMAIL, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Order.SENDER_EMAIL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Order.SENDER_PHONE)
+                                @Html.TextBoxFor(model => model.Order.SENDER_PHONE, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Order.SENDER_PHONE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h5 class="fw-bold mb-2">Thông tin người nhận</h5>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Order.RECIPIENT_NAME)
+                                @Html.TextBoxFor(model => model.Order.RECIPIENT_NAME, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Order.RECIPIENT_NAME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Order.RECIPIENT_PHONE)
+                                @Html.TextBoxFor(model => model.Order.RECIPIENT_PHONE, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Order.RECIPIENT_PHONE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.Label("Tỉnh, thành phố", new { @class = "fw-bold fs-6 form-label" })
+                                <select class="form-select" required id="provinceSelect" name="ProvinceCode">
+                                    <option selected disabled value="">--- Chọn tỉnh ---</option>
+                                    @foreach (var item in ViewBag.ListProvinces)
+                                    {
+                                        <option value="@item.code" data-provincecode="@item.code" @(item.name == Model.ProvinceName ? "selected" : "")>@item.name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Huyện, Thành phố</label>
+                                <select class="select" name="ReceiverDistrict">
+                                    <option selected disabled>Chọn tỉnh trước</option>
+                                    <option>Quận 9</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Địa chỉ</label>
+                                <input type="text" name="ReceiverAddress">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="table-responsive mb-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá</th>
+                                        <th>Tổng tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Order.ORDERDETAILS)
+                                    {
+                                        var i = 1;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td class="productimgname">
+                                                <a class="product-img">
+                                                    <img src="@item.FLOWER.FLOWER_IMAGE" alt="product">
+                                                </a>
+                                                <a href="javascript:void(0);">@item.FLOWER.FLOWER_NAME</a>
+                                            </td>
+                                            <td>@item.QUANTITY</td>
+                                            <td>@item.FLOWER.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                                            <td>@item.SUBTOTAL.Value.ToString("N0")VNĐ</td>
+                                        </tr>
+                                        {
+                                            totalPrice += (int)item.SUBTOTAL;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 "></div>
+                        <div class="col-lg-6 ">
+                            <div class="total-order w-100 max-widthauto m-auto mb-4">
+                                <ul>
+                                    <li>
+                                        <h4>Phí vận chuyển</h4>
+                                        <h5>30,000VNĐ</h5>
+                                    </li>
+                                    <li>
+                                        <h4>Mã giảm giá</h4>
+                                        <h5>@coupon.Value.ToString("N0")VNĐ</h5>
+                                    </li>
+                                    <li class="total">
+                                        <h4>Tổng tiền</h4>
+                                        <h5>@Model.Order.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Cập nhật</button>
+                            <a href="@Url.Action("Index", "Orders")" class="btn btn-cancel">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

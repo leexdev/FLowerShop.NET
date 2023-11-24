@@ -167,7 +167,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\FlowersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FlowerTypesController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Context\DbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -828,6 +830,12 @@
     <Content Include="Areas\Admin\Views\Flowers\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Flowers\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Flowers\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\FlowerTypes\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\FlowerTypes\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\FlowerTypes\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -848,7 +856,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\Shared\_CartFlower.cshtml" />
-    <Content Include="Views\Shared\_CheckoutFlower.cshtml" />
     <Content Include="Views\Shared\_FLowerSearch.cshtml" />
     <Content Include="Views\Shared\_MailTextToAdmin.cshtml" />
     <Content Include="Views\Shared\_MailTextToCustomer.cshtml" />

@@ -1,0 +1,42 @@
+﻿@model FlowerShop.Context.FLOWERTYPE
+
+@{
+    ViewBag.Title = "Sửa danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Sửa danh mục</h4>
+                <h6>Sửa/Cập nhật danh mục</h6>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Edit", "FlowerTypes", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.FLOWERTYPE_ID)
+                                @Html.LabelFor(model => model.FLOWERTYPE_NAME)
+                                @Html.TextBoxFor(model => model.FLOWERTYPE_NAME, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.FLOWERTYPE_NAME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Cập nhật</button>
+                            <a href="@Url.Action("Index", "FlowerTypes")" class="btn btn-cancel">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
