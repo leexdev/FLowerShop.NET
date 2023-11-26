@@ -22,12 +22,14 @@ namespace FlowerShop.Context
             this.ORDERS = new HashSet<ORDER>();
             this.USERDISCOUNTs = new HashSet<USERDISCOUNT>();
         }
+    
         public System.Guid DISCOUNT_ID { get; set; }
 
         [DisplayName("Mã giảm giá")]
         [Required(ErrorMessage = "Mã giảm giá không được để trống")]
         [MinLength(3, ErrorMessage = "Mã giảm giá phải có ít nhất {1} ký tự")]
         [MaxLength(20, ErrorMessage = "Vượt quá giới hạn ký tự")]
+        [RegularExpression("^[a-zA-Z]*$", ErrorMessage = "Chỉ được nhập ký tự (char)")]
         public string CODE { get; set; }
 
         [DisplayName("Loại giảm giá")]
@@ -54,7 +56,7 @@ namespace FlowerShop.Context
         [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Vui lòng nhập một số hợp lệ")]
         public Nullable<decimal> CODE_COUNT { get; set; }
 
-        [DisplayName("Mổ tả")]
+        [DisplayName("Mô tả")]
         public string DESCRIPTION { get; set; }
         public bool DELETED { get; set; }
 

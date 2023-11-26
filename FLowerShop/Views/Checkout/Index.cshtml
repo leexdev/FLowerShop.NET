@@ -35,16 +35,16 @@
                 </div>  
                 <h5 class="m-0 mt-4">Thông tin người nhận</h5>
                 <hr class="mt-2 mb-3" />
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="mb-3">
                             @Html.LabelFor(model => model.Order.RECIPIENT_NAME, new { @class = "fw-bold fs-6 form-label" })
                             @Html.TextBoxFor(model => model.Order.RECIPIENT_NAME, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(model => model.Order.RECIPIENT_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-md-6 mt-3 mt-md-0">
-                        <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="mb-3">
                             @Html.LabelFor(model => model.Order.RECIPIENT_PHONE, new { @class = "fw-bold fs-6 form-label" })
                             @Html.TextBoxFor(model => model.Order.RECIPIENT_PHONE, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(model => model.Order.RECIPIENT_PHONE, "", new { @class = "text-danger" })
@@ -53,7 +53,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="mb-3">
                             @Html.Label("Tỉnh, thành phố", new { @class = "fw-bold fs-6 form-label" })
                             <select class="form-select" required id="provinceSelect" name="ProvinceCode">
                                 <option selected disabled value="">--- Chọn tỉnh ---</option>
@@ -64,8 +64,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6 mt-3 mt-md-0">
-                        <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="mb-3">
                             @Html.Label("Quận/ Huyện:", new { @class = "fw-bold fs-6 form-label" })
                             <select class="form-select" required id="districtSelect" name="districtName">
                                 @if (ViewBag.ListDistricts != null)
@@ -83,18 +83,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group my-3">
+                <div class="mb-3">
                     @Html.LabelFor(model => model.Order.RECIPIENT_ADDRESS, new { @class = "fw-bold fs-6 form-label" })
                     @Html.TextBoxFor(model => model.Order.RECIPIENT_ADDRESS, new { @class = "form-control", required = "required" })
                     @Html.ValidationMessageFor(model => model.Order.RECIPIENT_ADDRESS, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
                     @Html.LabelFor(model => model.Order.MESSAGE_TO_RECIPIENT, new { @class = "fw-bold fs-6" })
-                    @Html.TextAreaFor(model => model.Order.MESSAGE_TO_RECIPIENT, new { @class = "form-control", rows = "2" })
+                    @Html.TextAreaFor(model => model.Order.MESSAGE_TO_RECIPIENT, new { @class = "form-control", rows = "4" })
                 </div>
                 <div class="mb-3">
                     @Html.LabelFor(model => model.Order.MESSAGE_TO_SHOP, new { @class = "fw-bold fs-6" })
-                    @Html.TextAreaFor(model => model.Order.MESSAGE_TO_SHOP, new { @class = "form-control", rows = "2" })
+                    @Html.TextAreaFor(model => model.Order.MESSAGE_TO_SHOP, new { @class = "form-control", rows = "4" })
                 </div>
                 @Html.LabelFor(model => model.Order.HIDE_SENDER_INFO, new { @class = "fw-bold fs-6" })
                 <div class="form-check mb-5">

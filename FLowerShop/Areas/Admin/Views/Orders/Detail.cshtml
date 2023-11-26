@@ -19,22 +19,22 @@
                 <div class="card-sales-split">
                     <ul>
                         <li>
-                            <a href="javascript:void(0);"><img src="assets/img/icons/edit.svg" alt="img"></a>
+                            <a href="@Url.Action("Edit", "Orders", new {orderId = Model.ORDER_ID})"><img src="~/Content/admin/assets/img/icons/edit.svg" alt="img"></a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);"><img src="assets/img/icons/pdf.svg" alt="img"></a>
+                            <a href="javascript:void(0);"><img src="~/Content/admin/assets/img/icons/pdf.svg" alt="img"></a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);"><img src="assets/img/icons/excel.svg" alt="img"></a>
+                            <a href="javascript:void(0);"><img src="~/Content/admin/assets/img/icons/excel.svg" alt="img"></a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);"><img src="assets/img/icons/printer.svg" alt="img"></a>
+                            <a href="javascript:void(0);"><img src="~/Content/admin/assets/img/icons/printer.svg" alt="img"></a>
                         </li>
                     </ul>
                 </div>
                 <div class="invoice-box table-height"
                      style="max-width: 1600px;width:100%;overflow: auto;margin:15px auto;padding: 0;font-size: 14px;line-height: 24px;color: #555;">
-                    <table cellpadding="0" cellspacing="0"
+                    <table class="table" cellpadding="0" cellspacing="0"
                            style="width: 100%;line-height: inherit;text-align: left;">
                         <tbody>
                             <tr class="top">
@@ -89,7 +89,7 @@
                                                     </font><br>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                            @Model.RECIPIENT_ADDRESS
+                                                            @(Model.RECIPIENT_ADDRESS + ", " + Model.RECIPIENT_DISTRICT + ", " + Model.RECIPIENT_PROVINCE)
                                                         </font>
                                                     </font><br>
                                                 </td>
@@ -101,7 +101,7 @@
                                                     </font><br>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                            @Model.MESSAGE_TO_RECIPIENT
+                                                            @Html.Raw(Model.MESSAGE_TO_RECIPIENT)
                                                         </font>
                                                     </font><br>
                                                 </td>
@@ -113,7 +113,7 @@
                                                     </font><br>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                            @Model.MESSAGE_TO_SHOP
+                                                            @Html.Raw(Model.MESSAGE_TO_SHOP)
                                                         </font>
                                                     </font><br>
                                                 </td>
@@ -140,9 +140,12 @@
                             {
                                 <tr class="details" style="border-bottom:1px solid #E9ECEF ;">
                                     <td style="padding: 10px;vertical-align: top; display: flex;align-items: center;">
-                                        <img src="~/Content/assets/img/product/@item.FLOWER.FLOWER_IMAGE" alt="img" class="me-2"
-                                             style="width:40px;height:40px;">
-                                        @item.FLOWER.FLOWER_NAME
+                                        
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER.FLOWER_ID})">
+                                            <img src="~/Content/assets/img/product/@item.FLOWER.FLOWER_IMAGE" alt="img" class="me-2" style="width:40px;height:40px;">   
+                                        </a>
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER.FLOWER_ID})">@item.FLOWER.FLOWER_NAME</a>
+
                                     </td>
                                     <td style="padding: 10px;vertical-align: top; ">
                                         @item.QUANTITY
@@ -167,10 +170,13 @@
                                     <h4>Phí vận chuyển</h4>
                                     <h5>30,000VNĐ</h5>
                                 </li>
-                                <li>
-                                    <h4>Giảm giá</h4>
-                                    <h5>- @coupon.Value.ToString("N0")VNĐ</h5>
-                                </li>
+                                @if (Model.DISCOUNT_ID != null)
+                                {
+                                    <li>
+                                        <h4>Mã giảm giá</h4>
+                                        <h5>@coupon.Value.ToString("N0")VNĐ</h5>
+                                    </li>
+                                }
                                 <li class="total">
                                     <h4>Tổng tiền</h4>
                                     <h5>@Model.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</h5>

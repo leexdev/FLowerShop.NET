@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Trang chủ";
     <link rel="stylesheet" href="~/Content/assets/css/homepage.css">
+    var randomFlowerTypes = Model.Select(f => f.FLOWERTYPE.FLOWERTYPE_NAME).Distinct().OrderBy(x => Guid.NewGuid()).Take(3).ToList();
 }
 
 <div class="list-flower container">
@@ -131,125 +132,49 @@
                 </div>
             }
         </div>
-        <div id="opengrand-flower">
-            <h4 class="mt-5 mb-4 text-center">HOA KHAI TRƯƠNG</h4>
-            <div class="list-product row justify-content-center">
-                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa khai trương").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
-                {
-                    <div class="item-product col-md-3 col-6 mb-4">
-                        <div class="image position-relative mb-3">
-                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
-                                <img class="img-fluid" src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
-                                @if (item.OLD_PRICE != null)
-                                {
-                                    var oldPrice = item.OLD_PRICE;
-                                    var newPrice = item.NEW_PRICE;
-                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
-                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
-                                }
-                            </a>
-                        </div>
-                        <div class="content">
-                            <div class="description">
-                                <div class="fw-bold text-center">
-                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
-                                </div>
-                                <div class="price text-center fw-bold p-2">
-                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
-                                    @if (item.OLD_PRICE != null)
-                                    {
-                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
-                                    }
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
 
-        <div id="birthday-flower">
-            <h4 class="mt-5 mb-4 text-center">HOA SINH NHẬT</h4>
-            <div class="list-product row">
-                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa sinh nhật").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
-                {
-                    <div class="item-product col-md-3 col-6 mb-4">
-                        <div class="image position-relative mb-3">
-                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
-                                <img class="img-fluid" src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
-                                @if (item.OLD_PRICE != null)
-                                {
-                                    var oldPrice = item.OLD_PRICE;
-                                    var newPrice = item.NEW_PRICE;
-                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
-                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
-                                }
-                            </a>
-                        </div>
-                        <div class="content">
-                            <div class="description">
-                                <div class="fw-bold text-center">
-                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
-                                </div>
-                                <div class="price text-center fw-bold p-2">
-                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
+        @foreach (var flowerType in randomFlowerTypes)
+        { 
+            <div id="random-flower">
+                <h4 class="mt-5 mb-4 text-center">@flowerType.ToUpper()</h4>
+                <div class="list-product row justify-content-center">
+                    @foreach (var item in Model.Where(f => f.FLOWERTYPE.FLOWERTYPE_NAME == flowerType).OrderBy(x => Guid.NewGuid()).Take(4).ToList())
+                    {
+                        <div class="item-product col-md-3 col-6 mb-4">
+                            <div class="image position-relative mb-3">
+                                <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
+                                    <img class="img-fluid" src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                                     @if (item.OLD_PRICE != null)
                                     {
-                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
+                                        var oldPrice = item.OLD_PRICE;
+                                        var newPrice = item.NEW_PRICE;
+                                        var discount = ((oldPrice - newPrice) / oldPrice) * 100;
+                                        <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
                                     }
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
+                                </a>
+                            </div>
+                            <div class="content">
+                                <div class="description">
+                                    <div class="fw-bold text-center">
+                                        <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
+                                    </div>
+                                    <div class="price text-center fw-bold p-2">
+                                        <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
+                                        @if (item.OLD_PRICE != null)
+                                        {
+                                            <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-
-        <div id="funeral-flower">
-            <h4 class="mt-5 mb-4 text-center">HOA TANG LỄ</h4>
-            <div class="list-product row">
-                @foreach (var item in Model.Where(f => f.FLOWER_NAME == "Hoa tang lễ").OrderBy(x => Guid.NewGuid()).Take(4).ToList())
-                {
-                    <div class="item-product col-md-3 col-6 mb-4">
-                        <div class="image position-relative mb-3">
-                            <a href="@Url.Action("Detail", "Flowers", new { flowerId = item.FLOWER_ID })">
-                                <img class="img-fluid" src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
-                                @if (item.OLD_PRICE != null)
-                                {
-                                    var oldPrice = item.OLD_PRICE;
-                                    var newPrice = item.NEW_PRICE;
-                                    var discount = ((oldPrice - newPrice) / oldPrice) * 100;
-                                    <span class="percent-off-rounded">@discount.Value.ToString("N0")%<br>GIẢM</span>
-                                }
-                            </a>
-                        </div>
-                        <div class="content">
-                            <div class="description">
-                                <div class="fw-bold text-center">
-                                    <a href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">@item.FLOWER_NAME</a>
-                                </div>
-                                <div class="price text-center fw-bold p-2">
-                                    <span class="price-new">@item.NEW_PRICE.Value.ToString("N0")VNĐ</span>
-                                    @if (item.OLD_PRICE != null)
-                                    {
-                                        <span class="price-old">@item.OLD_PRICE.Value.ToString("N0")VNĐ</span>
-                                    }
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn bg-pink px-md-4 text-white rounded" href="@Url.Action("Detail", "FLowers", new { flowerId = item.FLOWER_ID })">Đặt hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
+        }
     </div>
 </div>
 

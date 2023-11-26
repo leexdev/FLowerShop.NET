@@ -1,7 +1,8 @@
-﻿@model FlowerShop.Models.OrderModel
+﻿@model FlowerShop.Context.ORDER
 
 @{
     var totalPrice = 30000;
+    var status = Model.ORDERHISTORies.OrderByDescending(o => o.CHANGE_DATE).FirstOrDefault().STATUS;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -12,26 +13,53 @@
 </head>
 <body>
     <div class="container mt-3 mt-md-5">
-        <p>Xin chào @Model.Order.SENDER_NAME</p>
-        <p>Cảm ơn anh/chị đã đặt hàng tại <strong>Bloom Shop</strong></p>
-        <p>Đơn hàng của Anh/chị đã được tiếp nhận, chúng tôi sẽ nhanh chóng liên hệ với Anh/chị.</p>
-        <h2>Thông tin đơn hàng</h2>
+        @if (status == "Chờ xác nhận")
+        {
+            <p>Xin chào @Model.SENDER_NAME</p>
+            <p>Cảm ơn anh/chị đã đặt hàng tại <strong>Bloom Shop</strong></p>
+            <p>Đơn hàng của Anh/chị đã được tiếp nhận, chúng tôi sẽ nhanh chóng liên hệ với Anh/chị.</p>
+            <h2>Thông tin đơn hàng</h2>
+        }
+        else if (status == "Đang giao hàng")
+        {
+            <p>Xin chào @Model.SENDER_NAME</p>
+            <p>Cảm ơn anh/chị đã đặt hàng tại <strong>Bloom Shop</strong></p>
+            <p>Đơn hàng của Anh/chị đang trên đường giao đến bạn.</p>
+            <h2>Thông tin đơn hàng</h2>
+        }
+
+        else if (status == "Đã giao hàng")
+        {
+            <p>Xin chào @Model.SENDER_NAME</p>
+            <p>Cảm ơn anh/chị đã đặt hàng tại <strong>Bloom Shop</strong></p>
+            <p>Đơn hàng của Anh/chị đã được giao thành công.</p>
+            <p>Cảm ơn bạn đã mua sắm tại Bloom Shop.</p>
+            <h2>Thông tin đơn hàng</h2>
+        }
+
+        else if (status == "Đã hủy")
+        {
+            <p>Xin chào @Model.SENDER_NAME</p>
+            <p>Cảm ơn anh/chị đã đặt hàng tại <strong>Bloom Shop</strong></p>
+            <p>Đơn hàng của Anh/chị đã bị hủy.</p>
+            <h2>Thông tin đơn hàng</h2>
+        }
         <div>
             <h3><strong>Thông tin người gửi:</strong></h3>
-            <p><strong>Tên:</strong> @Model.Order.SENDER_NAME</p>
-            <p><strong>Số điện thoại:</strong> @Model.Order.SENDER_PHONE</p>
-            <p><strong>Email:</strong> @Model.Order.SENDER_EMAIL</p>
+            <p><strong>Tên:</strong> @Model.SENDER_NAME</p>
+            <p><strong>Số điện thoại:</strong> @Model.SENDER_PHONE</p>
+            <p><strong>Email:</strong> @Model.SENDER_EMAIL</p>
         </div>
 
         <div>
             <h3><strong>Thông tin người nhận:</strong></h3>
-            <p><strong>Tên:</strong> @Model.Order.RECIPIENT_NAME</p>
-            <p><strong>Số điện thoại:</strong> @Model.Order.RECIPIENT_PHONE</p>
-            <p><strong>Địa chỉ:</strong> @Model.Order.RECIPIENT_ADDRESS</p>
+            <p><strong>Tên:</strong> @Model.RECIPIENT_NAME</p>
+            <p><strong>Số điện thoại:</strong> @Model.RECIPIENT_PHONE</p>
+            <p><strong>Địa chỉ:</strong> @(Model.RECIPIENT_ADDRESS + ", " + Model.RECIPIENT_DISTRICT + ", " + Model.RECIPIENT_PROVINCE)</p>
         </div>
-        <p><strong>Lời nhắn cho người nhận:</strong> @Model.Order.MESSAGE_TO_RECIPIENT</p>
-        <p><strong>Lời nhắn cho shop:</strong> @Model.Order.MESSAGE_TO_SHOP</p>
-        <p><strong>Ẩn thông tin người gửi:</strong> @(Model.Order.HIDE_SENDER_INFO == true ? "Có" : "Không")</p>
+        <p><strong>Lời nhắn cho người nhận:</strong> @Model.MESSAGE_TO_RECIPIENT</p>
+        <p><strong>Lời nhắn cho shop:</strong> @Model.MESSAGE_TO_SHOP</p>
+        <p><strong>Ẩn thông tin người gửi:</strong> @(Model.HIDE_SENDER_INFO == true ? "Có" : "Không")</p>
 
         <h2>Chi tiết đơn hàng</h2>
         <table border="1">
@@ -43,7 +71,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Order.ORDERDETAILS)
+                @foreach (var item in Model.ORDERDETAILS)
                 {
                     <tr>
                         <td>
@@ -60,22 +88,22 @@
                     <td colspan="2" style="text-align: right;"><strong>Phí vận chuyển</strong></td>
                     <td>30,000VNĐ</td>
                 </tr>
-                @if (Model.Order.DISCOUNT_ID != null)
+                @if (Model.DISCOUNT_ID != null)
                 {
                     <tr>
                         <td colspan="2" style="text-align: right;"><strong>Giảm giá</strong></td>
-                        <td>-@((totalPrice - Model.Order.TOTAL_AMOUNT).Value.ToString("N0"))VNĐ</td>
+                        <td>-@((totalPrice - Model.TOTAL_AMOUNT).Value.ToString("N0"))VNĐ</td>
                     </tr>
                 }
                 <tr>
                     <td colspan="2" style="text-align: right;"><strong>Tổng cộng</strong></td>
-                    <td>@Model.Order.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
+                    <td>@Model.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
                 </tr>
             </tbody>
         </table>
 
         <div>
-            @if (Model.Order.PAYMENT_METHOD == true)
+            @if (Model.PAYMENT_METHOD == true)
             {
                 <strong>Phương thức thanh toán:</strong> <p>Ví điện tử(Momo)</p>
             }
@@ -95,14 +123,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OrderHistories)
+                @foreach (var item in Model.ORDERHISTORies.OrderByDescending(o => o.CHANGE_DATE))
                 {
                     <tr>
-                        <td>@item.CHANGE_DATE</td>
+                        <td>@item.CHANGE_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@item.STATUS</td>
                         <td>@item.CONTENT</td>
                     </tr>
-
                 }
             </tbody>
         </table>

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="~/Content/admin/assets/plugins/fontawesome/css/all.min.css">
 
     <link rel="stylesheet" href="~/Content/admin/assets/css/style.css">
-    @RenderSection("styles", required: false)
+    @RenderSection("scripts", required: false)
 
 </head>
 
@@ -31,7 +31,7 @@
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left active">
-                <a href="@Url.Action("Index", "Home")" class="logo">
+                <a href="@Url.Action("Index", "Home", new {area = ""})" class="logo">
                     <img src="~/Content/admin/assets/img/logo.png" alt="" />
                 </a>
                 <a href="index.html" class="logo-small">
@@ -57,49 +57,10 @@
                     </div>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <img src="~/Content/admin/assets/img/icons/notification-bing.svg" alt="img" />
-                        <span class="badge rounded-pill">4</span>
-                    </a>
-                    <div class="dropdown-menu notifications">
-                        <div class="topnav-dropdown-header">
-                            <span class="notification-title">Thông báo</span>
-                            <a href="javascript:void(0)" class="clear-noti"> Xóa tất cả </a>
-                        </div>
-                        <div class="noti-content">
-                            <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt="" src="~/Content/admin/assets/img/profiles/avatar-13.jpg" />
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details">
-                                                    <span class="noti-title">Bernardo Galaviz</span>
-                                                    added new task
-                                                    <span class="noti-title">Private chat module</span>
-                                                </p>
-                                                <p class="noti-time">
-                                                    <span class="notification-time">2 days ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="#">Xem tất cả thông báo</a>
-                        </div>
-                    </div>
-                </li>
-
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img src="~/Content/admin/assets/img/profiles/avator1.jpg" alt="" />
+                            <img src="~/Content/admin/assets/img/icons/users1.svg" alt="" />
                             <span class="status online"></span>
                         </span>
                     </a>
@@ -107,20 +68,19 @@
                         <div class="profilename">
                             <div class="profileset">
                                 <span class="user-img">
-                                    <img src="~/Content/admin/assets/img/profiles/avator1.jpg" alt="" />
+                                    <img src="~/Content/admin/assets/img/icons/users1.svg" alt="" />
                                     <span class="status online"></span>
                                 </span>
                                 <div class="profilesets">
-                                    <h6>John Doe</h6>
                                     <h5>Admin</h5>
                                 </div>
                             </div>
                             <hr class="m-0" />
-                            <a class="dropdown-item" href="profile.html">
+                            <a class="dropdown-item" href="@Url.Action("Profiles", "Account")">
                                 <i class="me-2" data-feather="user"></i>Thông tin cá nhân
                             </a>
                             <hr class="m-0" />
-                            <a class="dropdown-item logout pb-0" href="signin.html">
+                            <a class="dropdown-item logout pb-0" href="@Url.Action("Logout", "Account", new {area = ""})">
                                 <img src="~/Content/admin/assets/img/icons/log-out.svg" class="me-2" alt="img" />Đăng xuất
                             </a>
                         </div>
@@ -219,7 +179,7 @@
     <script src="~/Content/admin/assets/plugins/select2/js/select2.min.js"></script>
 
     <script src="~/Content/admin/assets/js/script.js"></script>
-    @RenderSection("scripts", required: false)
+
 </body>
 
 </html>

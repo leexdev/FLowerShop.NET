@@ -90,6 +90,8 @@
     <NavigationProperty Name="ORDERDETAILS" Relationship="Self.SYS_C008751" FromRole="ORDERS" ToRole="ORDERDETAILS" />
     <NavigationProperty Name="ORDERHISTORies" Relationship="Self.SYS_C008755" FromRole="ORDERS" ToRole="ORDERHISTORY" />
     <NavigationProperty Name="USER" Relationship="Self.SYS_C008747" FromRole="ORDERS" ToRole="USERS" />
+    <Property Name="RECIPIENT_PROVINCE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RECIPIENT_DISTRICT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="SHOPPINGCART">
     <Key>

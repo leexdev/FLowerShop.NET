@@ -77,6 +77,8 @@
     <Property Name="RECIPIENT_PHONE" Type="nvarchar2" MaxLength="15" />
     <Property Name="RECIPIENT_ADDRESS" Type="clob" />
     <Property Name="DELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+    <Property Name="RECIPIENT_PROVINCE" Type="nvarchar2" MaxLength="50" />
+    <Property Name="RECIPIENT_DISTRICT" Type="nvarchar2" MaxLength="50" />
   </EntityType>
   <EntityType Name="SHOPPINGCART">
     <Key>

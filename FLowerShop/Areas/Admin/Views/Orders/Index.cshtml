@@ -62,7 +62,7 @@
                                 <tr>
                                     <td>
                                         <label class="checkboxs">
-                                            <input name="@item.ORDER_ID" type="checkbox" data-flowerid="@item.ORDER_ID">
+                                            <input name="@item.ORDER_ID" type="checkbox" data-orderid="@item.ORDER_ID">
                                             <span class="checkmarks"></span>
                                         </label>
                                     </td>
@@ -70,7 +70,25 @@
                                     <td>@item.SENDER_NAME</td>
                                     <td>@item.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
                                     <td><span>@(item.PAYMENT_METHOD == true ? "Thanh toán bằng ví Momo" : "Thanh toán khi nhận hàng")</span></td>
-                                    <td><span class="badges bg-lightgreen">@item.ORDERHISTORies.OrderByDescending(o => o.CHANGE_DATE).FirstOrDefault().STATUS</span></td>
+                                    @{
+                                        var status = item.ORDERHISTORies.OrderByDescending(o => o.CHANGE_DATE).FirstOrDefault().STATUS;
+                                    }
+                                    @if (status == "Chờ xác nhận")
+                                    {
+                                        <td><span class="badges bg-warning">@status</span></td>
+                                    }
+                                    else if (status == "Đang giao hàng")
+                                    {
+                                        <td><span class="badges bg-lightyellow">@status</span></td>
+                                    }
+                                    else if (status == "Đã giao hàng")
+                                    {
+                                        <td><span class="badges bg-lightgreen">@status</span></td>
+                                    }
+                                    else if (status == "Đã hủy")
+                                    {
+                                        <td><span class="badges bg-danger">@status</span></td>
+                                    }
                                     <td class="text-center">
                                         <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                            aria-expanded="true">
@@ -88,7 +106,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:void(0);" class="dropdown-item"
+                                                <a href="javascript:void(0);" class="dropdown-item showstatusorder" data-orderid="@item.ORDER_ID"
                                                    data-bs-toggle="modal" data-bs-target="#orderstatus">
                                                     <img src="~/Content/admin/assets/img/icons/plus-circle.svg" class="me-2"
                                                          alt="img">Trạng thái đơn hàng
@@ -106,48 +124,49 @@
     </div>
 </div>
 
-<div class="modal fade" id="orderstatus" tabindex="-1" aria-labelledby="orderstatus" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal" id="orderstatus" tabindex="-1" role="dialog" aria-labelledby="orderStatusLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Trạng thái đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <h5 class="modal-title" id="orderStatusLabel">Cập nhật trạng thái đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-12 col-12">
-                        <div class="form-group">
-                            <label>Trạng thái</label>
-                            <select class="select">
-                                <option>Đang giao hàng</option>
-                                <option>Đã giao hàng</option>
-                                <option>Đã hủy</option>
-                            </select>
+            <form id="updateStatusForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="orderStatus">Trạng thái</label>
+                                <select class="form-control" id="orderStatus" name="orderstatus">
+                                    <option>Đang giao hàng</option>
+                                    <option>Đã giao hàng</option>
+                                    <option>Đã hủy</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group mb-0">
-                            <label>Nội dung</label>
-                            <textarea class="form-control"></textarea>
+                        <div class="col-lg-12">
+                            <div class="form-group mb-0">
+                                <label for="orderContent">Nội dung</label>
+                                <textarea class="form-control" id="orderContent" name="content"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-submit">Xác nhận</button>
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Đóng</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-submit" id="btnUpdateStatus">Xác nhận</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa danh mục này?</h1>
+                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa hóa đơn này?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -167,7 +186,41 @@
         alert('@Html.Raw(ViewBag.SuccessFully)');
     </script>
 }
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var orderId;
+        let btnUpdateStatus = document.getElementById('btnUpdateStatus');
 
+        var showStatusOrders = document.querySelectorAll('.showstatusorder');
+
+        showStatusOrders.forEach(function (showStatusOrder) {
+            showStatusOrder.addEventListener('click', function (event) {
+                orderId = event.target.getAttribute('data-orderid');
+            });
+        });
+
+        btnUpdateStatus.addEventListener('click', () => {
+            var selectedIndex = document.getElementById("orderStatus").selectedIndex;
+            var selectedText = document.getElementById("orderStatus").options[selectedIndex].text;
+            var content = document.getElementById("orderContent").value;
+            console.log(orderId)
+            fetch(`/Admin/Orders/UpdateStatus`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderid: orderId, status: selectedText, content: content }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                    location.reload();
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+            });
+        })
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -176,7 +229,7 @@
 
         deleteModal.addEventListener('shown.bs.modal', function () {
             const selectedCheckboxes = document.querySelectorAll('.datanew tbody input[type="checkbox"]:checked');
-            const orderIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.flowerid);
+            const orderIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.orderid);
 
             deleteBtn.dataset.orderIds = JSON.stringify(orderIds);
         });
@@ -189,7 +242,7 @@
             if (orderIdsToDelete && orderIdsToDelete.length > 0) {
                 deleteModal.classList.add('show');
 
-                fetch(`/Admin/FLowerTypes/DeleteMultiple`, {
+                fetch(`/Admin/Orders/DeleteMultiple`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

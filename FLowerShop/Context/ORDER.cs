@@ -54,7 +54,7 @@ namespace FlowerShop.Context
         [MaxLength(100, ErrorMessage = "Giới hạn {1} ký tự")]
         public string SENDER_NAME { get; set; }
 
-        [DisplayName("Số điện thoại")]
+        [DisplayName("Điện thoại")]
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [RegularExpression(@"^\d{10,15}$", ErrorMessage = "Số điện thoại phải là số từ 10 đến 15 ký tự")]
         public string SENDER_PHONE { get; set; }
@@ -70,7 +70,7 @@ namespace FlowerShop.Context
         [MaxLength(100, ErrorMessage = "Giới hạn {1} ký tự")]
         public string RECIPIENT_NAME { get; set; }
 
-        [DisplayName("Số điện thoại")]
+        [DisplayName("Điện thoại")]
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [RegularExpression(@"^\d{10,15}$", ErrorMessage = "Số điện thoại phải là số từ 10 đến 15 ký tự")]
         public string RECIPIENT_PHONE { get; set; }

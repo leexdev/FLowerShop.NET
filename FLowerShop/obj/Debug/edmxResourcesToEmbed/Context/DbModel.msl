@@ -66,6 +66,8 @@
     <EntitySetMapping Name="ORDERS">
       <EntityTypeMapping TypeName="Model.ORDER">
         <MappingFragment StoreEntitySet="ORDERS">
+          <ScalarProperty Name="RECIPIENT_DISTRICT" ColumnName="RECIPIENT_DISTRICT" />
+          <ScalarProperty Name="RECIPIENT_PROVINCE" ColumnName="RECIPIENT_PROVINCE" />
           <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
           <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
           <ScalarProperty Name="ORDER_DATE" ColumnName="ORDER_DATE" />

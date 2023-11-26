@@ -146,12 +146,12 @@
                         if (data.success) {
                             location.reload();
                         } else {
-                            console.error('Lỗi khi xóa sản phẩm:', data.error || 'Lỗi không xác định');
+                            console.error('Lỗi khi xóa danh mục:', data.error || 'Lỗi không xác định');
                         }
                     })
                     .catch(handleError);
             } else {
-                alert('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+                alert('Vui lòng chọn ít nhất một danh mục để xóa.');
             }
         }
 

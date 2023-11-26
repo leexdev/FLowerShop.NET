@@ -1,0 +1,178 @@
+﻿@model List<FlowerShop.Context.DISCOUNTCODE>
+
+@{
+    ViewBag.Title = "Mã giảm giá";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Mã giảm giá</h4>
+            </div>
+            <div class="page-btn">
+                <a href="@Url.Action("Add", "Discount")" class="btn btn-added">
+                    <img src="~/Content/admin/assets/img/icons/plus.svg" alt="img">Thêm mã giảm giá mới
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-top">
+                    <button class="btn btn-danger" id="deleteSelected" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa mã giảm giá</button>
+                    <div class="wordset">
+                        <ul>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf">
+                                    <img src="~/Content/admin/assets/img/icons/pdf.svg" alt="img">
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel">
+                                    <img src="~/Content/admin/assets/img/icons/excel.svg" alt="img">
+                                </a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="print">
+                                    <img src="~/Content/admin/assets/img/icons/printer.svg" alt="img">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table datanew">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="checkboxs">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </th>
+                                <th>Mã giảm giá</th>
+                                <th>Giá trị giảm giá</th>
+                                <th>Đơn hàng tối thiểu</th>
+                                <th>Số lượng</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <label class="checkboxs">
+                                            <input name="@item.DISCOUNT_ID" type="checkbox" data-discountid="@item.DISCOUNT_ID">
+                                            <span class="checkmarks"></span>
+                                        </label>
+                                    </td>
+                                    <td class="text-bolds">@item.CODE</td>
+                                    <td>@(item.DISCOUNT_TYPE == true ? item.DISCOUNT_VALUE + "%" : item.DISCOUNT_VALUE.Value.ToString("N0") + "VNĐ")</td>
+                                    <td>@item.MINIMUM_ORDER_AMOUNT.Value.ToString("N0")VNĐ</td>
+                                    <td>@item.CODE_COUNT</td>
+                                    <td>@item.START_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@item.END_DATE.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <a class="me-3" href="@Url.Action("Detail", "Discount", new {discountId = item.DISCOUNT_ID})">
+                                            <img src="~/Content/admin/assets/img/icons/eye.svg" alt="img">
+                                        </a>
+                                        <a class="me-3" href="@Url.Action("Edit", "Discount", new {discountId = item.DISCOUNT_ID})">
+                                            <img src="~/Content/admin/assets/img/icons/edit.svg" alt="img">
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModal">Bạn có chắc muốn xóa mã giảm giá này?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hành động này không được hoàn tác
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-primary" id="deleteBtn">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (@ViewBag.SuccessFully != null)
+{
+    <script>
+        alert('@Html.Raw(ViewBag.SuccessFully)');
+    </script>
+}
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        deleteModal.addEventListener('shown.bs.modal', function () {
+            const selectedCheckboxes = document.querySelectorAll('.datanew tbody input[type="checkbox"]:checked');
+            const discountIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.discountid);
+
+            deleteBtn.dataset.discountIds = JSON.stringify(discountIds);
+        });
+
+        deleteBtn.addEventListener('click', handleDeleteClick);
+
+        function handleDeleteClick() {
+            const discountIdsToDelete = JSON.parse(deleteBtn.dataset.discountIds);
+
+            if (discountIdsToDelete && discountIdsToDelete.length > 0) {
+                deleteModal.classList.add('show');
+
+                fetch(`/Admin/Discount/DeleteMultiple`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ discountIds: discountIdsToDelete }),
+                })
+                    .then(handleResponse)
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            console.error('Lỗi khi xóa mã giảm giá:', data.error || 'Lỗi không xác định');
+                        }
+                    })
+                    .catch(handleError);
+            } else {
+                alert('Vui lòng chọn ít nhất một mã giảm giá để xóa.');
+            }
+        }
+
+        function handleResponse(response) {
+            if (!response.ok) {
+                throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        function handleError(error) {
+            console.error('Lỗi:', error);
+        }
+    });
+</script>

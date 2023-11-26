@@ -5,6 +5,7 @@ using FlowerShop.Service.Momo;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -121,7 +122,8 @@ namespace FlowerShop.Controllers
             order.ORDER_ID = Guid.NewGuid();
             order.ORDER_DATE = DateTime.Now;
             order.USER_ID = userId;
-            order.RECIPIENT_ADDRESS += ", " + districtName + ", " + provinceName;
+            order.RECIPIENT_DISTRICT = districtName;
+            order.RECIPIENT_PROVINCE = provinceName;
 
             var totalPriceGrand = CalculateTotalPrice(flower);
 
@@ -224,7 +226,7 @@ namespace FlowerShop.Controllers
             return Redirect(jmessage.GetValue("payUrl").ToString());
         }
 
-        public async Task<ActionResult> ConfirmPaymentClient(Result result)
+        public async Task<ActionResult> ConfirmPaymentClient(ResultMomo result)
         {
             string rMessage = result.message;
             string rOrderId = result.orderId;
@@ -233,7 +235,7 @@ namespace FlowerShop.Controllers
             var order = db.ORDERS.FirstOrDefault(o => o.ORDER_ID == orderId && o.DELETED == false);
             if (rErrorCode == 0)
             {
-                await SendEmailsAsync(order);
+                await SendEmailsAsync(order.ORDER_ID);
 
                 if (Session["BuyFlower"] == null)
                 {
@@ -285,9 +287,9 @@ namespace FlowerShop.Controllers
             // Handle saving payment data to the database
         }
 
-        private async Task SaveOrderToDatabaseAsync(ORDER order, List<SHOPPINGCART> flower)
+        private async Task SaveOrderToDatabaseAsync(ORDER order, List<SHOPPINGCART> shoppingCart)
         {
-            foreach (var item in flower)
+            foreach (var item in shoppingCart)
             {
                 var orderDetail = new ORDERDETAIL
                 {
@@ -296,9 +298,8 @@ namespace FlowerShop.Controllers
                     FLOWER_ID = (Guid)item.FLOWER_ID,
                     QUANTITY = item.QUANTITY,
                     SUBTOTAL = item.SUBTOTAL,
-                    FLOWER = db.FLOWERS.FirstOrDefault()
                 };
-                order.ORDERDETAILS.Add(orderDetail);
+
                 db.ORDERDETAILS.Add(orderDetail);
             }
 
@@ -311,21 +312,22 @@ namespace FlowerShop.Controllers
                 CONTENT = "Đơn hàng đã được tạo thành công"
             };
 
-            order.ORDERHISTORies.Add(orderHistory);
             db.ORDERHISTORies.Add(orderHistory);
 
             db.ORDERS.Add(order);
 
+            db.SaveChanges();
+
             if (order.PAYMENT_METHOD == false)
             {
-                await SendEmailsAsync(order);
+                await SendEmailsAsync(order.ORDER_ID);
             }
 
             if (Session["BuyFlower"] == null && order.PAYMENT_METHOD == false)
             {
                 if (Session["UserId"] != null)
                 {
-                    foreach (var item in flower)
+                    foreach (var item in shoppingCart)
                     {
                         db.SHOPPINGCARTs.Remove(item);
                     }
@@ -335,12 +337,11 @@ namespace FlowerShop.Controllers
                     Session["ShoppingCart"] = null;
                 }
             }
-
-            db.SaveChanges();
         }
 
-        private async Task SendEmailsAsync(ORDER order)
+        private async Task SendEmailsAsync(Guid? orderId)
         {
+            var order = db.ORDERS.AsNoTracking().Where(o => o.ORDER_ID == orderId).FirstOrDefault();
             string toEmailAdmin = "leex.dev@gmail.com";
             string subjectAdmin = "Bạn có đơn hàng mới!";
             string bodyAdmin = "Thông tin đơn hàng";
@@ -349,19 +350,8 @@ namespace FlowerShop.Controllers
             string subjectCustomer = "Đơn hàng đã được tạo";
             string bodyCustomer = "Thông tin đơn hàng";
 
-            var orderToAdmin = new OrderModel
-            {
-                Order = order,
-            };
-
-            var orderToCustomer = new OrderModel
-            {
-                Order = order,
-                OrderHistories = order.ORDERHISTORies.ToList()
-            };
-
-            string htmlBodyAdmin = RenderToString("_MailTextToAdmin", orderToAdmin);
-            string htmlBodyCustomer = RenderToString("_MailTextToCustomer", orderToCustomer);
+            string htmlBodyAdmin = RenderToString("_MailTextToAdmin", order);
+            string htmlBodyCustomer = RenderToString("_MailTextToCustomer", order);
 
             await Task.WhenAll(
                 emailService.SendEmailAsync(toEmailAdmin, subjectAdmin, bodyAdmin, htmlBodyAdmin),
@@ -370,7 +360,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
-        public JsonResult CheckCoupon(string couponName, ORDER order)
+        public JsonResult CheckCoupon(string couponName)
         {
             var userId = Session["UserId"] as Guid?;
             if (userId == null)

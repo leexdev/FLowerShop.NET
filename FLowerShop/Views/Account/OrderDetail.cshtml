@@ -19,7 +19,7 @@
                             <b>ID đặt hàng: </b>
                             @Model.ORDER_ID
                             <br>
-                            <b>Ngày thêm: </b>
+                            <b>Ngày đặt: </b>
                             @Model.ORDER_DATE.Value.ToString("dd/MM/yyyy HH:mm")
                         </td>
 
@@ -50,7 +50,7 @@
                         <td class="w-50">
                             <p>@Model.RECIPIENT_NAME</p>
                             <p>@Model.RECIPIENT_PHONE</p>
-                            <p>@Model.RECIPIENT_ADDRESS</p>
+                            <p>@(Model.RECIPIENT_ADDRESS + ", " + Model.RECIPIENT_DISTRICT + ", " + Model.RECIPIENT_PROVINCE)</p>
                         </td>
                     </tr>
 
@@ -77,7 +77,7 @@
                                     <td class="text-center">
                                         <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">
                                             <img class="img-thumbnail img-cart-flower"
-                                                 src="~/Content/assets/img/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
+                                                 src="~/Content/assets/img/product/@item.FLOWER.FLOWER_IMAGE" alt="@item.FLOWER.FLOWER_IMAGE">
                                         </a>
                                     </td>
                                     <td class="align-middle text-center">
@@ -118,7 +118,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <td>Ngày đặt</td>
+                        <td>Ngày thêm</td>
                         <td>Trạng thái</td>
                         <td>Nội dung</td>
                     </tr>

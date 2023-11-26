@@ -24,7 +24,6 @@ namespace FlowerShop.Context
             this.SHOPPINGCARTs = new HashSet<SHOPPINGCART>();
             this.USERDISCOUNTs = new HashSet<USERDISCOUNT>();
         }
-
         [DisplayName("Mã người dùng")]
         public System.Guid USER_ID { get; set; }
 
@@ -46,7 +45,7 @@ namespace FlowerShop.Context
 
         [DisplayName("Mật khẩu")]
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$", ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự, 1 chữ hoa, 1 chữ thường, 1 ký tự số")]
+        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{6,}$", ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự, 1 chữ cái và 1 ký tự số")]
         [MaxLength(100, ErrorMessage = "Mật khẩu có tối đa 100 ký tự")]
         public string USER_PASSWORD { get; set; }
 

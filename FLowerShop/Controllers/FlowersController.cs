@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI;
 using FlowerShop.Context;
 using FlowerShop.Models;
+using PagedList;
 
 namespace FlowerShop.Controllers
 {
@@ -38,7 +40,11 @@ namespace FlowerShop.Controllers
             {
                 return View("_NotFound");
             }
-
+             
+            if(flower.DESCRIPTION != null)
+            {
+                flower.DESCRIPTION = flower.DESCRIPTION.Replace("\n", "<br>");
+            }
             var flowersOfType = db.FLOWERS
                 .AsNoTracking()
                 .Where(f => f.FLOWERTYPE_ID == flower.FLOWERTYPE_ID && f.FLOWER_ID != flowerId && f.DELETED == false)
@@ -61,47 +67,55 @@ namespace FlowerShop.Controllers
             return View(detailModel);
         }
 
-        public ActionResult Search(string searchQuery, Guid? flowerTypeId, int filterValue = 0)
+        public ActionResult Search(string searchQuery, Guid? flowerTypeId, int? page, int filterValue = 0)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
-                .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
+                .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.ToLower().Contains(searchQuery.ToLower()))
                     && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId) && f.DELETED == false)
                 .ToList();
 
-            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
+            if (TempData["FilterValue"] != null)
+            {
+                filterValue = (Int32)TempData["FilterValue"];
+            }
 
             filteredFlowers = SortFlowers(filteredFlowers, filterValue);
 
-            var searchModel = new SearchModel
-            {
-                Flowers = filteredFlowers,
-                FlowersType = flowerTypes
-            };
+            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
 
             ViewBag.SearchQuery = searchQuery;
             ViewBag.SelectedFlowerTypeId = flowerTypeId?.ToString();
+            ViewBag.ListFlowerTypes = db.FLOWERTYPES.Where(f => f.DELETED == false).ToList();
+            ViewBag.FilterValue = filterValue;
 
-            return View(searchModel);
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+
+            return View(filteredFlowers.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult FilterFLowers(string searchQuery, Guid? flowerTypeId, int filterValue)
+        public ActionResult FilterFLowers(string searchQuery, Guid? flowerTypeId, int? page, int filterValue)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
-                .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.Contains(searchQuery))
-                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId) && f.DELETED == false) 
+                .Where(f => (string.IsNullOrEmpty(searchQuery) || f.FLOWER_NAME.ToLower().Contains(searchQuery.ToLower()))
+                    && (!flowerTypeId.HasValue || f.FLOWERTYPE_ID == flowerTypeId) && f.DELETED == false)
                 .ToList();
 
-            // Sử dụng giá trị filterValue từ tham số URL để áp dụng sắp xếp
             filteredFlowers = SortFlowers(filteredFlowers, filterValue);
 
-            var searchModel = new SearchModel
-            {
-                Flowers = filteredFlowers.ToList()
-            };
+            var flowerTypes = db.FLOWERTYPES.AsNoTracking().ToList();
 
-            return PartialView("_FlowerSearch", searchModel);
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SelectedFlowerTypeId = flowerTypeId?.ToString();
+            ViewBag.ListFlowerTypes = db.FLOWERTYPES.Where(f => f.DELETED == false).ToList();
+            TempData["FilterValue"] = filterValue;
+
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+
+            return PartialView("_FlowerSearch", filteredFlowers.ToPagedList(pageNumber, pageSize));
         }
 
 

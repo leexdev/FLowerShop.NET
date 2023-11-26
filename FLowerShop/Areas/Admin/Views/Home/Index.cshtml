@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Trang Admin";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    @section scripts
+    {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    }
 }
 
 <div class="page-wrapper">
@@ -56,31 +61,27 @@
                 </div>
             </div>
         </div>
+        <style>
+            #chartContainer {
+                width: 50vw;
+                overflow-x: auto;
+            }
+        </style>
 
         <div class="row">
             <div class="col-lg-7 col-sm-12 col-12 d-flex">
                 <div class="card flex-fill">
+                    <div class="m-3">
+                        <label for="selectYear">Chọn năm:</label>
+                        <select id="selectYear">
+                            <!-- Bạn có thể để các tùy chọn trống và sẽ được thêm tự động bằng JavaScript -->
+                        </select>
+                    </div>
                     <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                        <div class="graph-sets">
-                            <div class="dropdown">
-                                <button class="btn btn-white btn-sm dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    2022
-                                    <img src="~/Content/admin/assets/img/icons/dropdown.svg" alt="img" class="ms-2" />
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a href="javascript:void(0);" class="dropdown-item">2022</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="dropdown-item">2021</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="dropdown-item">2020</a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div id="chartContainer">
+                            <canvas id="salesChart" width="800" height="400"></canvas>
                         </div>
+
                     </div>
                     <div class="card-body">
                         <div id="s-line" class="chart-set"></div>
@@ -98,7 +99,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <a href="productlist.html" class="dropdown-item">Danh sách sản phẩm</a>
+                                    <a href="@Url.Action("Index", "FLowers")" class="dropdown-item">Danh sách sản phẩm</a>
                                 </li>
                             </ul>
                         </div>
@@ -111,6 +112,7 @@
                                         <th>STT</th>
                                         <th>Tên</th>
                                         <th>Giá</th>
+                                        <th>Số lượng bán</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,6 +131,12 @@
                                                     <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER_NAME</a>
                                                 </td>
                                                 <td>@item.NEW_PRICE.Value.ToString("N0")VNĐ</td>
+                                                <td>
+                                                    @item.ORDERDETAILS.Count(od => od.ORDER.ORDERHISTORies
+                                                      .OrderByDescending(oh => oh.CHANGE_DATE)
+                                                      .FirstOrDefault()?.STATUS == "Đã giao hàng")
+                                            </td>
+
                                             </tr>
                                             index++;
                                         }
@@ -142,3 +150,109 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var myChart;
+        var selectYear = document.getElementById('selectYear');
+
+        // Lấy năm hiện tại
+        var currentYear = new Date().getFullYear();
+
+        var defaultOption = document.createElement('option');
+        defaultOption.value = currentYear;
+        defaultOption.text = currentYear;
+        defaultOption.selected = true;
+        selectYear.add(defaultOption);
+
+        for (var i = 1; i <= 2 ; i++) {
+            var optionYear = currentYear - i;
+            var option = document.createElement('option');
+            option.value = optionYear;
+            option.text = optionYear;
+            selectYear.add(option);
+        }
+
+
+        fetch('/Admin/Home/GetSalesData?year=' + currentYear)
+            .then(response => response.json())
+            .then(data => {
+                updateChart(data);
+            })
+            .catch(error => {
+                console.error('Lỗi khi gửi yêu cầu fetch:', error);
+            });
+
+        selectYear.addEventListener('change', function () {
+            var selectedYear = this.value;
+
+            fetch('/Admin/Home/GetSalesData?year=' + selectedYear)
+                .then(response => response.json())
+                .then(data => {
+                    updateChart(data);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gửi yêu cầu fetch:', error);
+                });
+        });
+
+        function updateChart(data) {    
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.Month),
+                    datasets: [
+                        {
+                            label: 'Số lượng bán',
+                            yAxisID: 'quantity',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            data: data.map(item => item.Quantity)
+                        },
+                        {
+                            label: 'Tổng tiền',
+                            yAxisID: 'revenue',
+                            type: 'line',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2,
+                            fill: false,
+                            data: data.map(item => item.TotalAmount)
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: [
+                            {
+                                id: 'quantity',
+                                type: 'linear',
+                                position: 'left',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Số lượng'
+                                }
+                            },
+                            {
+                                id: 'revenue',
+                                type: 'linear',
+                                position: 'right',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Tổng tiền'
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+        }
+    });
+</script>

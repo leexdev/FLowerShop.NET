@@ -22,22 +22,23 @@
                         <h5 class="fw-bold mb-2">Thông tin người gửi</h5>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
+                                @Html.HiddenFor(model => model.Order.ORDER_ID)
                                 @Html.LabelFor(model => model.Order.SENDER_NAME)
-                                @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Order.SENDER_NAME, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Order.SENDER_NAME, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Order.SENDER_EMAIL)
-                                @Html.TextBoxFor(model => model.Order.SENDER_EMAIL, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Order.SENDER_EMAIL, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Order.SENDER_EMAIL, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Order.SENDER_PHONE)
-                                @Html.TextBoxFor(model => model.Order.SENDER_PHONE, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Order.SENDER_PHONE, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Order.SENDER_PHONE, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -48,42 +49,45 @@
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Order.RECIPIENT_NAME)
-                                @Html.TextBoxFor(model => model.Order.RECIPIENT_NAME, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Order.RECIPIENT_NAME, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Order.RECIPIENT_NAME, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Order.RECIPIENT_PHONE)
-                                @Html.TextBoxFor(model => model.Order.RECIPIENT_PHONE, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Order.RECIPIENT_PHONE, new { @class = "form-control", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Order.RECIPIENT_PHONE, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                @Html.Label("Tỉnh, thành phố", new { @class = "fw-bold fs-6 form-label" })
+                                @Html.LabelFor(model => model.Order.RECIPIENT_PROVINCE)
                                 <select class="form-select" required id="provinceSelect" name="ProvinceCode">
                                     <option selected disabled value="">--- Chọn tỉnh ---</option>
                                     @foreach (var item in ViewBag.ListProvinces)
                                     {
-                                        <option value="@item.code" data-provincecode="@item.code" @(item.name == Model.ProvinceName ? "selected" : "")>@item.name</option>
+                                        <option value="@item.code" data-provincecode="@item.code" @(item.name == Model.Order.RECIPIENT_PROVINCE ? "selected" : "")>@item.name</option>
                                     }
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>Huyện, Thành phố</label>
-                                <select class="select" name="ReceiverDistrict">
-                                    <option selected disabled>Chọn tỉnh trước</option>
-                                    <option>Quận 9</option>
+                                @Html.LabelFor(model => model.Order.RECIPIENT_DISTRICT)
+                                <select class="form-select" required id="districtSelect" name="districtName">
+                                    @foreach (var item in ViewBag.ListDistricts)
+                                    {
+                                        <option value="@item.name" @(item.name == Model.Order.RECIPIENT_DISTRICT ? "selected" : "")>@item.name</option>
+                                    }
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>Địa chỉ</label>
-                                <input type="text" name="ReceiverAddress">
+                                @Html.LabelFor(model => model.Order.RECIPIENT_ADDRESS)
+                                @Html.TextBoxFor(model => model.Order.RECIPIENT_ADDRESS, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Order.RECIPIENT_ADDRESS, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -108,7 +112,7 @@
                                             <td>@i</td>
                                             <td class="productimgname">
                                                 <a class="product-img">
-                                                    <img src="@item.FLOWER.FLOWER_IMAGE" alt="product">
+                                                    <img src="~/Content/assets/img/product/@item.FLOWER.FLOWER_IMAGE" alt="product">
                                                 </a>
                                                 <a href="javascript:void(0);">@item.FLOWER.FLOWER_NAME</a>
                                             </td>
@@ -134,10 +138,13 @@
                                         <h4>Phí vận chuyển</h4>
                                         <h5>30,000VNĐ</h5>
                                     </li>
-                                    <li>
-                                        <h4>Mã giảm giá</h4>
-                                        <h5>@coupon.Value.ToString("N0")VNĐ</h5>
-                                    </li>
+                                    @if(Model.Order.DISCOUNT_ID != null)
+                                    {
+                                        <li>
+                                            <h4>Mã giảm giá</h4>
+                                            <h5>@coupon.Value.ToString("N0")VNĐ</h5>
+                                        </li>
+                                    }
                                     <li class="total">
                                         <h4>Tổng tiền</h4>
                                         <h5>@Model.Order.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</h5>
@@ -158,3 +165,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let provinceSelect = document.getElementById('provinceSelect');
+        let districtSelect = document.getElementById('districtSelect');
+        provinceSelect.addEventListener('change', (event) => {
+            let selectedOption = event.target.options[event.target.selectedIndex];
+            let provinceCode = selectedOption.getAttribute('data-provincecode');
+
+            districtSelect.innerHTML = "";
+
+            fetch('/Admin/Orders/GetDistricts?provinceCode=' + encodeURIComponent(provinceCode))
+                .then(response => response.json())
+                .then(result => {
+                    result.forEach(district => {
+                        let option = document.createElement('option');
+                        option.value = district.name;
+
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    })
+</script>

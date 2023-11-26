@@ -22,7 +22,7 @@ namespace FlowerShop.Context
             this.SHOPPINGCARTs = new HashSet<SHOPPINGCART>();
             this.ORDERDETAILS = new HashSet<ORDERDETAIL>();
         }
-    
+
         public System.Guid FLOWER_ID { get; set; }
         [DisplayName("Tên sản phẩm")]
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]

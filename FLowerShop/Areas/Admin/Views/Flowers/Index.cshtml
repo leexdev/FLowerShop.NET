@@ -72,10 +72,10 @@
                                         </label>
                                     </td>
                                     <td class="productimgname">
-                                        <a href="javascript:void(0);" class="product-img">
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})" class="product-img">
                                             <img src="~/Content/assets/img/product/@item.FLOWER_IMAGE" alt="@item.FLOWER_IMAGE">
                                         </a>
-                                        <a href="javascript:void(0);">@item.FLOWER_NAME</a>
+                                        <a href="@Url.Action("Detail", "Flowers", new {flowerId = item.FLOWER_ID})">@item.FLOWER_NAME</a>
                                     </td>
                                     <td>@((item.OLD_PRICE.HasValue) ? item.OLD_PRICE?.ToString("N0") + "VNĐ" : "")</td>
                                     <td>@item.NEW_PRICE.Value.ToString("N0")VNĐ</td>

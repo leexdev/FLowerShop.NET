@@ -39,13 +39,10 @@
                                 <li>
                                     <h4>Mô tả</h4>
                                     <h6>
-                                        @Model.DESCRIPTION
+                                        @Html.Raw(Model.DESCRIPTION)
                                     </h6>
                                 </li>
                             </ul>
-                            <div class="mt-3">
-                                <a href="@Url.Action("Index", "Flowers")" class="btn btn-cancel">Quay lại</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,7 +51,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="slider-product-details">
-                            <div class="owl-carousel owl-theme product-slide">
+                            <div class="owl-theme">
                                 <div class="slider-product">
                                     <img src="~/Content/assets/img/product/@Model.FLOWER_IMAGE" alt="img">
                                     <h4>@Model.FLOWER_IMAGE</h4>

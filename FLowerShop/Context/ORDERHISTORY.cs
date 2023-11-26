@@ -24,7 +24,7 @@ namespace FlowerShop.Context
 
         [DisplayName("Trạng thái")]
         public string STATUS { get; set; }
-    
+
         public virtual ORDER ORDER { get; set; }
     }
 }

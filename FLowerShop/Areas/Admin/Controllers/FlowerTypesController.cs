@@ -1,14 +1,17 @@
 ﻿using FlowerShop.Context;
 using FlowerShop.Controllers;
+using FlowerShop.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace FlowerShop.Areas.Admin.Controllers
 {
+    [CustomAuthorize(Roles = "1")]
     public class FlowerTypesController : Controller
     {
         private readonly FlowerShopEntities db;
@@ -89,7 +92,7 @@ namespace FlowerShop.Areas.Admin.Controllers
                 return View(flowerType);
             }
 
-            var flowerTypeToUpdate = db.FLOWERTYPES.AsNoTracking().Where(f => f.FLOWERTYPE_ID == flowerType.FLOWERTYPE_ID && f.DELETED == false).FirstOrDefault();
+            var flowerTypeToUpdate = db.FLOWERTYPES.Where(f => f.FLOWERTYPE_ID == flowerType.FLOWERTYPE_ID && f.DELETED == false).FirstOrDefault();
             if (flowerTypeToUpdate != null)
             {
                 flowerTypeToUpdate.FLOWERTYPE_NAME = formattedFlowerType;

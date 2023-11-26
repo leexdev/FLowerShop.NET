@@ -1,0 +1,98 @@
+﻿@model FlowerShop.Context.DISCOUNTCODE
+
+@{
+    ViewBag.Title = "Thêm mã giảm giá";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Thêm mã giảm giá</h4>
+                <h6>Thêm mã giảm giá mới</h6>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Add", "Discount", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CODE)
+                                @Html.TextBoxFor(model => model.CODE, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.CODE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DISCOUNT_TYPE)
+                                @Html.DropDownListFor(model => model.DISCOUNT_TYPE,
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "Chọn loại", Value = "", Disabled = true, Selected = true },
+                                        new SelectListItem { Text = "%", Value = "true" },
+                                        new SelectListItem { Text = "VNĐ", Value = "false" }
+                                    },
+                                    new { @class = "select form-control", @name = "DISCOUNT_TYPE", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.DISCOUNT_TYPE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DISCOUNT_VALUE)
+                                @Html.TextBoxFor(model => model.DISCOUNT_VALUE, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.DISCOUNT_VALUE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MINIMUM_ORDER_AMOUNT)
+                                @Html.TextBoxFor(model => model.MINIMUM_ORDER_AMOUNT, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.MINIMUM_ORDER_AMOUNT, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CODE_COUNT)
+                                @Html.TextBoxFor(model => model.CODE_COUNT, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.CODE_COUNT, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.START_DATE)
+                                <div class="input-groupicon">
+                                    @Html.TextBoxFor(model => model.START_DATE, new { @placeholder = "DD-MM-YYYY", @type = "datetime-local", required = "required" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.START_DATE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.END_DATE)
+                                <div class="input-groupicon">
+                                    @Html.TextBoxFor(model => model.END_DATE, new { @placeholder = "DD-MM-YYYY", @type = "datetime-local", required = "required" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.END_DATE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Thêm</button>
+                            <a href="@Url.Action("Index", "Discount")" class="btn btn-cancel">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

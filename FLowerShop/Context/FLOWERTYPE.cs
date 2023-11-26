@@ -28,7 +28,7 @@ namespace FlowerShop.Context
         [StringLength(100, ErrorMessage = "Tên phải có ít nhât {2} ký tự và không quá 100 ký tự.", MinimumLength = 5)]
         public string FLOWERTYPE_NAME { get; set; }
         public bool DELETED { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLOWER> FLOWERS { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using FlowerShop.Context;
+using FlowerShop.Service;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,10 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 
 namespace FlowerShop.Areas.Admin.Controllers
 {
+    [CustomAuthorize(Roles = "1")]
     public class FlowersController : Controller
     {
         private readonly FlowerShopEntities db;
@@ -32,6 +35,10 @@ namespace FlowerShop.Areas.Admin.Controllers
 
             if (flower != null)
             {
+                if (flower.DESCRIPTION != null)
+                {
+                    flower.DESCRIPTION = flower.DESCRIPTION.Replace("\n", "<br>");
+                }
                 return View(flower);
             }
             return PartialView("_NotFound");
@@ -127,7 +134,7 @@ namespace FlowerShop.Areas.Admin.Controllers
                 flower.FLOWER_IMAGE = fileName;
             }
 
-            var existingFlower = db.FLOWERS.AsNoTracking().Where(f => f.FLOWER_ID == flower.FLOWER_ID && f.DELETED == false).FirstOrDefault();
+            var existingFlower = db.FLOWERS.Where(f => f.FLOWER_ID == flower.FLOWER_ID && f.DELETED == false).FirstOrDefault();
 
             if (existingFlower != null)
             {

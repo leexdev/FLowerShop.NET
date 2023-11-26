@@ -1,0 +1,60 @@
+﻿@model FlowerShop.Context.DISCOUNTCODE
+
+@{
+    ViewBag.Title = "Chi tiết mã giảm giá";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Chi tiết mã giảm giá</h4>
+                <h6>Xem chi tiết mã giảm giá</h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="productdetails">
+                            <ul class="product-bar">
+                                <li>
+                                    <h4>Mã giảm giá</h4>
+                                    <h6>@Model.CODE</h6>
+                                </li>
+                                <li>
+                                    <h4>Giá trị giảm giá</h4>
+                                    <h6>@(Model.DISCOUNT_TYPE == true ? Model.DISCOUNT_VALUE + "%" : Model.DISCOUNT_VALUE.Value.ToString("N0") + "VNĐ")</h6>
+                                </li>
+                                <li>
+                                    <h4>Đơn hàng tối thiểu</h4>
+                                    <h6>@Model.MINIMUM_ORDER_AMOUNT.Value.ToString("N0")VNĐ</h6>
+                                </li>
+                                <li>
+                                    <h4>Ngày bắt đầu</h4>
+                                    <h6>@Model.START_DATE.Value.ToString("dd/MM/yyyy HH:mm")</h6>
+                                </li>
+                                <li>
+                                    <h4>Ngày kết thúc</h4>
+                                    <h6>@Model.END_DATE.Value.ToString("dd/MM/yyyy HH:mm")</h6>
+                                </li>
+                                <li>
+                                    <h4>Số lượng</h4>
+                                    <h6>@Model.CODE_COUNT</h6>
+                                </li>
+                                <li>
+                                    <h4>Mô tả</h4>
+                                    <h6>
+                                        @Model.DESCRIPTION
+                                    </h6>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

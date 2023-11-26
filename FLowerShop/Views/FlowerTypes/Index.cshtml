@@ -1,10 +1,13 @@
-﻿@{
+﻿@model PagedList.IPagedList<FlowerShop.Context.FLOWER>
+@using PagedList.Mvc
+
+@{
     ViewBag.Title = ViewBag.FlowerTypeName;
 }
 
 <div class="container mt-3">
     <h2 class="text-center">
-        <span class="category-title d-inline-block border-bottom">Hoa khai trương</span>
+        <span class="category-title d-inline-block border-bottom">@ViewBag.FlowerTypeName</span>
     </h2>
     @if (Model != null && Model.Count > 0)
     {
@@ -12,11 +15,11 @@
             <span class="me-2">Sắp xếp theo</span>
             <div class="filter-flower">
                 <select class="form-select" id="filterSelect">
-                    <option value="0" selected>Mặc định</option>
-                    <option value="1">Tên (A - Z)</option>
-                    <option value="2">Tên (Z - A)</option>
-                    <option value="3">Giá (Thấp > Cao)</option>
-                    <option value="4">Giá (Cao > Thấp)</option>
+                    <option value="0" @(ViewBag.FilterValue == 0 ? "selected" : "")>Mặc định</option>
+                    <option value="1" @(ViewBag.FilterValue == 1 ? "selected" : "")>Tên (A - Z)</option>
+                    <option value="2" @(ViewBag.FilterValue == 2 ? "selected" : "")>Tên (Z - A)</option>
+                    <option value="3" @(ViewBag.FilterValue == 3 ? "selected" : "")>Giá (Thấp > Cao)</option>
+                    <option value="4" @(ViewBag.FilterValue == 4 ? "selected" : "")>Giá (Cao > Thấp)</option>
                 </select>
             </div>
         </div>
@@ -25,23 +28,46 @@
                 @Html.Partial("_FlowerType")
             </div>
         </div>
-    <nav class="d-flex justify-content-center">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        <nav class="d-flex justify-content-center">
+            <ul class="pagination">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Search", new { page = Model.PageNumber - 1, searchQuery = ViewBag.SearchQuery, flowerTypeId = ViewBag.SelectedFlowerTypeId, filterValue = ViewBag.FilterValue })" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&laquo;</span>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", "FlowerTypes", new { flowerTypeId = ViewBag.FlowerTypeId, page = i, filterValue = ViewBag.FilterValue })">@i</a>
+                    </li>
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", "FlowerTypes", new {flowerTypeId = ViewBag.FlowerTypeId, page = Model.PageNumber + 1, filterValue = ViewBag.FilterValue })" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&raquo;</span>
+                    </li>
+                }
+            </ul>
+        </nav>
     }
     else
     {

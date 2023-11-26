@@ -1,6 +1,7 @@
 ﻿using Facebook;
 using FlowerShop.Context;
 using FlowerShop.Models;
+using FlowerShop.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace FlowerShop.Controllers
 {
@@ -33,6 +35,7 @@ namespace FlowerShop.Controllers
             return View();
         }
 
+        [CustomAuthorize]
         public ActionResult Logout()
         {
             Session.Clear();
@@ -115,12 +118,15 @@ namespace FlowerShop.Controllers
             }
 
             Session["UserId"] = existingUser.USER_ID;
-            Session["UserEmail"] = existingUser.USER_EMAIL;
-            Session["UserPhone"] = existingUser.USER_PHONE;
             Session["Role"] = existingUser.ROLE;
             Session.Remove("ShoppingCart");
 
             ModelState.Clear();
+
+            if((Boolean)Session["Role"] == true)
+            {
+                return RedirectToAction("Index", "Home", new {area = "Admin"});
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -156,15 +162,18 @@ namespace FlowerShop.Controllers
                 };
 
                 db.USERS.Add(user);
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
             }
 
             Session["UserId"] = user.USER_ID;
-            Session["UserName"] = user.USER_NAME;
-            Session["UserEmail"] = user.USER_EMAIL;
-            Session["UserPhone"] = user.USER_PHONE;
             Session["Role"] = user.ROLE;
             Session.Remove("ShoppingCart");
+
+            if ((Boolean)Session["Role"] == true)
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -271,12 +280,14 @@ namespace FlowerShop.Controllers
             }
         }
 
+        [CustomAuthorize]
         public ActionResult Account()
         {
             ViewBag.ShowAlert = TempData["ShowAlert"];
             return View();
         }
 
+        [CustomAuthorize]
         public ActionResult EditAccount()
         {
             var userId = (Guid)Session["UserId"];
@@ -291,6 +302,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
+        [CustomAuthorize]
         [HttpPost]
         public ActionResult EditAccount(USER user)
         {
@@ -314,6 +326,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
+        [CustomAuthorize]
         public ActionResult ChangePassword()
         {
             var userId = (Guid)Session["UserId"];
@@ -328,6 +341,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
+        [CustomAuthorize]
         [HttpPost]
         public ActionResult ChangePassword(USER user)
         {
@@ -355,6 +369,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
+        [CustomAuthorize]
         public ActionResult OrderHistory()
         {
             var userId = (Guid)Session["UserId"];
@@ -369,6 +384,7 @@ namespace FlowerShop.Controllers
             return PartialView("_NotFound");
         }
 
+        [CustomAuthorize]
         public ActionResult OrderDetail(Guid? orderId)
         {
             var order = db.ORDERS.Where(o => o.ORDER_ID == orderId && o.DELETED == false).FirstOrDefault();

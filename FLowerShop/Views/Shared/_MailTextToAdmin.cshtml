@@ -1,6 +1,6 @@
-﻿@model FlowerShop.Models.OrderModel
+﻿@model FlowerShop.Context.ORDER
 
-@{ 
+@{
     var totalPrice = 30000;
 }
 <!DOCTYPE html>
@@ -15,16 +15,16 @@
         <h2>Thông tin đơn hàng</h2>
         <div>
             <h3><strong>Thông tin người gửi:</strong></h3>
-            <p><strong>Tên:</strong> @Model.Order.SENDER_NAME</p>
-            <p><strong>Số điện thoại:</strong> @Model.Order.SENDER_PHONE</p>
-            <p><strong>Email:</strong> @Model.Order.SENDER_EMAIL</p>
+            <p><strong>Tên:</strong> @Model.SENDER_NAME</p>
+            <p><strong>Số điện thoại:</strong> @Model.SENDER_PHONE</p>
+            <p><strong>Email:</strong> @Model.SENDER_EMAIL</p>
         </div>
 
         <div>
             <h3><strong>Thông tin người nhận:</strong></h3>
-            <p><strong>Tên:</strong> @Model.Order.RECIPIENT_NAME</p>
-            <p><strong>Số điện thoại:</strong> @Model.Order.RECIPIENT_PHONE</p>
-            <p><strong>Địa chỉ:</strong> @Model.Order.RECIPIENT_ADDRESS</p>
+            <p><strong>Tên:</strong> @Model.RECIPIENT_NAME</p>
+            <p><strong>Số điện thoại:</strong> @Model.RECIPIENT_PHONE</p>
+            <p><strong>Địa chỉ:</strong>@(Model.RECIPIENT_ADDRESS + ", " + Model.RECIPIENT_DISTRICT + ", " + Model.RECIPIENT_PROVINCE)</p>
         </div>
 
         <h2>Chi tiết đơn hàng</h2>
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Order.ORDERDETAILS)
+                @foreach (var item in Model.ORDERDETAILS)
                 {
                     <tr>
                         <td>
@@ -54,22 +54,22 @@
                     <td colspan="2" style="text-align: right;"><strong>Phí vận chuyển</strong></td>
                     <td>30,000VNĐ</td>
                 </tr>
-                @if(Model.Order.DISCOUNT_ID != null)
+                @if (Model.DISCOUNT_ID != null)
                 {
                     <tr>
                         <td colspan="2" style="text-align: right;"><strong>Giảm giá</strong></td>
-                        <td>-@((totalPrice - Model.Order.TOTAL_AMOUNT).Value.ToString("N0"))VNĐ</td>
+                        <td>-@((totalPrice - Model.TOTAL_AMOUNT).Value.ToString("N0"))VNĐ</td>
                     </tr>
                 }
                 <tr>
                     <td colspan="2" style="text-align: right;"><strong>Tổng cộng</strong></td>
-                    <td>@Model.Order.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
+                    <td>@Model.TOTAL_AMOUNT.Value.ToString("N0")VNĐ</td>
                 </tr>
             </tbody>
         </table>
 
         <div>
-            @if (Model.Order.PAYMENT_METHOD == true)
+            @if (Model.PAYMENT_METHOD == true)
             {
                 <strong>Phương thức thanh toán:</strong> <p>Ví điện tử(Momo)</p>
             }

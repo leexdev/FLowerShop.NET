@@ -5,7 +5,7 @@ using System.Web;
 
 namespace FlowerShop.Models
 {
-    public class Result
+    public class ResultMomo
     {
         public string partnerCode { get; set; }
         public string accessKey { get; set; }

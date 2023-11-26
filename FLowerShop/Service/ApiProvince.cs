@@ -55,5 +55,40 @@ namespace FlowerShop.Service
             return province.districts.ToObject<List<dynamic>>() ?? new List<dynamic>();
         }
 
+
+        public async Task<List<dynamic>> GetDistrictsByProvinceNameAsync(string provinceName)
+        {
+            int? provinceCode = await GetProvinceCodeByNameAsync(provinceName);
+
+            if (provinceCode.HasValue)
+            {
+                // Use the obtained province code to get districts
+                var url = $"https://provinces.open-api.vn/api/p/{provinceCode}?depth=2";
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var content = await response.Content.ReadAsStringAsync();
+                var province = JsonConvert.DeserializeObject<dynamic>(content);
+
+                return province.districts.ToObject<List<dynamic>>() ?? new List<dynamic>();
+            }
+
+            return new List<dynamic>();
+        }
+
+        public async Task<int?> GetProvinceCodeByNameAsync(string provinceName)
+        {
+            var url = $"https://provinces.open-api.vn/api/p";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var provinces = JsonConvert.DeserializeObject<List<dynamic>>(content);
+
+            var targetProvince = provinces.FirstOrDefault(p => p.name == provinceName);
+
+            return targetProvince?.code;
+        }
+
     }
 }

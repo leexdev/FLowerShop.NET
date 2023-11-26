@@ -120,7 +120,7 @@
         <div class="description-flower mt-4">
             <div class="name fw-bold mb-3">Mô tả sản phẩm</div>
             <div class="content">
-                @Model.Flower.DESCRIPTION
+                @Html.Raw(Model.Flower.DESCRIPTION)
             </div>
         </div>
 
@@ -129,7 +129,7 @@
             <div id="relate-flower">
                 <h4 class="mt-5 mb-4 text-center">Sản phẩm liên quan</h4>
                 <div class="list-product row justify-content-center">
-                    @foreach(var item in Model.Flowers) 
+                    @foreach(var item in Model.Flowers.Take(4)) 
                     {
                         <div class="item-product col-md-3 col-6 mb-4">
                             <div class="image position-relative mb-3">

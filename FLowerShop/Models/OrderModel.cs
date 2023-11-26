@@ -10,7 +10,6 @@ namespace FlowerShop.Models
     {
         public List<SHOPPINGCART> ShoppingCarts { get; set; }
         public List<ORDERDETAIL> OrderDetails { get; set; }
-        public List<ORDERHISTORY> OrderHistories { get; set; }
         public USER User { get; set; }
         public ORDER Order { get; set; }
         public DISCOUNTCODE DiscountCode { get; set; }

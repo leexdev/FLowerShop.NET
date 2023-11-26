@@ -1,7 +1,9 @@
 ﻿using FlowerShop.Context;
 using FlowerShop.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,31 +25,47 @@ namespace FlowerShop.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        public ActionResult Index(Guid? flowerTypeId, int filterValue = 0)
+        public ActionResult Index(Guid? flowerTypeId, int? page, int filterValue = 0)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
                 .Where(f => f.FLOWERTYPE_ID == flowerTypeId && f.DELETED == false)
                 .ToList();
+
+            if (TempData["FilterValue"] != null)
+            {
+                filterValue = (Int32)TempData["FilterValue"];
+            }
 
             filteredFlowers = SortFlowers(filteredFlowers, filterValue);
             var flowerTypeName = db.FLOWERTYPES.Where(f => f.FLOWERTYPE_ID == flowerTypeId).FirstOrDefault().FLOWERTYPE_NAME; 
             ViewBag.FlowerTypeId = flowerTypeId;
             ViewBag.FlowerTypeName = flowerTypeName;
-            return View(filteredFlowers);
+            ViewBag.FilterValue = filterValue;
+
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+            return View(filteredFlowers.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult FilterFLowers(Guid? flowerTypeId, int filterValue)
+        public ActionResult FilterFLowers(Guid? flowerTypeId, int? page, int filterValue)
         {
             var filteredFlowers = db.FLOWERS
                 .AsNoTracking()
                 .Where(f => f.FLOWERTYPE_ID == flowerTypeId && f.DELETED == false)
                 .ToList();
 
-            // Sử dụng giá trị filterValue từ tham số URL để áp dụng sắp xếp
             filteredFlowers = SortFlowers(filteredFlowers, filterValue);
+            var flowerTypeName = db.FLOWERTYPES.Where(f => f.FLOWERTYPE_ID == flowerTypeId).FirstOrDefault().FLOWERTYPE_NAME;
+            ViewBag.FlowerTypeId = flowerTypeId;
+            ViewBag.FlowerTypeName = flowerTypeName;
+            ViewBag.FilterValue = filterValue;
+            TempData["FilterValue"] = filterValue;
 
-            return PartialView("_FlowerType", filteredFlowers);
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+
+            return PartialView("_FlowerType", filteredFlowers.ToPagedList(pageNumber, pageSize));
         }
 
         private List<FLOWER> SortFlowers(List<FLOWER> flowers, int? filterValue)

@@ -1,0 +1,68 @@
+﻿@model FlowerShop.Context.USER
+
+@{
+    ViewBag.Title = "Chỉnh sửa tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Chỉnh sửa tài khoản</h4>
+                <h6>Chỉnh sửa/Cập nhật tài khoản</h6>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Edit", "Account", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.USER_ID)
+                                @Html.LabelFor(model => model.USER_NAME)
+                                @Html.TextBoxFor(model => model.USER_NAME, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.USER_NAME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.USER_EMAIL)
+                                @Html.TextBoxFor(model => model.USER_EMAIL, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.USER_EMAIL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.USER_PHONE)
+                                @Html.TextBoxFor(model => model.USER_PHONE, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.USER_PHONE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.USER_PASSWORD)
+                                @Html.PasswordFor(model => model.USER_PASSWORD, new { @class = "form-control", @Value = Model.USER_PASSWORD })
+                                @Html.ValidationMessageFor(model => model.USER_PASSWORD, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ROLE)
+                                @Html.DropDownListFor(model => model.ROLE, new SelectList(new[] { new { Value = true, Text = "Quản trị viên" }, new { Value = false, Text = "Người dùng" } }, "Value", "Text"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ROLE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Thêm</button>
+                            <a href="@Url.Action("Index", "Account")" class="btn btn-cancel">Hủy bỏ</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

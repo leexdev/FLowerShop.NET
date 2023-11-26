@@ -208,3 +208,7 @@ E:\.NET\FlowerShop\FlowerShop\obj\Debug\FlowerShop.csproj.CoreCompileInputs.cach
 E:\.NET\FlowerShop\FlowerShop\obj\Debug\FlowerShop.csproj.CopyComplete
 E:\.NET\FlowerShop\FlowerShop\obj\Debug\FlowerShop.dll
 E:\.NET\FlowerShop\FlowerShop\obj\Debug\FlowerShop.pdb
+E:\.NET\FLowerShop\FlowerShop\bin\PagedList.dll
+E:\.NET\FLowerShop\FlowerShop\bin\PagedList.xml
+E:\.NET\FLowerShop\FlowerShop\bin\PagedList.Mvc.dll
+E:\.NET\FLowerShop\FlowerShop\bin\PagedList.Mvc.xml

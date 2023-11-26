@@ -1,8 +1,12 @@
-﻿@model FlowerShop.Models.SearchModel
+﻿@model PagedList.IPagedList<FlowerShop.Context.FLOWER>
+@using PagedList.Mvc
 
+@{
+    var currentPage = (Model is PagedList.IPagedList<FlowerShop.Context.FLOWER> pagedList) ? pagedList.PageNumber : 1;
+}
 
 <div class="list-product row">
-    @foreach (var item in Model.Flowers)
+    @foreach (var item in Model)
     {
         <div class="item-product col-md-3 col-6 mb-4">
             <div class="image position-relative mb-3">
@@ -37,34 +41,36 @@
         </div>
     }
 </div>
-    
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         var filterSelect = document.getElementById("filterSelect");
         var searchQuery = document.getElementById("search-flower-name");
         var flowerTypeId = document.getElementById("flowerTypeId");
         var filteredProducts = document.getElementById("filteredProducts");
+        var currentPage = @currentPage;
 
         filterSelect.addEventListener("change", () => {
             const selectedValue = filterSelect.value;
             const searchQueryValue = searchQuery.value;
             const flowerTypeIdValue = flowerTypeId.value;
 
-            fetch(`/FLowers/FilterFLowers?searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}&filterValue=${selectedValue}`, {
+            fetch(`/FLowers/FilterFLowers?searchQuery=${searchQueryValue}&flowerTypeId=${flowerTypeIdValue}&page=${currentPage}&filterValue=${selectedValue}`, {
                 method: 'GET',
             })
                 .then(response => response.text())
                 .then(result => {
                     filteredProducts.innerHTML = result;
 
-                    updateUrl(searchQueryValue, flowerTypeIdValue, selectedValue);
+                    updateUrl(searchQueryValue, flowerTypeIdValue, currentPage, selectedValue, );
                 });
         });
 
-        const updateUrl = (searchQueryValue, flowerTypeIdValue, filterValue) => {
+        const updateUrl = (searchQueryValue, flowerTypeIdValue, currentPageValue, filterValue) => {
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('searchQuery', searchQueryValue);
             urlParams.set('flowerTypeId', flowerTypeIdValue);
+            urlParams.set('page', currentPageValue);
             urlParams.set('filterValue', filterValue);
 
             const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
@@ -73,5 +79,6 @@
             history.pushState(null, '', newUrl);
         };
     });
+
 
 </script>
