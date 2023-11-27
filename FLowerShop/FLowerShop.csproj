@@ -341,6 +341,7 @@
     <Content Include="Content\admin\assets\img\img-04.jpg" />
     <Content Include="Content\admin\assets\img\img-05.jpg" />
     <Content Include="Content\admin\assets\img\login.jpg" />
+    <Content Include="Content\admin\assets\img\logo-bloom.png" />
     <Content Include="Content\admin\assets\img\logo-small.png" />
     <Content Include="Content\admin\assets\img\logo.png" />
     <Content Include="Content\admin\assets\img\logo3.png" />

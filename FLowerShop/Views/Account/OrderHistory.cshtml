@@ -1,4 +1,4 @@
-﻿@model List<FlowerShop.Context.ORDER>
+﻿@model PagedList.IPagedList<FlowerShop.Context.ORDER>
 
 @{
     ViewBag.Title = "Lịch sử đơn hàng";
@@ -51,12 +51,46 @@
                     </table>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-6"></div>
-                    <div class="col-sm-6 text-end">
-                        Hiển thị từ 1 đến 1 / 1 (1 Trang)
-                    </div>
-                </div>
+                <nav class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Search", new { page = Model.PageNumber - 1, searchQuery = ViewBag.SearchQuery, flowerTypeId = ViewBag.SelectedFlowerTypeId, filterValue = ViewBag.FilterValue })" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo;</span>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("OrderHistory", "Account", new { page = i })">@i</a>
+                            </li>
+                        }
+
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("OrderHistory", "Account", new { page = Model.PageNumber + 1})" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                            </li>
+                        }
+                    </ul>
+                </nav>
                 <div class="button-select my-3">
                     <a class="text-white bg-pink px-3 py-2 rounded-3 float-end my-3" href="@Url.Action("Account", "Account")">Tiếp tục</a>
                 </div>

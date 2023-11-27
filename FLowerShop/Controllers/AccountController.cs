@@ -2,6 +2,7 @@
 using FlowerShop.Context;
 using FlowerShop.Models;
 using FlowerShop.Service;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -370,7 +371,7 @@ namespace FlowerShop.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult OrderHistory()
+        public ActionResult OrderHistory(int? page)
         {
             var userId = (Guid)Session["UserId"];
 
@@ -378,7 +379,9 @@ namespace FlowerShop.Controllers
             {
                 var order = db.ORDERS.Where(o => o.USER_ID == userId && o.DELETED == false).ToList();
 
-                return View(order);
+                int pageSize = 5;
+                int pageNumber = (page ?? 1);
+                return View(order.ToPagedList(pageNumber, pageSize));
             }
 
             return PartialView("_NotFound");
