@@ -13,7 +13,6 @@
 ## Step 2
 - Open the program in Visual Studio.
 - Open the Web.config file and update the TNS_ADMIN to match your machine's path. For example, TNS_ADMIN=C:\Users\LE\Oracle\network\admin.
-- Open the source code in Visual Studio by navigating to Context -> DbModel -> Right-click -> Update Model from Database.
 
 ## Step 3
 - Run the program.
